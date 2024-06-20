@@ -1,0 +1,87 @@
+/*
+.tophd-controls {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.icon-notification {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  padding: 5px 12px;
+  justify-content: center;
+  align-items: stretch;
+
+  border-style: none;
+  border-width: 2px;
+  border-color: hsla(250.90909090909096, 100.00%, 95.69%, 1.00);
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.btn-profile {
+  display: flex;
+  margin-left: 10px;
+  padding: 2px;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-style: none;
+  border-width: 2px;
+  border-color: hsla(250.90909090909096, 100.00%, 95.69%, 1.00);
+  border-radius: 30px;
+}
+
+.btn-profile:hover {
+  background-color: #ede9ff;
+}
+
+.my-profile-button-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: hsla(0, 0.00%, 40.00%, 1.00);
+  text-decoration: none;
+}
+
+.avatar-profile {
+  width: 32px;
+  height: 32px;
+}
+
+.profile-name {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.name-profile {
+  color: hsla(0, 0.00%, 20.00%, 0.80);
+  font-size: 13px;
+  line-height: 1.2em;
+  font-weight: 700;
+}
+
+.position-profile {
+  font-size: 10px;
+  line-height: 1.2em;
+}
+
+.btn-profile-dorpdown {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  padding-right: 7px;
+  padding-left: 7px;
+  justify-content: center;
+  align-items: center;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(250.90909090909096, 100.00%, 95.69%, 1.00);
+  border-radius: 50%;
+
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+}
+*/

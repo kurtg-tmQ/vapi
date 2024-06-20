@@ -1,0 +1,31 @@
+/*
+.column-sidebar {
+  display: flex;
+  width: 45px;
+  padding-top: 10%;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  background-color: hsla(268, 0.00%, 93.33%, 1.00);
+}
+
+.icon-sidenav {
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+
+  border-radius: 5px;
+}
+
+.icon-sidenav.selected {
+  background-color: hsla(259.24528301886795, 49.37%, 57.86%, 1.00);
+}
+
+.side-nav.seelcted {
+  filter: brightness(500%) grayscale(100%);
+}
+*/

@@ -1,0 +1,80 @@
+/*
+.emotions-table {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  flex: 1;
+}
+
+.emotions-row {
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.emotions-label {
+  width: 95px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+}
+
+.ermotions-row {
+  position: relative;
+
+  display: flex;
+  margin-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+}
+
+.emotions-line {
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  right: 0%;
+  bottom: 50%;
+
+  border-top: 1px solid hsla(0, 0.00%, 92.67%, 1.00);
+}
+
+.space {
+  width: 24%;
+  height: 20px;
+}
+
+.space._5 {
+  width: 9%;
+}
+
+.space._3 {
+  width: 3%;
+}
+
+.icon-emotions {
+  position: relative;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+}
+
+.icon-emotions-circle {
+  position: relative;
+  z-index: 2;
+
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background-color: hsla(214.09836065573768, 84.33%, 57.45%, 1.00);
+}
+
+.icon-emotions-circle.yellow {
+  background-color: hsla(32.866242038216555, 100.00%, 69.22%, 1.00);
+}
+*/

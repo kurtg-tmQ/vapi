@@ -1,0 +1,105 @@
+/*
+.waveform-div {
+  display: flex;
+  padding-right: 10px;
+  padding-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.trasncript-people-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  align-self: stretch;
+
+  color: hsla(0, 0.00%, 20.00%, 0.80);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.waveform-label-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex: 1;
+}
+
+.trasncript-wave-div {
+  position: relative;
+
+  display: flex;
+  margin-left: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+}
+
+.trasncript-percentage-indicator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.trasncript-percentage {
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 1;
+
+  font-family: 'Open Sans', sans-serif;
+  color: hsla(0, 0.00%, 20.00%, 0.61);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.waveform-container {
+  display: flex;
+  height: 120px;
+  margin-left: 10px;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.agent-waveform {
+  overflow: hidden;
+  height: 50%;
+  align-self: stretch;
+}
+
+.customer-waveform {
+  position: relative;
+
+  display: block;
+  overflow: hidden;
+  height: 50%;
+  justify-content: flex-start;
+  align-items: flex-end;
+  align-self: stretch;
+
+  transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+  transform-style: preserve-3d;
+}
+
+.trasncript-divider {
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  right: 0%;
+  bottom: 50%;
+
+  border-top: 1px solid hsla(0, 0.00%, 85.33%, 1.00);
+}
+*/

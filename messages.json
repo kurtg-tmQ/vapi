@@ -1,0 +1,200 @@
+{
+    "message": {
+        "type": "tool-calls",
+        "toolCalls": [
+            {
+                "id": "call_c8kfDnQi6ON3eHPTlJiliHex",
+                "type": "function",
+                "function": {
+                    "name": "verify_user",
+                    "arguments": {
+                        "firstname": "Kurt",
+                        "lastname": "Anthony"
+                    }
+                }
+            }
+        ],
+        "toolCallList": [
+            {
+                "id": "call_c8kfDnQi6ON3eHPTlJiliHex",
+                "type": "function",
+                "function": {
+                    "name": "verify_user",
+                    "arguments": {
+                        "firstname": "Kurt",
+                        "lastname": "Anthony"
+                    }
+                }
+            }
+        ],
+        "toolWithToolCallList": [
+            {
+                "type": "function",
+                "function": {
+                    "name": "verify_user",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "lastname": {
+                                "type": "string"
+                            },
+                            "firstname": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "description": "Retrieves the user from database."
+                },
+                "async": true,
+                "server": {
+                    "url": "https://calf-true-llama.ngrok-free.app/api/info"
+                },
+                "messages": [
+                    {
+                        "type": "request-start",
+                        "content": "Checking the database for existing accounts."
+                    },
+                    {
+                        "type": "request-failed",
+                        "content": "Sorry , there is something wrong on our server."
+                    },
+                    {
+                        "type": "request-response-delayed",
+                        "content": "It appears there is some delay in check our database.",
+                        "timingMilliseconds": 2000
+                    }
+                ],
+                "toolCall": {
+                    "id": "call_c8kfDnQi6ON3eHPTlJiliHex",
+                    "type": "function",
+                    "function": {
+                        "name": "verify_user",
+                        "arguments": {
+                            "firstname": "Kurt",
+                            "lastname": "Anthony"
+                        }
+                    }
+                }
+            }
+        ],
+        "call": {
+            "id": "3652c556-54b4-4ea3-a6f4-00d6b56acfdd",
+            "orgId": "9596af19-fbeb-4b72-946f-22da437b9faf",
+            "createdAt": "2024-06-18T19:51:07.509Z",
+            "updatedAt": "2024-06-18T19:51:07.509Z",
+            "type": "webCall",
+            "status": "queued",
+            "assistantId": "fa7e167d-e8d9-443c-8ebe-8d08fec2279d",
+            "webCallUrl": "https://vapi.daily.co/c9AzO6VSs7HnsNDlE3ll"
+        },
+        "artifact": {
+            "messages": [
+                {
+                    "role": "bot",
+                    "message": "Hello. How can I help you today?",
+                    "time": 1718740276182,
+                    "endTime": 1718740278132,
+                    "secondsFromStart": 1.4399999,
+                    "source": ""
+                },
+                {
+                    "role": "user",
+                    "message": "Hi. How are you?",
+                    "time": 1718740279762,
+                    "endTime": 1718740281152,
+                    "secondsFromStart": 5.02,
+                    "duration": 2.4699998
+                },
+                {
+                    "role": "bot",
+                    "message": "I'm doing well. Thank you. How can I assist you today?",
+                    "time": 1718740282912,
+                    "endTime": 1718740285952,
+                    "secondsFromStart": 8.17,
+                    "source": ""
+                },
+                {
+                    "role": "user",
+                    "message": "Like to inquire about my balance.",
+                    "time": 1718740287282,
+                    "endTime": 1718740289142,
+                    "secondsFromStart": 12.54,
+                    "duration": 2.75
+                },
+                {
+                    "role": "bot",
+                    "message": "Sure. I can help you on with that. First, I need to verify your identity. Could you please provide me with your first and last name?",
+                    "time": 1718740291712,
+                    "endTime": 1718740300202,
+                    "secondsFromStart": 16.97,
+                    "source": ""
+                },
+                {
+                    "role": "user",
+                    "message": "My first name is Kurt, and last name is Anthony.",
+                    "time": 1718740301512,
+                    "endTime": 1718740304732,
+                    "secondsFromStart": 26.77,
+                    "duration": 3.6800003
+                },
+                {
+                    "toolCalls": [
+                        {
+                            "id": "call_c8kfDnQi6ON3eHPTlJiliHex",
+                            "type": "function",
+                            "function": {
+                                "name": "verify_user",
+                                "arguments": "{\"firstname\": \"Kurt\", \"lastname\": \"Anthony\"}"
+                            }
+                        }
+                    ],
+                    "role": "tool_calls",
+                    "message": "",
+                    "time": 1718740304835,
+                    "secondsFromStart": 30.227
+                }
+            ],
+            "messagesOpenAIFormatted": [
+                {
+                    "role": "assistant",
+                    "content": "Hello. How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "Hi. How are you?"
+                },
+                {
+                    "role": "assistant",
+                    "content": "I'm doing well. Thank you. How can I assist you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "Like to inquire about my balance."
+                },
+                {
+                    "role": "assistant",
+                    "content": "Sure. I can help you on with that. First, I need to verify your identity. Could you please provide me with your first and last name?"
+                },
+                {
+                    "role": "user",
+                    "content": "My first name is Kurt, and last name is Anthony."
+                },
+                {
+                    "role": "assistant",
+                    "content": "",
+                    "tool_calls": [
+                        {
+                            "type": "function",
+                            "id": "call_c8kfDnQi6ON3eHPTlJiliHex",
+                            "function": {
+                                "name": "verify_user",
+                                "arguments": "{\"firstname\": \"Kurt\", \"lastname\": \"Anthony\"}"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "timestamp": "2024-06-18T19:51:44.840Z"
+    }
+}

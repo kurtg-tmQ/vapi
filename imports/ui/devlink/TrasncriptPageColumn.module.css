@@ -1,0 +1,153 @@
+/*
+.transcript-page-column-container {
+  display: flex;
+  padding: 15px 10px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex: 1;
+
+  border-left: 2px solid hsla(0, 0.00%, 90.20%, 0.71);
+}
+
+.scorecard-column-hd {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.column-hd {
+  font-size: 22px;
+  line-height: 1.3em;
+  font-weight: 600;
+}
+
+.column-hd.smaller {
+  font-size: 18px;
+}
+
+.label-icon {
+  display: flex;
+  margin-left: 7px;
+  justify-content: flex-start;
+  align-items: center;
+
+  opacity: 0.6;
+
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+}
+
+.icon--autoscored {
+  display: flex;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.scorecard-content {
+  margin-top: 20px;
+  flex: 1;
+}
+
+.select-field {
+  height: 35px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0.00%, 80.00%, 1.00);
+  border-radius: 5px;
+
+  background-color: hsla(249.99999999999994, 50.00%, 95.29%, 1.00);
+
+  font-family: 'Open Sans', sans-serif;
+  color: hsla(0, 0.00%, 30.20%, 1.00);
+  font-size: 12px;
+}
+
+.text-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Articulat;
+  font-size: 12px;
+}
+
+.text-info.align-left {
+  margin-top: 5px;
+  justify-content: flex-start;
+  font-family: 'Open Sans', sans-serif;
+  color: hsla(0, 0.00%, 20.00%, 0.80);
+  letter-spacing: -0.5px;
+}
+
+.btn {
+  padding: 5px 10px;
+
+  border-radius: 5px;
+
+  background-color: hsla(252.2033898305085, 60.68%, 88.13%, 1.00);
+
+  font-family: 'Open Sans', sans-serif;
+  color: hsla(276, 25.64%, 30.59%, 0.77);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.btn.main {
+  background-color: var(--main-color);
+  color: hsla(276, 0.00%, 100.00%, 0.77);
+}
+
+.btn.users {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e39_Asset%2078.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+
+.btn.calendar {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3a_Asset%2079.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+
+.btn.add-existing {
+  padding-left: 30px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0.00%, 80.00%, 1.00);
+
+  background-color: hsla(249.99999999999994, 50.00%, 95.29%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3b_Asset%2080.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+
+  white-space: nowrap;
+}
+
+.btn.gray {
+  padding-left: 10px;
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+}
+
+.btn.time {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3b_Asset%2080.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+*/

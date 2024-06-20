@@ -1,0 +1,78 @@
+/*
+.filter-nav-topic {
+  display: flex;
+}
+
+.filter-button-div {
+  margin-right: 10px;
+}
+
+.btn {
+  padding: 5px 10px;
+
+  border-radius: 5px;
+
+  background-color: hsla(252.2033898305085, 60.68%, 88.13%, 1.00);
+
+  font-family: 'Open Sans', sans-serif;
+  color: hsla(276, 25.64%, 30.59%, 0.77);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.btn.main {
+  background-color: var(--main-color);
+  color: hsla(276, 0.00%, 100.00%, 0.77);
+}
+
+.btn.users {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e39_Asset%2078.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+
+.btn.calendar {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3a_Asset%2079.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+
+.btn.add-existing {
+  padding-left: 30px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0.00%, 80.00%, 1.00);
+
+  background-color: hsla(249.99999999999994, 50.00%, 95.29%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3b_Asset%2080.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+
+  white-space: nowrap;
+}
+
+.btn.gray {
+  padding-left: 10px;
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+}
+
+.btn.time {
+  padding-left: 30px;
+
+  background-color: hsla(0, 0.00%, 94.90%, 1.00);
+  background-image: url("https://uploads-ssl.webflow.com/66706867b675938e0e831dbe/66706867b675938e0e831e3b_Asset%2080.svg");
+  background-position: 8px 50%;
+  background-size: 18px;
+  background-repeat: no-repeat;
+}
+*/

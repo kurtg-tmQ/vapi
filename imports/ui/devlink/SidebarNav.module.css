@@ -1,0 +1,127 @@
+/*
+.main-sidebar {
+  position: relative;
+  flex: 0 auto;
+}
+
+.sidebar-content {
+  display: block;
+  width: 180px;
+  height: 100%;
+  padding: 20px 5px;
+
+  border-right: 1px solid hsla(0, 0.00%, 95.33%, 1.00);
+
+  background-color: hsla(268, 0.00%, 100.00%, 1.00);
+}
+
+.brand {
+  display: flex;
+  height: 50px;
+  margin-right: 5px;
+  margin-left: 5px;
+
+  border-radius: 5px;
+
+  background-color: hsla(266, 23.60%, 90.40%, 1.00);
+}
+
+.sidebar-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.sidebar-section-div {
+  margin-top: 5px;
+}
+
+.sidebar-link {
+  display: flex;
+  padding: 5px 10px;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: hsla(0, 0.00%, 0.00%, 0.00);
+  border-radius: 5px;
+
+  opacity: 0.8;
+  filter: grayscale(100%);
+
+  color: hsla(252.2033898305085, 45.16%, 46.39%, 1.00);
+  font-size: 13px;
+  letter-spacing: 0.15px;
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.sidebar-link:hover {
+  background-color: hsla(250.90909090909096, 100.00%, 95.69%, 1.00);
+  filter: none;
+}
+
+.sidebar-link:global(.w--current) {
+  border: 1px solid #ede9ff;
+  background-color: #ede9ff;
+  filter: none;
+}
+
+.sidebar-link.logout {
+  opacity: 1;
+  filter: none;
+  color: hsla(352.7710843373494, 100.00%, 67.45%, 1.00);
+  font-weight: 500;
+}
+
+.icon-sidebar {
+  display: flex;
+  width: 25px;
+  height: 25px;
+  margin-right: 0px;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-sidebar-links {
+  margin-left: 10px;
+}
+
+.icon-minimize-sidebar {
+  position: absolute;
+  left: auto;
+  top: 15px;
+  right: -15px;
+  bottom: auto;
+
+  display: flex;
+  width: 25px;
+  height: 25px;
+  padding: 6px 7px;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+
+  background-color: hsla(0, 0.00%, 100.00%, 1.00);
+
+  box-shadow: 0 0 11px 0 hsla(0, 0.00%, 0.00%, 0.30);
+  filter: grayscale(100%);
+
+  cursor: pointer;
+}
+
+.icon-minimize-sidebar:hover {
+  background-color: hsla(241, 100.00%, 91.56%, 1.00);
+  filter: none;
+}
+
+.icon-minimize {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  opacity: 0.5;
+}
+*/
