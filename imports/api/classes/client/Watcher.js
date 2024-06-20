@@ -48,6 +48,9 @@ export default class Watcher {
     get User() {
         return this.#user();
     }
+    get IsLoggedIn() {
+        return !!Meteor.userId();
+    }
     /**
      * Hide sensitive functions
      */

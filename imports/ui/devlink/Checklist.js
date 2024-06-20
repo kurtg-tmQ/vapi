@@ -66,7 +66,7 @@ export function Checklist({ as: _Component = _Builtin.Block }) {
                                         className={_utils.cx(_styles, "checklist-count", category.isComplete ? "completed" : "")}
                                     >{`${category.items.length} items`}</_Builtin.Block>
                                 </_Builtin.Block>
-                                <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow")} tag="div">
+                                <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow ")} tag="div">
                                     <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-111.svg" />
                                 </_Builtin.Block>
                             </_Builtin.Block>

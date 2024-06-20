@@ -1,7 +1,6 @@
 import { FuncTemplate } from "./template";
 import moment from "moment";
 
-
 class BirthDay extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);

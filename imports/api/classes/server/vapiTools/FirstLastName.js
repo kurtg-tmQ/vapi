@@ -38,43 +38,41 @@ class FirstLastName extends FuncTemplate {
     }
 }
 
-
-const messages = [
-    {
-        type: "request-start",
-        content: "Checking the database for existing accounts.",
-    },
-    {
-        type: "request-failed",
-        content: "Sorry , there is something wrong on our server.",
-    },
-    {
-        type: "request-response-delayed",
-        content: "It appears there is some delay in check our database.",
-        timingMilliseconds: 2000,
-    },
-];
-const serv = {
-    url: "https://api.example.com",
-};
-const func = {
-    name: "verify_user",
-    parameters: {
-        type: "object",
-        properties: {
-            firstname: {
-                type: "string",
-
-            },
-            lastname: {
-                type: "string",
+const verifyUser = {
+    type: "function",
+    messages: [
+        {
+            type: "request-start",
+            content: "Checking ...",
+        },
+        {
+            type: "request-response-delayed",
+            content: "Wait a sec...",
+            timingMilliseconds: 2000,
+        },
+    ],
+    function: {
+        name: "verify_user",
+        parameters: {
+            type: "object",
+            properties: {
+                firstname: {
+                    type: "string",
+                },
+                lastname: {
+                    type: "string",
+                },
             },
         },
+        description: "Check user if they exist on database or not",
     },
-    description: "Retrieves the user from database.",
+    async: false,
+    server: {
+        url: "https://kind-intensely-herring.ngrok-free.app/verify_name",
+    },
 };
 const meta = {
     title: "First and Last Name",
 };
 
-export default new FirstLastName(false, serv, messages, func, meta);
+export default new FirstLastName(false, verifyUser.server, verifyUser.messages, verifyUser.function, meta);

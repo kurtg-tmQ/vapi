@@ -8,7 +8,7 @@
   
   body {
     color: #333;
-    font-family: Articulat, sans-serif;
+    font-family: 'Articulat', sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
@@ -1919,8 +1919,12 @@
     bottom: 0%;
     left: auto;
     right: 2%;
-    transform: rotate(-90deg);
-  }
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+}
   
   .icon-checklist-arrow.open {
     transform: none;
@@ -2104,49 +2108,55 @@
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e11_Fontspring-DEMO-articulatcf-boldoblique-BF64a38d8ac535a.otf') format('opentype');
+    src: url('/public/font/ArticulatCF-BoldOblique.otf') format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e11_Fontspring-DEMO-articulatcf-boldoblique-BF64a38d8ac535a.otf') format('opentype');
     font-weight: 700;
     font-style: italic;
     font-display: swap;
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e16_Fontspring-DEMO-articulatcf-demibold-BF64a38d8aeae4a.otf') format('opentype');
+    src: url('/public/font/ArticulatCF-DemiBold.otf') format('opentype');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e17_Fontspring-DEMO-articulatcf-demiboldoblique-BF64a38d8b12178.otf') format('opentype');
+    src: url('/public/font/ArticulatCF-DemiBoldOblique.otf') format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e17_Fontspring-DEMO-articulatcf-demiboldoblique-BF64a38d8b12178.otf') format('opentype');
     font-weight: 600;
     font-style: italic;
     font-display: swap;
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e18_Fontspring-DEMO-articulatcf-extrabold-BF64a38d8b06d4e.otf') format('opentype');
+    src: url('/public/font/ArticulatCF-ExtraBold.otf') format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e18_Fontspring-DEMO-articulatcf-extrabold-BF64a38d8b06d4e.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e19_Fontspring-DEMO-articulatcf-medium-BF64a38d8b06b0b.otf') format('opentype');
+    src: url('/public/font/ArticulatCF-Medium.otf') format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e19_Fontspring-DEMO-articulatcf-medium-BF64a38d8b06b0b.otf') format('opentype');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
-    font-family: ' Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e1a_Fontspring-DEMO-articulatcf-normal-BF64a38d8b0cbaf.otf') format('opentype');
+    font-family: 'Articulat';
+    src: url("/public/font/ArticulatCF-Normal.otf") format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e1a_Fontspring-DEMO-articulatcf-normal-BF64a38d8b0cbaf.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
   }
   @font-face {
     font-family: 'Articulat';
-    src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e1b_Fontspring-DEMO-articulatcf-regular-BF64a38d8b1d671.otf') format('opentype');
+    // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e1b_Fontspring-DEMO-articulatcf-regular-BF64a38d8b1d671.otf') format('opentype');
+    src: url("/public/font/ArticulatCF-Normal.otf") format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;

@@ -8,7 +8,7 @@ import verify_account_password from "./Password";
 
 // Assistans
 import TaskRouter from "./assistants/TaskRouter";
-import FullVerification from "./assistants/FullVerification";
+import FullVerification from "./assistants/FullVerification2";
 import PartialVerification from "./assistants/PartialVerification";
 
 const FV = {
