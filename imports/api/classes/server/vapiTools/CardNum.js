@@ -24,7 +24,7 @@ class CardNum extends FuncTemplate {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: "Card number verified and password is not required",
+                            result: "Card number exist and DOES NOT requires password",
                         },
                     ],
                 }, true);
@@ -33,7 +33,7 @@ class CardNum extends FuncTemplate {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: "Card verified but ask for account's password.",
+                            result: "Card exist BUT requires password.",
                         },
                     ],
                 }, true);
@@ -43,7 +43,7 @@ class CardNum extends FuncTemplate {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "Card number not valid.",
+                        result: "Card number not exist",
                     },
                 ],
             });
@@ -52,74 +52,39 @@ class CardNum extends FuncTemplate {
         return this.checkResponse();
     }
 }
-const args = {
-    cardNum: {
-        messages: [
-            {
-                "type": "request-start",
-                "content": "Verifying number."
-            },
-            {
-                "type": "request-failed",
-                "content": "Sorry, there seems to have been an error."
-            },
-            {
-                "type": "request-response-delayed",
-                "content": "It appears there is some delay in check our database.",
-                "timingMilliseconds": 2000
-            }
-        ],
-        serv: {
-            url: `https://api.example.com/card_num`,
+const card = {
+    type: "function",
+    messages: [
+        {
+            type: "request-start",
+            content: "Verifying number...",
         },
-        func: {
-            name: "retrieve_card_number",
-            parameters: {
-                type: "object",
-                properties: {
-                    number: {
-                        type: "string",
-                    }
+        {
+            type: "request-response-delayed",
+            content: "Just a second...",
+            timingMilliseconds: 2000,
+        },
+    ],
+    function: {
+        name: "retrieve_card_number",
+        parameters: {
+            type: "object",
+            properties: {
+                number: {
+                    type: "string",
                 },
             },
-            description: "Retrieves card number.",
-        }
-    },
-    verifyPass: {
-        messages: [
-            {
-                "type": "request-start",
-                "content": "Verifying your password."
-            },
-            {
-                "type": "request-failed",
-                "content": "Sorry, there is something wrong on our server."
-            },
-            {
-                "type": "request-response-delayed",
-                "content": "It appears there is some delay in check our database.",
-                "timingMilliseconds": 2000
-            }
-        ],
-        serv: {
-            url: "https://api.example.com",
         },
-        func: {
-            "name": "verify_account_password",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "description": "Retrieves account password."
-        }
-    }
+        description:
+            "Retrieves card number and verify it. This will check if the card exist and if it require password or not.",
+    },
+    async: false,
+    server: {
+        url: "https://kind-intensely-herring.ngrok-free.app/card_num",
+    },
 };
 const meta = {
     title: "Last four (4) Card Number/Account Number (if they have it)",
 };
 
-export default new CardNum(false, args.cardNum.serv, args.cardNum.messages, args.cardNum.func, meta);
+export default new CardNum(card.async, card.server, card.messages, card.function, meta);

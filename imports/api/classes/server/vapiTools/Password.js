@@ -20,7 +20,7 @@ class PasswordVerify extends FuncTemplate {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "Successfully verified.",
+                        result: "Correct",
                     },
                 ],
             }, true);
@@ -29,7 +29,7 @@ class PasswordVerify extends FuncTemplate {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "Incorrect password.",
+                        result: "Not correct",
                     },
                 ],
             });
@@ -38,74 +38,39 @@ class PasswordVerify extends FuncTemplate {
         return this.checkResponse();
     }
 }
-const args = {
-    cardNum: {
-        messages: [
-            {
-                "type": "request-start",
-                "content": "Verifying number."
-            },
-            {
-                "type": "request-failed",
-                "content": "Sorry, there seems to have been an error."
-            },
-            {
-                "type": "request-response-delayed",
-                "content": "It appears there is some delay in check our database.",
-                "timingMilliseconds": 2000
-            }
-        ],
-        serv: {
-            url: `https://api.example.com/card_num`,
+const password = {
+    type: "function",
+    messages: [
+        {
+            type: "request-start",
+            content: "Verifying...",
         },
-        func: {
-            name: "retrieve_card_number",
-            parameters: {
-                type: "object",
-                properties: {
-                    number: {
-                        type: "string",
-                    }
+        {
+            type: "request-response-delayed",
+            content: "Hold on a moment...",
+            timingMilliseconds: 2000,
+        },
+    ],
+    function: {
+        name: "verify_account_password",
+        parameters: {
+            type: "object",
+            properties: {
+                password: {
+                    type: "string",
                 },
             },
-            description: "Retrieves card number.",
-        }
-    },
-    verifyPass: {
-        messages: [
-            {
-                "type": "request-start",
-                "content": "Verifying your password."
-            },
-            {
-                "type": "request-failed",
-                "content": "Sorry, there is something wrong on our server."
-            },
-            {
-                "type": "request-response-delayed",
-                "content": "It appears there is some delay in check our database.",
-                "timingMilliseconds": 2000
-            }
-        ],
-        serv: {
-            url: "https://api.example.com",
         },
-        func: {
-            "name": "verify_account_password",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "description": "Retrieves account password."
-        }
-    }
+        description:
+            "Retrieves account password and check if it is correct or not.",
+    },
+    async: false,
+    server: {
+        url: "https://kind-intensely-herring.ngrok-free.app/verify_pass",
+    },
 };
 const meta = {
     title: "Password (if applicable)",
 };
 
-export default new PasswordVerify(false, args.verifyPass.serv, args.verifyPass.messages, args.verifyPass.func, meta);
+export default new PasswordVerify(password.async, password.server, password.messages, password.function, meta);

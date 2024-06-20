@@ -23,10 +23,6 @@ const messages = [
         content: "Transferring call please wait.",
     },
     {
-        type: "request-failed",
-        content: "Sorry, there is something wrong on our server.",
-    },
-    {
         type: "request-response-delayed",
         content: "It appears there is some delay transferring the call.",
         timingMilliseconds: 4000,
@@ -45,7 +41,7 @@ const func = {
             }
         },
     },
-    description: "Provide the destination and the assistant id for the transfer.",
+    description: "Provide the destination for the transfer.",
 };
 const meta = {
     title: "Transfer call according to request.",

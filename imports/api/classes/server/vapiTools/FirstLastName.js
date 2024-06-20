@@ -20,7 +20,7 @@ class FirstLastName extends FuncTemplate {
                 results: [
                     {
                         toolCallId: requestBody.message.toolCalls[0].id,
-                        result: "Your name exist in our database.",
+                        result: "Exist.",
                     },
                 ],
             }, true);
@@ -29,7 +29,7 @@ class FirstLastName extends FuncTemplate {
                 results: [
                     {
                         toolCallId: requestBody.message.toolCalls[0].id,
-                        result: "I'm sorry the information you provided does not exist in our database.",
+                        result: "Not Exist.",
                     },
                 ],
             });

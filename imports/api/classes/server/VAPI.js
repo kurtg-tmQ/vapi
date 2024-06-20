@@ -41,6 +41,7 @@ export class Vapi {
 
             for (const vt of VapiTools) {
                 const config = vt.assistant;
+                config.serverUrl = this.#host + "/api/session";
                 const tools = vt.tools;
                 const newConfig = await this.createTools(config, tools);
                 await this.createAssistant(newConfig);
@@ -380,7 +381,7 @@ export class Vapi {
                     if (tool.Data) session.setData(tool.Data);
                     const update = { valid: response.valid, id: tool.Id };
                     if (response.info && response.info.destination) {
-                        const assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name === response.info.destination);
+                        const assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name.includes(response.info.destination));
                         console.log("Vapi -> parseRequest -> assistantId", assistantId);
                         session.createCheckList(parsed, assistantId);
                     }

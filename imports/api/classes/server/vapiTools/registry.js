@@ -1,5 +1,6 @@
 // 
 import task_route from "./TaskRoute";
+import sss_verify from "./LastSSSNum";
 import zipcode_update from "./ZipCode";
 import birthday_update from "./BirthDay";
 import verify_user from "./FirstLastName";
@@ -13,7 +14,7 @@ import PartialVerification from "./assistants/PartialVerification";
 
 const FV = {
     assistant: FullVerification,
-    tools: [verify_user, zipcode_update, birthday_update, retrieve_card_number, verify_account_password]
+    tools: [verify_user, zipcode_update, birthday_update, sss_verify, retrieve_card_number, verify_account_password]
 };
 const PV = {
     assistant: PartialVerification,

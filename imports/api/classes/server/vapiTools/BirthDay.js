@@ -17,7 +17,7 @@ class BirthDay extends FuncTemplate {
                     results: [
                         {
                             toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "Your birthday is valid.",
+                            result: "valid.",
                         },
                     ],
                 }, true);
@@ -26,7 +26,7 @@ class BirthDay extends FuncTemplate {
                     results: [
                         {
                             toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "Your birthday is not valid.",
+                            result: "not valid.",
                         },
                     ],
                 });
@@ -35,7 +35,7 @@ class BirthDay extends FuncTemplate {
                 results: [
                     {
                         toolCallId: requestBody.message.toolCalls[0].id,
-                        result: "The is a problem updating your birthday.",
+                        result: "error",
                     },
                 ],
             });
@@ -43,39 +43,39 @@ class BirthDay extends FuncTemplate {
         return this.checkResponse();
     }
 }
-
-const messages = [
-    {
-        type: "request-start",
-        content: "Validating your birthday on your account.",
-    },
-    {
-        type: "request-failed",
-        content: "Sorry , there is something wrong on our server.",
-    },
-    {
-        type: "request-response-delayed",
-        content: "It appears there is some delay updating your birthday.",
-        timingMilliseconds: 2000,
-    },
-];
-const serv = {
-    url: "https://kind-intensely-herring.ngrok-free.app/birthdayUpdate",
-};
-const func = {
-    name: "birthday_update",
-    parameters: {
-        type: "object",
-        properties: {
-            birthday: {
-                type: "string",
+const birthday = {
+    type: "function",
+    messages: [
+        {
+            type: "request-start",
+            content: "Updating ...",
+        },
+        {
+            type: "request-response-delayed",
+            content: "Give me a minute...",
+            timingMilliseconds: 2000,
+        },
+    ],
+    function: {
+        name: "birthday_update",
+        parameters: {
+            type: "object",
+            properties: {
+                birthday: {
+                    type: "string",
+                },
             },
         },
+        description:
+            "Validates birthday of customer. This will return if it is valid or not valid",
     },
-    description: "Verify birthday on account.",
+    async: false,
+    server: {
+        url: "https://kind-intensely-herring.ngrok-free.app/birthdayUpdate",
+    },
 };
 const meta = {
     title: "Date of Birth",
 };
 
-export default new BirthDay(false, serv, messages, func, meta);
+export default new BirthDay(birthday.async, birthday.server, birthday.messages, birthday.function, meta);

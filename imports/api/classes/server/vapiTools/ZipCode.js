@@ -15,7 +15,7 @@ class ZipCodeTemp extends FuncTemplate {
                     results: [
                         {
                             toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "Your zip code is not valid.",
+                            result: "not valid",
                         },
                     ],
                 });
@@ -24,7 +24,7 @@ class ZipCodeTemp extends FuncTemplate {
                     results: [
                         {
                             toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "Your zip code is valid",
+                            result: "valid",
                         },
                     ],
                 }, true);
@@ -33,7 +33,7 @@ class ZipCodeTemp extends FuncTemplate {
                     results: [
                         {
                             toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "Your zip code is not valid.",
+                            result: "not valid",
                         },
                     ],
                 });
@@ -43,7 +43,7 @@ class ZipCodeTemp extends FuncTemplate {
                 results: [
                     {
                         toolCallId: requestBody.message.toolCalls[0].id,
-                        result: "There was an error while updating your zipcode.",
+                        result: "error",
                     },
                 ],
             });
@@ -52,39 +52,39 @@ class ZipCodeTemp extends FuncTemplate {
     }
 }
 
-const messages = [
-    {
-        type: "request-start",
-        content: "Checking your zip code...",
-    },
-    {
-        type: "request-failed",
-        content: "Sorry , there is something wrong on our server.",
-    },
-    {
-        type: "request-response-delayed",
-        content:
-            "It appears there is some delay veiriying and updating your zip code.",
-        timingMilliseconds: 2000,
-    },
-];
-const serv = {
-    url: "https://kind-intensely-herring.ngrok-free.app/birthdayUpdate",
-};
-const func = {
-    name: "zipcode_update",
-    parameters: {
-        type: "object",
-        properties: {
-            zipcode: {
-                type: "string",
+const zipcode = {
+    type: "function",
+    messages: [
+        {
+            type: "request-start",
+            content: "Updating ...",
+        },
+        {
+            type: "request-response-delayed",
+            content: "Hang on...",
+            timingMilliseconds: 2000,
+        },
+    ],
+    function: {
+        name: "zipcode_update",
+        parameters: {
+            type: "object",
+            properties: {
+                zipcode: {
+                    type: "string",
+                },
             },
         },
+        description:
+            "Verify zipcode. This will return valid or not valid",
     },
-    description: "Verify zipcode on account.",
+    async: false,
+    server: {
+        url: "https://kind-intensely-herring.ngrok-free.app/zipCodeUpdate",
+    },
 };
 const meta = {
     title: "Zip Code",
 };
 
-export default new ZipCodeTemp(false, serv, messages, func, meta);
+export default new ZipCodeTemp(false, zipcode.server, zipcode.messages, zipcode.function, meta);
