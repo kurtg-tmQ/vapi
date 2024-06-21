@@ -110,8 +110,13 @@ export class Business {
 }
 
 export class Consumer {
-    constructor({ _id, businessId, firstName, lastName, zipCode, birthday, account = { cardNumber: "", sss: "", }, contactInfo = { email: "", phone: "", mobile: "" },
-        security = { question: "", answer: "", password: "", passwordRequired: false }, createdAt, updatedAt }) {
+    constructor({
+        _id, businessId, firstName, lastName, zipCode, birthday,
+        account = { cardNumber: "", sss: "", },
+        contactInfo = { email: "", phone: "", mobile: "" },
+        security = { question: "", answer: "", password: "", passwordRequired: false },
+        createdAt, updatedAt, session = []
+    }) {
         this._id = _id;
         this.businessId = businessId;
         this.firstName = firstName;
@@ -123,8 +128,8 @@ export class Consumer {
         this.security = security;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.session = session;
     }
-
     get Default() {
         return {
             firstName: "",
@@ -135,17 +140,20 @@ export class Consumer {
             account: { cardNumber: "", sss: "", },
             contactInfo: { email: "", phone: "", mobile: "" },
             security: { question: "", answer: "", password: "", passwordRequired: false },
+            session: [
+                { sessionId: "", createdAt: "", updatedAt: "", active: false, otp: { code: "", expiresIn: "" } },
+            ]
         };
     }
-
     get CardNumber() {
         return this.account.cardNumber;
     }
-
     get SSS() {
         return this.account.sss;
     }
-
+    get OTP() {
+        return this.session.otp;
+    }
     verifyBirthday(birthday) {
         return moment(birthday, "YYYY-MM-DD").isSame(moment(this.birthday, "YYYY-MM-DD"));
     }
@@ -164,15 +172,33 @@ export class Consumer {
     verifyPassword(password) {
         return password === this.security.password;
     }
-    sendOTP() {
+    sendOTP(number, sessionId) {
         if (this.contactInfo.mobile) {
             const channel = DB.Channels.findOne({ businessId: this.businessId });
             const ch = new Channels(channel);
-            return ch.sendSMS(this.contactInfo.mobile, "OTP: 1234");
-
+            let phonenumber = this.contactInfo.mobile;
+            if (!phonenumber && number) phonenumber = number;
+            const otp = new OTP();
+            const idx = this.session.findIndex((s) => s.sessionId === sessionId);
+            const code = otp.generateOPT(4);
+            if (idx > -1) {
+                this.session[idx].otp = { code, expiresIn: otp.ExpiresIn };
+            } else {
+                this.session.push({ sessionId, otp: { code, expiresIn: otp.ExpiresIn } });
+            }
+            this.save();
+            return ch.sendSMS(phonenumber, `Your OTP is ${code}`);
         } else {
             return Promise.resolve("no number");
         }
+    }
+    verifyOTP(code, sessionId) {
+        const idx = this.session.findIndex((s) => s.sessionId === sessionId);
+        if (idx > -1) {
+            const o = new OTP(this.session[idx].otp.code, this.session[idx].otp.expiresIn);
+            return o.getIsValid(code);
+        }
+        return false;
     }
     save() {
         if (this._id) {
@@ -183,5 +209,36 @@ export class Consumer {
             delete this._id;
             this._id = DB.Consumers.insert(this);
         }
+    }
+}
+
+class OTP {
+    #otp;
+    #expiresIn;
+    constructor(otp, expiresIn) {
+        this.#otp = otp;
+        this.#expiresIn = expiresIn;
+    }
+    get ExpiresIn() {
+        return this.#expiresIn;
+    }
+    get OTP() {
+        return this.#otp;
+    }
+    get IsExpired() {
+        return this.#expiresIn < Date.now();
+    }
+    getIsValid(otp) {
+        if (this.IsExpired) return false;
+        return this.#otp === otp;
+    }
+    /**
+     * @description generate digit OTP based on length
+     * @param {*} length 
+     * @returns {Number}
+     */
+    generateOPT(length) {
+        this.#expiresIn = Date.now() + 1000 * 60 * 5;
+        return Math.floor(Math.random() * Math.pow(10, length));
     }
 }

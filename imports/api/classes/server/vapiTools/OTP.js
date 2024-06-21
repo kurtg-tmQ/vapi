@@ -10,7 +10,7 @@ class OTP extends FuncTemplate {
         const data = this.Data;
         if (data) {
             const consumer = new Consumer(data);
-            return consumer.sendOTP();
+            return consumer.sendOTP(number, this.Meta.sessionId);
         }
         return Promise.resolve("no number");
     }
@@ -82,7 +82,7 @@ const otp = {
     },
 };
 const meta = {
-    title: "Last four (4) Card Number/Account Number (if they have it)",
+    title: "Send OTP",
 };
 
 export default new OTP(otp.async, otp.server, otp.messages, otp.function, meta);
