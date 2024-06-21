@@ -31,7 +31,7 @@ class AuthLayout extends Component {
 
         const prevPath = (this.props.location.state && this.props.location.state.from.pathname) || null;
         if (!Client.IsLoggedIn)
-            return <Navigate to={prevPath || Navigation.AvailableRoutes.LOGIN.path} state={{ from: this.props.location }} replace />;
+            return <Navigate to={prevPath || Navigation.AvailableRoutes.DEFAULT.path} state={{ from: this.props.location }} replace />;
         return <Outlet />;
     }
 }

@@ -77,7 +77,7 @@ export default class Login extends Component {
                                             data-name="Name 2"
                                             placeholder="Password"
                                             ref={(ref) => (this.#password = ref)}
-                                            type="text"
+                                            type="password"
                                             id="name-2"
                                         />
                                     </div>
