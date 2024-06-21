@@ -49,6 +49,14 @@ export class FuncTemplate {
     get Meta() {
         return this.#meta;
     }
+    /**
+     * 
+     * @param {Object} meta 
+     */
+    setMeta(meta) {
+        if (meta && typeof meta === "object")
+            this.#meta = { ...this.#meta, ...meta };
+    }
     setResponse(statusCode, message, valid = false, info = {}) {
         this.#response.statusCode = statusCode;
         this.#response.message = message;

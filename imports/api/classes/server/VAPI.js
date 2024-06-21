@@ -377,6 +377,7 @@ export class Vapi {
             const session = this.getSession(sessionId);
             const tool = this.getTool(parsed);
             if (tool && session) {
+                tool.setMeta({ sessionId });
                 const data = session.Data;
                 if (data) tool.setData(data);
                 tool.parseRequest(parsed).then((response) => {
@@ -412,6 +413,7 @@ class Session {
     #event;
     #data = null;
     #assistants = {};
+    #other = {};
     constructor(call, event, assistants) {
         this.#call = call;
         // this.writeStream = fs.createWriteStream(Path.ASSETS + this.SessionId + ".json");
@@ -432,6 +434,9 @@ class Session {
     }
     get IsSquadCall() {
         return !!this.#call.squadId;
+    }
+    get OTP() {
+        return this.#other.otp;
     }
     setData(data) {
         this.#data = data;
