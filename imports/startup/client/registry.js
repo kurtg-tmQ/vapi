@@ -6,6 +6,12 @@ import Login from "../../ui/pages/Login";
 import DiscoveryPage from "../../ui/pages/DiscoveryPage";
 
 export const UNAUTHENTICATED_ROUTES = {
+    DEFAULT: {
+        path: "/",
+        default: true,
+        component: <Login />,
+        isAuthenticated: false
+    },
     LOGIN: {
         path: "/login",
         default: true,
