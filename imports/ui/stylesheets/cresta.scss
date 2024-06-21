@@ -1967,7 +1967,11 @@ a {
     bottom: 0%;
     left: auto;
     right: 2%;
-    transform: rotate(-90deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
 }
 
 .icon-checklist-arrow.open {
