@@ -1,7 +1,7 @@
 import { fetch, Headers } from "meteor/fetch";
 
 import { Sms } from "../smsMiddleware";
-import Utilities from "../../utilities";
+import Utilities from "../../Utilities";
 
 export class Intelliquent extends Sms {
     constructor(provider, key, secret, number) {

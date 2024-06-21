@@ -2,9 +2,9 @@ import webhooks from "twilio/lib/webhooks/webhooks";
 import { Meteor } from "meteor/meteor";
 import twilio from "twilio";
 
-import Utilities from "../../utilities";
+import Utilities from "../../Utilities";
 import { Sms } from "../smsMiddleware";
-import Server from "../../server.js";
+import Server from "../../Server.js";
 
 /**
  * @typedef {import('../../ChannelMiddleWare.js').Response} Response
@@ -49,7 +49,7 @@ export class TwilioSMS extends Sms {
                     to: to,
                     from: this.Number,
                     body: message,
-                    statusCallback: Server.Config.receiptCallback
+                    statusCallback: Server.Config.host + "/receipt",
                 };
                 if (attachment && attachment.length)
                     json.mediaUrl = attachment;

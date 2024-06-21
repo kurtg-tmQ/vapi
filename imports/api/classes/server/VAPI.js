@@ -24,9 +24,11 @@ export class Vapi {
     #host;
     #event = new EventEmitter();
     #assistants = {};
-    constructor(orgId, key, host) {
+    #phoneId;
+    constructor(orgId, key, host, phoneId) {
         this.#token = this.generateToken(orgId, key);
         this.#host = host;
+        this.#phoneId = phoneId;
         this.listen();
         this.init();
     }
@@ -51,7 +53,7 @@ export class Vapi {
             // console.log("Squad deleted! response: ", response);
             const response = await this.createSquad();
             Utilities.showDebug("Squad created! response: %s", JSON.stringify(response));
-            const updatePhone = await this.updatePhonenumber("2cbbb9a2-aba5-4acf-b129-100b7c0e28c9", response.id);
+            const updatePhone = await this.updatePhonenumber(this.#phoneId, response.id);
             Utilities.showDebug("Phone number updated! response: %s", JSON.stringify(updatePhone));
         } catch (error) {
             Utilities.showError("Error initializing VAPI! err: %s", error.message || error);

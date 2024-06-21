@@ -1,4 +1,5 @@
 host: ""
+phoneId: "123123123123123"
 
 vapi:
   orgId: ""
@@ -9,12 +10,11 @@ channels:
     secret: ""
     number: ""
 
-consumer:
+consumers:
   - firstName: ""
     lastName: ""
     zipCode: ""
-    password: ""
-    birthday: ""
-    account: { cardNumber: "", sss: "", }
+    birthday: "2000-01-01"
+    account: { cardNumber: "1234", sss: "1234", }
     contactInfo: { email: "", phone: "", mobile: "" }
-    security: { question: "", answer: "", password: "", passwordRequired: false }
+    security: { question: "", answer: "", password: "alpha", passwordRequired: false }

@@ -1,6 +1,6 @@
 import nexmo from "nexmo";
 
-import Utilities from "../../utilities";
+import Utilities from "../../Utilities";
 import { Sms } from "../smsMiddleware";
 
 export class Nexmo extends Sms {

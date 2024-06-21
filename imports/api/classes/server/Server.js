@@ -71,7 +71,7 @@ class Server {
             Utilities.showStatus("Starting up server...");
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
-                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host);
+                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId);
             this.createDefaultData();
         } catch (error) {
             Utilities.showError("Error starting up server! err: %s", error.message);

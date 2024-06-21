@@ -1,4 +1,4 @@
-import Utilities from "../utilities";
+import Utilities from "../Utilities";
 
 export class Sms {
     #provider = null;
