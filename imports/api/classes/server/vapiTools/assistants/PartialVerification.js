@@ -27,7 +27,7 @@ export default {
         "messages": [
             {
                 "role": "system",
-                "content": "You are a voice assistant. That will initially verify the user's identity. You need to perform a series of steps in order and only move to the next step if the current step is verified.\n1. First ask them for their first and last name.\n2. Ask their zip code."
+                "content": "You are a voice assistant. That will initially verify the user's identity. You need to perform a series of steps in order and only move to the next step if the current step is verified.\n1. First ask them for their first and last name.\n2. send OTP\n3. Verify OTP code."
             }
         ],
         "tools": []

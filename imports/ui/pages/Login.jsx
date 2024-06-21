@@ -8,7 +8,6 @@ export default class Login extends Component {
         Client.setWatcher(this, "login");
     }
     async handleSubmit() {
-        console.log("Login form submitted", this.#email.value.trim(), this.#password.value.trim());
         return Client.login(this.#email.value.trim(), this.#password.value.trim(), (err) => {
             if (err) {
                 console.log("Error logging in", err);

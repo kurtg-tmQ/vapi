@@ -63,7 +63,7 @@ export class Channels {
             case NETWORK.TWILIO:
                 return new TwilioSMS(this.api.network, this.api.key, this.api.secret, this.number);
             default:
-                return null;
+                return {};
         }
     }
 
@@ -186,17 +186,33 @@ export class Consumer {
             } else {
                 this.session.push({ sessionId, otp: { code, expiresIn: otp.ExpiresIn } });
             }
-            this.save();
-            return ch.sendSMS(phonenumber, `Your OTP is ${code}`);
+            //TESTING
+            // this.save();
+            // return Promise.resolve("OTP sent");
+            return ch.sendSMS(phonenumber, `Your OTP is ${code}`).then((response) => {
+                const errorStatus = ["ERROR", "FAILED"];
+                if (errorStatus.includes(response.status)) {
+                    return Promise.reject("OTP not sent");
+                }
+                this.save();
+                return Promise.resolve("OTP sent");
+            });
         } else {
             return Promise.resolve("no number");
         }
     }
-    verifyOTP(code, sessionId) {
+    async verifyOTP(code, sessionId) {
         const idx = this.session.findIndex((s) => s.sessionId === sessionId);
         if (idx > -1) {
+            if (this.session[idx].otp.used) return "used";
             const o = new OTP(this.session[idx].otp.code, this.session[idx].otp.expiresIn);
-            return o.getIsValid(code);
+            const isValid = o.getIsValid(code);
+            if (isValid) {
+                this.session[idx].otp.expiresIn = moment().valueOf();
+                this.session[idx].otp.used = true;
+                this.save();
+            }
+            return isValid ? "valid" : "invalid";
         }
         return false;
     }
@@ -226,11 +242,11 @@ class OTP {
         return this.#otp;
     }
     get IsExpired() {
-        return this.#expiresIn < Date.now();
+        return moment().isAfter(this.#expiresIn);
     }
     getIsValid(otp) {
         if (this.IsExpired) return false;
-        return this.#otp === otp;
+        return parseInt(otp) === parseInt(this.#otp);
     }
     /**
      * @description generate digit OTP based on length
@@ -238,7 +254,7 @@ class OTP {
      * @returns {Number}
      */
     generateOPT(length) {
-        this.#expiresIn = Date.now() + 1000 * 60 * 5;
+        this.#expiresIn = moment().add(5, "minutes").valueOf();
         return Math.floor(Math.random() * Math.pow(10, length));
     }
 }

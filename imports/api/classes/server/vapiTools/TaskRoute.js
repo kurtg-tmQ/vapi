@@ -5,7 +5,6 @@ class TaskRoute extends FuncTemplate {
         super(async, server, messages, func, meta);
     }
     parseRequest(requestBody) {
-        console.log("<--------------------------parse : ", requestBody);
         let argument = requestBody.message.toolCalls[0].function.arguments;
         this.setResponse(
             200,
