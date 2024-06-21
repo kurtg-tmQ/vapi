@@ -35,19 +35,21 @@ class OTP extends FuncTemplate {
                             result: "OTP sent",
                         },
                     ],
-                });
+                }, true);
             }
+            return this.checkResponse();
         }).catch((e) => {
-            console.log(e);
+            console.error(e);
             this.setResponse(200, {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "no number",
+                        result: "no number found",
                     },
                 ],
             });
-        }).finally(() => this.checkResponse());
+            return this.checkResponse();
+        });
     }
 }
 const otp = {

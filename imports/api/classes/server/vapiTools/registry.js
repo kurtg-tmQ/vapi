@@ -1,5 +1,6 @@
 // 
 import send_otp from "./OTP";
+import verify_otp from "./VerifyOTP";
 import task_route from "./TaskRoute";
 import sss_verify from "./LastSSSNum";
 import zipcode_update from "./ZipCode";
@@ -19,7 +20,7 @@ const FV = {
 };
 const PV = {
     assistant: PartialVerification,
-    tools: [verify_user, zipcode_update, send_otp]
+    tools: [verify_user, send_otp, verify_otp]
 };
 const TV = {
     assistant: TaskRouter,
