@@ -3,3 +3,18 @@ host: ""
 vapi:
   orgId: ""
   key: ""
+
+channels:
+  - key: ""
+    secret: ""
+    number: ""
+
+consumer:
+  - firstName: ""
+    lastName: ""
+    zipCode: ""
+    password: ""
+    birthday: ""
+    account: { cardNumber: "", sss: "", }
+    contactInfo: { email: "", phone: "", mobile: "" }
+    security: { question: "", answer: "", password: "", passwordRequired: false }

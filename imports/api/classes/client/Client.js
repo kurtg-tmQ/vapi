@@ -56,12 +56,10 @@ class Client extends Watcher {
         if (!this.#check) {
             RedisVent.Session.listen(SESSION_KEY.UPDATE_CHECKLIST, "session", ({ event, data }) => {
                 data = data.data;
-                console.log("Client -> listen -> data", data);
                 switch (event) {
                     case "upsert": {
                         if (this.#checklist.length) {
                             const { parentIdx, childIdx } = this.getChecklistIdx(this.#checklist, data.id);
-                            console.log("Client -> listen -> parentIdx, childIdx", parentIdx, childIdx);
                             if (parentIdx > -1 && childIdx > -1) {
                                 const newChecklist = [...this.#checklist].map((category) => ({ ...category, items: [...category.items].map((item) => ({ ...item, current: false })) }));
                                 newChecklist[parentIdx].items[childIdx] = { ...newChecklist[parentIdx].items[childIdx], current: true, completed: data.valid };
@@ -80,7 +78,6 @@ class Client extends Watcher {
                 switch (event) {
                     case "upsert":
                         const chatData = this.parseIncomingData(data.data);
-                        console.log("UPDATE_CONVERSAION -> chatData", chatData);
                         this.#events.emit(SESSION_KEY.UPDATE_CONVERSAION, chatData);
                         break;
                     default:
@@ -88,7 +85,6 @@ class Client extends Watcher {
                 }
             });
             RedisVent.Session.listen(SESSION_KEY.UPDATE_STATUS, "session", ({ event, data }) => {
-                console.log("UPDATE_STATUS -> ", { event, data });
                 data = data.data;
                 switch (event) {
                     case "upsert":

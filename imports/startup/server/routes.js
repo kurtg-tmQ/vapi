@@ -30,7 +30,6 @@ Meteor.startup(() => {
             //     throw new Error("Invalid request!");
             // }
         } catch (error) {
-            console.log("Error: ", error);
             response.statusCode = 500;
             response.end("Error: " + error);
         }

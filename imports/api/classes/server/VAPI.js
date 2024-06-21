@@ -223,7 +223,7 @@ export class Vapi {
         const sessionId = this.getSessionId(parsed);
         if (sessionId) {
             if (!this.#sessions[sessionId])
-                this.#sessions[sessionId] = new Session(parsed.message.call, this.#event, this.#assistants, this.getCall.bind(this));
+                this.#sessions[sessionId] = new Session(parsed.message.call, this.#event, this.#assistants);
             return this.#sessions[sessionId];
         }
         return null;
@@ -242,7 +242,7 @@ export class Vapi {
             };
             const body = { members: [] };
             const taskRouter = { assistantId: "", assistantDestinations: [] };
-            const messageTemplate = "Hi, let me transfer you to the right assistant. Please wait a moment.";
+            const messageTemplate = "Please wait a moment.";
             for (const id in this.#assistants) {
                 const assistant = this.#assistants[id];
                 if (assistant && assistant.name.includes("Task Router")) {
@@ -382,7 +382,6 @@ export class Vapi {
                     const update = { valid: response.valid, id: tool.Id };
                     if (response.info && response.info.destination) {
                         const assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name.includes(response.info.destination));
-                        console.log("Vapi -> parseRequest -> assistantId", assistantId);
                         session.createCheckList(parsed, assistantId);
                     }
                     RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CHECKLIST, "session", update);
@@ -411,14 +410,12 @@ class Session {
     #event;
     #data = null;
     #assistants = {};
-    #getCall = () => Promise.resolve();
-    constructor(call, event, assistants, getCall) {
+    constructor(call, event, assistants) {
         this.#call = call;
         // this.writeStream = fs.createWriteStream(Path.ASSETS + this.SessionId + ".json");
         this.init(call);
         this.#event = event;
         this.#assistants = assistants;
-        this.#getCall = getCall;
     }
     get SessionId() {
         if (this.IsSquadCall)
@@ -460,18 +457,6 @@ class Session {
             return ["bot", "user"].includes(conv.role);
         });
     }
-    transferDestination(message = []) {
-        if (message.type === "conversation-update" && message.conversation.length) {
-            const lastMessage = message.conversation.pop();
-
-            if (lastMessage.tool_calls?.[0]?.function.name === "transferCall") {
-                const args = JSON.parse(lastMessage.tool_calls[0].function.arguments);
-                console.log(args);
-                return args.destination;
-            }
-        }
-        return false;
-    }
     parseSession(requestBody) {
         let parsed = requestBody;
         if (typeof requestBody === "string")
@@ -485,7 +470,6 @@ class Session {
                     let assistantId = null;
                     if (this.IsSquadCall) {
                         assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name === "Task Router");
-                        console.log("Session -> parseSession -> assistantId", assistantId);
                     }
                     this.createCheckList(parsed, assistantId);
                 }
@@ -513,9 +497,9 @@ class Session {
     startRecording(body) {
         this.writeStream.write(JSON.stringify(body));
     }
-
     createCheckList(parsed, id = null) {
-        const assistantId = parsed.message?.call?.assistantId || id;
+        let assistantId = parsed.message?.call?.assistantId;
+        if (id) assistantId = id;
         const checklist = [
             {
                 name: "Introductions",
@@ -540,7 +524,9 @@ class Session {
             }
             checklist.push(credentials);
         }
-        RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: "started", checklist });
+        Meteor.defer(() => {
+            RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: "started", checklist });
+        });
     }
 }
 

@@ -1,4 +1,5 @@
 import { FuncTemplate } from "./template";
+import { Consumer } from "../../../DB";
 
 class CardNum extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
@@ -9,8 +10,9 @@ class CardNum extends FuncTemplate {
         const retval = { verified: false, passRequired: false };
         const data = this.Data;
         if (data) {
-            if (parseInt(data.cardnumber) === parseInt(number)) retval.verified = true;
-            if (data.passwordrequired) retval.passRequired = true;
+            const consumer = new Consumer(data);
+            retval.passRequired = consumer.requirePassword();
+            retval.verified = consumer.verifyCardNumber(number);
         }
         return retval;
     }

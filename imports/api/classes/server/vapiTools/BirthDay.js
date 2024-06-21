@@ -1,18 +1,22 @@
 import { FuncTemplate } from "./template";
+import { Consumer } from "../../../DB";
 import moment from "moment";
 
 class BirthDay extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
+    verifyBirthday(birthday) {
+        if (this.Data) {
+            const consumer = new Consumer(this.Data);
+            return consumer.verifyBirthday(birthday);
+        }
+        return false;
+    }
     parseRequest(requestBody) {
-        const data = this.Data;
-        const birthday = moment(data.birthday, "YYYY-MM-DD");
-        console.log("BirthDay -> parseRequest -> birthday", birthday, data);
         try {
             let argument = requestBody.message.toolCalls[0].function.arguments;
-            const newBirthday = moment(argument.birthday, "YYYY-MM-DD");
-            if (birthday.isSame(newBirthday))
+            if (this.verifyBirthday(argument.birthday))
                 this.setResponse(200, {
                     results: [
                         {

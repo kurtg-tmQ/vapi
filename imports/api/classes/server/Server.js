@@ -4,7 +4,7 @@ import Path from './Path';
 import fs from 'fs';
 
 import { RedisClient } from "./RedisClient";
-import DB, { INDEXES } from "../../DB";
+import DB, { INDEXES, Business, Channels, Consumer } from "../../DB";
 import Utilities from './Utilities';
 import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
@@ -72,6 +72,7 @@ class Server {
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
                 this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host);
+            this.createDefaultData();
         } catch (error) {
             Utilities.showError("Error starting up server! err: %s", error.message);
         }
@@ -119,6 +120,51 @@ class Server {
         } catch (error) {
             throw new Error(error);
         }
+    }
+
+    createDefaultData() {
+        if (DB.Business.find().count()) {
+            Utilities.showStatus("Default data already exists!");
+            return;
+        }
+        const business = new Business({
+            name: "Default Business",
+            address: "1234 Main St. Anytown, USA",
+        });
+        business.save();
+
+        const channels = this.Config.channels;
+        if (channels && channels.length) {
+            for (const channel of channels) {
+                const ch = new Channels({
+                    businessId: business._id,
+                    number: channel.number,
+                    api: {
+                        key: channel.key,
+                        secret: channel.secret,
+                        network: channel.network,
+                    },
+                });
+                ch.save();
+            }
+        }
+        const consumers = this.Config.consumers;
+        if (consumers && consumers.length) {
+            for (const consumer of consumers) {
+                const cons = new Consumer({
+                    businessId: business._id,
+                    firstName: consumer.firstName,
+                    lastName: consumer.lastName,
+                    birthday: consumer.birthday,
+                    zipCode: consumer.zipCode,
+                    account: consumer.account,
+                    contactInfo: consumer.contactInfo,
+                    security: consumer.security
+                });
+                cons.save();
+            }
+        }
+        Utilities.showStatus("Default data created!");
     }
 }
 
