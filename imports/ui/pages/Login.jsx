@@ -103,7 +103,7 @@ export default class Login extends Component {
                     </div>
                     <div className="div-block-2">
                         <p className="ry_sign-in-p-style1">
-                            Dont have an account yet?{" "}
+                            Don&apos;t have an account yet?{" "}
                             <a href="#" className="ry_span-link-style1">
                                 Sign up
                             </a>
