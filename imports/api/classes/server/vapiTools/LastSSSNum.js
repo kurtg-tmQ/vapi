@@ -1,5 +1,5 @@
 import { FuncTemplate } from "./template";
-import DB from "../../../DB";
+import { Consumer } from "../../../DB";
 
 class LastSssNumTemp extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
@@ -7,13 +7,15 @@ class LastSssNumTemp extends FuncTemplate {
     }
     validate(sss) {
         const data = this.Data;
-        if (data.sss === sss) return true;
+        if (data) {
+            const consumer = new Consumer(data);
+            return consumer.verifySss(sss);
+        }
         return false;
     }
     parseRequest(requestBody) {
         try {
             let argument = requestBody.message.toolCalls[0].function.arguments;
-            console.log(argument);
             const isVerified = this.validate(argument.sssNumber);
             const sss = parseInt(argument.sssNumber);
             if (isNaN(sss) || argument.sssNumber.length != 4 || !isVerified) {
@@ -49,6 +51,7 @@ class LastSssNumTemp extends FuncTemplate {
                 ],
             });
         }
+        return this.checkResponse();
     }
 }
 const sss = {

@@ -1,5 +1,5 @@
 export default {
-    "name": "Full Verification 5",
+    "name": "Full Verification",
     "firstMessageMode": "assistant-speaks-first",
     "firstMessage": "Hello, How can I help you today?",
     "recordingEnabled": true,

@@ -6,7 +6,6 @@ class TaskRoute extends FuncTemplate {
     }
     parseRequest(requestBody) {
         let argument = requestBody.message.toolCalls[0].function.arguments;
-        console.log("TaskRoute -> parseRequest -> argument", argument, requestBody);
         this.setResponse(
             200,
             { results: [{ toolCallId: requestBody.message.toolCalls[0].id, result: "SUCCESS", }] },

@@ -1,16 +1,17 @@
 import { FuncTemplate } from "./template";
+import { Consumer } from "../../../DB";
 
 class PasswordVerify extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
     verifyRequest(password) {
-        let retval = false;
         const data = this.Data;
         if (data) {
-            if (data.password.toLowerCase() === password.toLowerCase()) retval = true;
+            const consumer = new Consumer(data);
+            return consumer.verifyPassword(password);
         }
-        return retval;
+        return false;
     }
 
     parseRequest(request) {

@@ -8,7 +8,7 @@ class FirstLastName extends FuncTemplate {
     verifyFirstLastName(firstName, lastName) {
         const firstname = new RegExp(firstName, "i");
         const lastname = new RegExp(lastName, "i");
-        const exist = DB.Consumers.findOne({ firstname: { $regex: firstname }, lastname: { $regex: lastname } });
+        const exist = DB.Consumers.findOne({ firstName: { $regex: firstname }, lastName: { $regex: lastname } });
         if (exist) this.setData(exist);
         return !!exist;
     }

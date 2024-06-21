@@ -1,16 +1,24 @@
 import { FuncTemplate } from "./template";
-import DB from "../../../DB";
+import { Consumer } from "../../../DB";
 
 class ZipCodeTemp extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
+
+    verifyRequest(zipcode) {
+        const data = this.Data;
+        if (data) {
+            const consumer = new Consumer(data);
+            return consumer.verifyZipCode(zipcode);
+        }
+        return false;
+    }
+
     parseRequest(requestBody) {
         let argument = requestBody.message.toolCalls[0].function.arguments;
-        const data = this.Data;
         try {
-            const zip = parseInt(argument.zipcode);
-            if (isNaN(zip)) {
+            if (!this.verifyRequest(argument.zipcode)) {
                 this.setResponse(200, {
                     results: [
                         {
@@ -19,7 +27,7 @@ class ZipCodeTemp extends FuncTemplate {
                         },
                     ],
                 });
-            } else if (zip === parseInt(data.zipcode)) {
+            } else {
                 this.setResponse(200, {
                     results: [
                         {
@@ -28,15 +36,6 @@ class ZipCodeTemp extends FuncTemplate {
                         },
                     ],
                 }, true);
-            } else {
-                this.setResponse(200, {
-                    results: [
-                        {
-                            toolCallId: requestBody.message.toolCalls[0].id,
-                            result: "not valid",
-                        },
-                    ],
-                });
             }
         } catch (error) {
             this.setResponse(400, {
