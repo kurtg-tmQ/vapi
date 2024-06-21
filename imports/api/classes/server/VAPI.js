@@ -110,13 +110,15 @@ export class Vapi {
         };
         assistants.forEach(assistant => {
             const vt = VapiTools.find(vt => vt.assistant.name === assistant.name);
-            const tools = vt.tools;
-            this.#assistants[assistant.id] = {
-                name: assistant.name,
-                message: assistant.firstMessage,
-                description: assistant.model.messages[0].content,
-                tools: getTools(tools, assistant.model.tools)
-            };
+            if (vt) {
+                const tools = vt.tools;
+                this.#assistants[assistant.id] = {
+                    name: assistant.name,
+                    message: assistant.firstMessage,
+                    description: assistant.model.messages[0].content,
+                    tools: getTools(tools, assistant.model.tools)
+                };
+            }
         });
     }
     /**
@@ -377,7 +379,7 @@ export class Vapi {
             const session = this.getSession(sessionId);
             const tool = this.getTool(parsed);
             if (tool && session) {
-                tool.setMeta({ sessionId });
+                tool.setMeta({ sessionId, consumerNumber: session.ConsumerNumber });
                 const data = session.Data;
                 if (data) tool.setData(data);
                 tool.parseRequest(parsed).then((response) => {
@@ -420,6 +422,12 @@ class Session {
         this.init(call);
         this.#event = event;
         this.#assistants = assistants;
+    }
+    get Call() {
+        return this.#call;
+    }
+    get ConsumerNumber() {
+        return this.#call?.customer?.number;
     }
     get SessionId() {
         if (this.IsSquadCall)
