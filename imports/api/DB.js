@@ -173,11 +173,12 @@ export class Consumer {
         return password === this.security.password;
     }
     sendOTP(number, sessionId) {
-        if (this.contactInfo.mobile) {
+        if (this.contactInfo.mobile || number) {
             const channel = DB.Channels.findOne({ businessId: this.businessId });
             const ch = new Channels(channel);
             let phonenumber = this.contactInfo.mobile;
-            if (!phonenumber && number) phonenumber = number;
+            // if (!phonenumber && number) phonenumber = number;
+            if (number) phonenumber = number;
             const otp = new OTP();
             const idx = this.session.findIndex((s) => s.sessionId === sessionId);
             const code = otp.generateOPT(4);

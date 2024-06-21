@@ -6,10 +6,11 @@ class OTP extends FuncTemplate {
         super(async, server, messages, func, meta);
     }
 
-    verifyRequest(number) {
+    verifyRequest() {
         const data = this.Data;
         if (data) {
             const consumer = new Consumer(data);
+            const number = this.Meta.consumerNumber;
             return consumer.sendOTP(number, this.Meta.sessionId);
         }
         return Promise.resolve("no number");
