@@ -10,7 +10,7 @@ import { SESSION_KEY } from "../../api/classes/common/Const";
 import Client from "../../api/classes/client/Client";
 
 const _interactionsData = JSON.parse(
-    '{"events":{"e-217":{"id":"e-217","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-218"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730bab96","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730bab96","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718379994183},"e-218":{"id":"e-218","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-21","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-217"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730bab96","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730bab96","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718379994184},"e-219":{"id":"e-219","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-21","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-220"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babb4","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babb4","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718380045638},"e-220":{"id":"e-220","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-219"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babb4","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babb4","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718380045662},"e-223":{"id":"e-223","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-22","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-224"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730bab92","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730bab92","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718380272403},"e-239":{"id":"e-239","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-21","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-240"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babea","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babea","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718709497303},"e-240":{"id":"e-240","name":"","animationType":"preset","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-239"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babea","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babea","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718709497303},"e-241":{"id":"e-241","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-21","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-242"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babcf","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babcf","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718709744565},"e-242":{"id":"e-242","name":"","animationType":"preset","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-20","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-241"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"2befca73-6a81-85c1-7742-afc4730babcf","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"2befca73-6a81-85c1-7742-afc4730babcf","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718709744565}},"actionLists":{"a-20":{"id":"a-20","title":"[hide] checklist-accordion","actionItemGroups":[{"actionItems":[{"id":"a-20-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".checklist-list","selectorGuids":["bad8301c-d409-799a-5b27-98b62d051613"]},"value":"none"}},{"id":"a-20-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeInOut","duration":150,"target":{"useEventTarget":"CHILDREN","selector":".icon-checklist-arrow","selectorGuids":["72a7ef83-a8c1-a945-7efb-623f2ebdd31b"]},"zValue":-90,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718379997688},"a-21":{"id":"a-21","title":"[show] checklist-accordion","actionItemGroups":[{"actionItems":[{"id":"a-21-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".checklist-list","selectorGuids":["bad8301c-d409-799a-5b27-98b62d051613"]},"value":"block"}},{"id":"a-21-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeInOut","duration":150,"target":{"useEventTarget":"CHILDREN","selector":".icon-checklist-arrow","selectorGuids":["72a7ef83-a8c1-a945-7efb-623f2ebdd31b"]},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718379997688},"a-22":{"id":"a-22","title":"[close] checklist","actionItemGroups":[{"actionItems":[{"id":"a-22-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"PARENT","selector":".checklist","selectorGuids":["cd249579-30dd-0c7d-b08b-6473901de332"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718380276062}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
+    '{"events":{"e-239":{"id":"e-239","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-31","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-240"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df18","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718898232916},"e-243":{"id":"e-243","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-247"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df1c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df1c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718379994183},"e-247":{"id":"e-247","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-243"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df1c","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df1c","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718379994184},"e-241":{"id":"e-241","name":"","animationType":"custom","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-250"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718380045638},"e-250":{"id":"e-250","name":"","animationType":"custom","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-241"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4d","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4d","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718380045662},"e-245":{"id":"e-245","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-248"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df76","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df76","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718895284592},"e-248":{"id":"e-248","name":"","animationType":"preset","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-245"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df76","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df76","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718895284592},"e-249":{"id":"e-249","name":"","animationType":"preset","eventTypeId":"MOUSE_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-36","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-242"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df9f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df9f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718895283915},"e-242":{"id":"e-242","name":"","animationType":"preset","eventTypeId":"MOUSE_SECOND_CLICK","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-35","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-249"}},"mediaQueries":["main","medium","small","tiny"],"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df9f","appliesTo":"ELEMENT","styleBlockIds":[]},"targets":[{"id":"f3108e56-9d2c-a813-992d-bf5ef504df9f","appliesTo":"ELEMENT","styleBlockIds":[]}],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718895283915},"e-252":{"id":"e-252","name":"","animationType":"custom","eventTypeId":"PAGE_FINISH","action":{"id":"","actionTypeId":"GENERAL_START_ACTION","config":{"delay":0,"easing":"","duration":0,"actionListId":"a-34","affectedElements":{},"playInReverse":false,"autoStopEventId":"e-251"}},"mediaQueries":["main","medium","small","tiny"],"target":{"appliesTo":"PAGE","styleBlockIds":[],"id":"wf-page-id"},"targets":[],"config":{"loop":false,"playInReverse":false,"scrollOffsetValue":null,"scrollOffsetUnit":null,"delay":null,"direction":null,"effectIn":null},"createdOn":1718898367288}},"actionLists":{"a-31":{"id":"a-31","title":"[close] checklist 2","actionItemGroups":[{"actionItems":[{"id":"a-31-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"PARENT","selector":".checklist","selectorGuids":["cd249579-30dd-0c7d-b08b-6473901de332"]},"value":"none"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718380276062},"a-35":{"id":"a-35","title":"[hide] checklist-accordion 3","actionItemGroups":[{"actionItems":[{"id":"a-35-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".checklist-list","selectorGuids":["c91d1a9b-1de9-3ec6-b527-81b4e82c44fc"]},"value":"none"}},{"id":"a-35-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeInOut","duration":150,"target":{"useEventTarget":"CHILDREN","selector":".icon-checklist-arrow","selectorGuids":["c91d1a9b-1de9-3ec6-b527-81b4e82c44f3"]},"zValue":-90,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718379997688},"a-36":{"id":"a-36","title":"[show] checklist-accordion 3","actionItemGroups":[{"actionItems":[{"id":"a-36-n","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"useEventTarget":"SIBLINGS","selector":".checklist-list","selectorGuids":["c91d1a9b-1de9-3ec6-b527-81b4e82c44fc"]},"value":"block"}},{"id":"a-36-n-2","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"easeInOut","duration":150,"target":{"useEventTarget":"CHILDREN","selector":".icon-checklist-arrow","selectorGuids":["c91d1a9b-1de9-3ec6-b527-81b4e82c44f3"]},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}}]}],"useFirstGroupAsInitialState":false,"createdOn":1718379997688},"a-34":{"id":"a-34","title":"checklist animation","actionItemGroups":[{"actionItems":[{"id":"a-34-n","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df33"},"xValue":0,"yValue":1,"locked":false}},{"id":"a-34-n-2","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3b"},"xValue":0,"yValue":1,"locked":false}},{"id":"a-34-n-3","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df43"},"xValue":0,"yValue":1,"locked":false}},{"id":"a-34-n-4","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4b"},"xValue":0,"yValue":1,"locked":false}}]},{"actionItems":[{"id":"a-34-n-5","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":3000,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df31"},"globalSwatchId":"--main-color","rValue":111,"bValue":255,"gValue":43,"aValue":1}}]},{"actionItems":[{"id":"a-34-n-6","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df2d"},"value":1,"unit":""}},{"id":"a-34-n-7","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df2d"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-8","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df2d"},"xValue":1.5,"yValue":1.5,"locked":true}}]},{"actionItems":[{"id":"a-34-n-9","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df2d"},"xValue":1,"yValue":1,"locked":true}},{"id":"a-34-n-10","actionTypeId":"STYLE_OPACITY","config":{"delay":500,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df2d"},"value":0,"unit":""}},{"id":"a-34-n-11","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df39"},"globalSwatchId":"--main-color","rValue":111,"bValue":255,"gValue":43,"aValue":1}},{"id":"a-34-n-12","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df31"},"globalSwatchId":"@var_variable-b3b85d23-7f6e-8580-7b57-819dfc866fdb","rValue":202,"bValue":202,"gValue":202,"aValue":1}}]},{"actionItems":[{"id":"a-34-n-13","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df33"},"xValue":1,"yValue":1,"locked":false}}]},{"actionItems":[{"id":"a-34-n-14","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df35"},"value":1,"unit":""}},{"id":"a-34-n-15","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df35"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-16","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df35"},"xValue":1.5,"yValue":1.5,"locked":true}}]},{"actionItems":[{"id":"a-34-n-17","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df35"},"xValue":1,"yValue":1,"locked":true}},{"id":"a-34-n-18","actionTypeId":"STYLE_OPACITY","config":{"delay":500,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df35"},"value":0,"unit":""}},{"id":"a-34-n-19","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df41"},"globalSwatchId":"--main-color","rValue":111,"bValue":255,"gValue":43,"aValue":1}},{"id":"a-34-n-20","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df39"},"globalSwatchId":"@var_variable-b3b85d23-7f6e-8580-7b57-819dfc866fdb","rValue":202,"bValue":202,"gValue":202,"aValue":1}}]},{"actionItems":[{"id":"a-34-n-21","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3b"},"xValue":1,"yValue":1,"locked":false}}]},{"actionItems":[{"id":"a-34-n-22","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3d"},"value":1,"unit":""}},{"id":"a-34-n-23","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3d"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-24","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3d"},"xValue":1.5,"yValue":1.5,"locked":true}}]},{"actionItems":[{"id":"a-34-n-25","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3d"},"xValue":1,"yValue":1,"locked":true}},{"id":"a-34-n-26","actionTypeId":"STYLE_OPACITY","config":{"delay":500,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df3d"},"value":0,"unit":""}},{"id":"a-34-n-27","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df49"},"globalSwatchId":"--main-color","rValue":111,"bValue":255,"gValue":43,"aValue":1}},{"id":"a-34-n-28","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df41"},"globalSwatchId":"@var_variable-b3b85d23-7f6e-8580-7b57-819dfc866fdb","rValue":202,"bValue":202,"gValue":202,"aValue":1}}]},{"actionItems":[{"id":"a-34-n-29","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df43"},"xValue":1,"yValue":1,"locked":false}}]},{"actionItems":[{"id":"a-34-n-30","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df45"},"value":1,"unit":""}},{"id":"a-34-n-31","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df45"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-32","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df45"},"xValue":1.5,"yValue":1.5,"locked":true}}]},{"actionItems":[{"id":"a-34-n-33","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":250,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df45"},"xValue":1,"yValue":1,"locked":true}},{"id":"a-34-n-34","actionTypeId":"STYLE_OPACITY","config":{"delay":500,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df45"},"value":0,"unit":""}},{"id":"a-34-n-35","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":1000,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df49"},"globalSwatchId":"@var_variable-b3b85d23-7f6e-8580-7b57-819dfc866fdb","rValue":202,"bValue":202,"gValue":202,"aValue":1}}]},{"actionItems":[{"id":"a-34-n-36","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df4b"},"xValue":1,"yValue":1,"locked":false}},{"id":"a-34-n-37","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df21"},"value":0,"unit":""}}]},{"actionItems":[{"id":"a-34-n-38","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df21"},"value":"none"}},{"id":"a-34-n-39","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df25"},"value":1,"unit":""}}]},{"actionItems":[{"id":"a-34-n-40","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df25"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-41","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df25"},"xValue":1.5,"yValue":1.5,"locked":true}}]},{"actionItems":[{"id":"a-34-n-42","actionTypeId":"TRANSFORM_SCALE","config":{"delay":0,"easing":"","duration":150,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df25"},"xValue":1,"yValue":1,"locked":true}}]},{"actionItems":[{"id":"a-34-n-43","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df24"},"value":"flex"}},{"id":"a-34-n-44","actionTypeId":"STYLE_OPACITY","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df24"},"value":1,"unit":""}},{"id":"a-34-n-45","actionTypeId":"TRANSFORM_ROTATE","config":{"delay":0,"easing":"","duration":1000,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df5a"},"zValue":0,"xUnit":"DEG","yUnit":"DEG","zUnit":"deg"}},{"id":"a-34-n-46","actionTypeId":"GENERAL_DISPLAY","config":{"delay":0,"easing":"","duration":0,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df5c"},"value":"block"}},{"id":"a-34-n-47","actionTypeId":"STYLE_TEXT_COLOR","config":{"delay":0,"easing":"","duration":500,"target":{"id":"f3108e56-9d2c-a813-992d-bf5ef504df62"},"globalSwatchId":"--main-color","rValue":111,"bValue":255,"gValue":43,"aValue":1}}]}],"useFirstGroupAsInitialState":true,"createdOn":1718889597337}},"site":{"mediaQueries":[{"key":"main","min":992,"max":10000},{"key":"medium","min":768,"max":991},{"key":"small","min":480,"max":767},{"key":"tiny","min":0,"max":479}]}}'
 );
 
 export function Checklist({ as: _Component = _Builtin.Block }) {
@@ -39,53 +39,84 @@ export function Checklist({ as: _Component = _Builtin.Block }) {
                         <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-108.svg" />
                     </_Builtin.Block>
                     <_Builtin.Block tag="div">{"Checklist"}</_Builtin.Block>
-                    <_Builtin.Block className={_utils.cx(_styles, "btn-close", "padding")} data-w-id="2befca73-6a81-85c1-7742-afc4730bab92" tag="div">
+                    <_Builtin.Block className={_utils.cx(_styles, "btn-close", "padding")} data-w-id="f3108e56-9d2c-a813-992d-bf5ef504df18" tag="div">
                         <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-109.svg" />
                     </_Builtin.Block>
                 </_Builtin.Block>
                 <_Builtin.Block className={_utils.cx(_styles, "checklist-bot")} tag="div">
                     {checklist.map((category, categoryIndex) => (
                         <_Builtin.Block key={categoryIndex} className={_utils.cx(_styles, "checklist-section")} tag="div">
-                            <_Builtin.Block
-                                className={_utils.cx(_styles, "checklist-hd")}
-                                data-w-id={`2befca73-6a81-85c1-7742-afc4730bab96`}
-                                tag="div"
-                            >
+                            <_Builtin.Block className={_utils.cx(_styles, "checklist-hd")} data-w-id="f3108e56-9d2c-a813-992d-bf5ef504df1c" tag="div">
                                 <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text-div")} tag="div">
                                     <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text")} tag="div">
                                         {`${category.name} - `}
                                     </_Builtin.Block>
-                                    {category.isComplete ? (
-                                        <_Builtin.Block className={_utils.cx(_styles, "icon-check")} tag="div">
-                                            <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-116.svg" />
-                                        </_Builtin.Block>
-                                    ) : (
-                                        ""
-                                    )}
-                                    <_Builtin.Block
-                                        className={_utils.cx(_styles, "checklist-count", category.isComplete ? "completed" : "")}
-                                    >{`${category.items.length} items`}</_Builtin.Block>
+                                    <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-status")} tag="div">
+                                        {!category.isComplete ? (
+                                            <_Builtin.Block
+                                                className={_utils.cx(_styles, "unfinished-checklist-group")}
+                                                data-w-id="f3108e56-9d2c-a813-992d-bf5ef504df21"
+                                                tag="div"
+                                                style={{ display: category.isComplete ? "none" : "flex" }}
+                                            >
+                                                <_Builtin.Block className={_utils.cx(_styles, "checklist-count")} tag="div">
+                                                    {`${category.items.length} items`}
+                                                </_Builtin.Block>
+                                            </_Builtin.Block>
+                                        ) : (
+                                            <_Builtin.Block
+                                                className={_utils.cx(_styles, "completed-checklist-group")}
+                                                data-w-id="f3108e56-9d2c-a813-992d-bf5ef504df24"
+                                                tag="div"
+                                                style={{ display: category.isComplete ? "flex" : "none" }}
+                                            >
+                                                <_Builtin.Block
+                                                    className={_utils.cx(_styles, "icon-check", category.isComplete ? "show" : "hd")}
+                                                    tag="div"
+                                                >
+                                                    <_Builtin.Image width="auto" height="auto" loading="lazy" alt="" src="/images/Asset-116.svg" />
+                                                </_Builtin.Block>
+                                                <_Builtin.Block
+                                                    className={_utils.cx(_styles, "checklist-count", category.isComplete ? "completed" : "")}
+                                                    tag="div"
+                                                >
+                                                    {`${category.items.length} items`}
+                                                </_Builtin.Block>
+                                            </_Builtin.Block>
+                                        )}
+                                    </_Builtin.Block>
                                 </_Builtin.Block>
-                                <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow ")} tag="div">
-                                    <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-111.svg" />
+                                <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow")} tag="div">
+                                    <_Builtin.Image width="auto" height="auto" loading="lazy" alt="" src="/images/Asset-111.svg" />
                                 </_Builtin.Block>
                             </_Builtin.Block>
                             <_Builtin.Block className={_utils.cx(_styles, "checklist-list", "show")} tag="div">
                                 {category.items.map((item, itemIndex) => (
-                                    <_Builtin.Block key={itemIndex} className={_utils.cx(_styles, "checklist-row")} tag="div">
-                                        <_Builtin.Block className={_utils.cx(_styles, "icon-check", item.current ? "" : "hide")} tag="div">
-                                            <_Builtin.Image loading="lazy" width="auto" height="auto" alt="" src="/images/Asset-110.svg" />
-                                        </_Builtin.Block>
+                                    <_Builtin.Block key={itemIndex} className={_utils.cx(_styles, "checklist-row", "done")} tag="div">
                                         <_Builtin.Block
-                                            className={_utils.cx(
-                                                _styles,
-                                                "text-checklist-row",
-                                                item.completed ? "done" : "",
-                                                item.current ? "current" : ""
-                                            )}
+                                            className={_utils.cx(_styles, "icon-check", item.current ? "show" : "hide")}
                                             tag="div"
                                         >
-                                            {item.name}
+                                            <_Builtin.Image width="auto" height="auto" loading="lazy" alt="" src="/images/Asset-110.svg" />
+                                        </_Builtin.Block>
+                                        <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row-div")} tag="div">
+                                            <_Builtin.Block className={_utils.cx(_styles, "checklist-text")} tag="div">
+                                                <_Builtin.Block
+                                                    className={_utils.cx(
+                                                        _styles,
+                                                        "text-checklist-row",
+                                                        item.completed ? "done" : "",
+                                                        item.current ? "current" : ""
+                                                    )}
+                                                    tag="div"
+                                                >
+                                                    {item.name}
+                                                </_Builtin.Block>
+                                            </_Builtin.Block>
+                                            <_Builtin.Block
+                                                className={_utils.cx(_styles, "line-checklist")}
+                                                tag="div"
+                                            />
                                         </_Builtin.Block>
                                     </_Builtin.Block>
                                 ))}
@@ -97,333 +128,3 @@ export function Checklist({ as: _Component = _Builtin.Block }) {
         </Draggable>
     );
 }
-
-// // eslint-disable-next-line func-style
-// export function Checklist({ as: _Component = _Builtin.Block }) {
-//     _interactions.useInteractions(_interactionsData, _styles);
-
-//     return (
-//         <_Component className={_utils.cx(_styles, "checklist")} tag="div">
-//             <_Builtin.Block className={_utils.cx(_styles, "checklist-top")} tag="div">
-//                 <_Builtin.Block className={_utils.cx(_styles, "icon-draggable")} tag="div">
-//                     <_Builtin.Image
-//                         loading="lazy"
-//                         width="auto"
-//                         height="auto"
-//                         alt=""
-//                         src="/images/Asset-115.svg"
-//                     />
-//                 </_Builtin.Block>
-//                 <_Builtin.Block className={_utils.cx(_styles, "icon-checklist")} tag="div">
-//                     <_Builtin.Image
-//                         loading="lazy"
-//                         width="auto"
-//                         height="auto"
-//                         alt=""
-//                         src="/images/Asset-108.svg"
-//                     />
-//                 </_Builtin.Block>
-//                 <_Builtin.Block tag="div">{"Checklist"}</_Builtin.Block>
-//                 <_Builtin.Block className={_utils.cx(_styles, "btn-close", "padding")} data-w-id="2befca73-6a81-85c1-7742-afc4730bab92" tag="div">
-//                     <_Builtin.Image
-//                         loading="lazy"
-//                         width="auto"
-//                         height="auto"
-//                         alt=""
-//                         src="/images/Asset-109.svg"
-//                     />
-//                 </_Builtin.Block>
-//             </_Builtin.Block>
-//             <_Builtin.Block className={_utils.cx(_styles, "checklist-bot")} tag="div">
-//                 <_Builtin.Block className={_utils.cx(_styles, "checklist-section")} tag="div">
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-hd")} data-w-id="2befca73-6a81-85c1-7742-afc4730bab96" tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text-div")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text")} tag="div">
-//                                 {"Introductions - "}
-//                                 <_Builtin.Span className={_utils.cx(_styles, "checklist-count")}>{"4 items"}</_Builtin.Span>
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow", "open")} tag="div">
-//                             <_Builtin.Image
-//                                 loading="lazy"
-//                                 width="auto"
-//                                 height="auto"
-//                                 alt=""
-//                                 src="/images/Asset-111.svg"
-//                             />
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-list", "show")} tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row", "done")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row", "done")} tag="div">
-//                                 {"Greetings"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row", "done")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row", "done")} tag="div">
-//                                 {"Verify policy"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row", "current")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row", "current")} tag="div">
-//                                 {"Offer assistance"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                 </_Builtin.Block>
-//                 <_Builtin.Block className={_utils.cx(_styles, "checklist-section")} tag="div">
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-hd")} data-w-id="2befca73-6a81-85c1-7742-afc4730babb4" tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text-div")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text")} tag="div">
-//                                 {"TCPA statement - "}
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-116.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-count", "completed")} tag="div">
-//                                 {"3 items"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow")} tag="div">
-//                             <_Builtin.Image
-//                                 loading="lazy"
-//                                 width="auto"
-//                                 height="auto"
-//                                 alt=""
-//                                 src="/images/Asset-111.svg"
-//                             />
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-list")} tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                 </_Builtin.Block>
-//                 <_Builtin.Block className={_utils.cx(_styles, "checklist-section")} tag="div">
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-hd")} data-w-id="2befca73-6a81-85c1-7742-afc4730babcf" tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text-div")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text")} tag="div">
-//                                 {"Cross sell insurance plan -"}
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-116.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-count", "completed")} tag="div">
-//                                 {"3 items"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow")} tag="div">
-//                             <_Builtin.Image
-//                                 loading="lazy"
-//                                 width="auto"
-//                                 height="auto"
-//                                 alt=""
-//                                 src="/images/Asset-111.svg"
-//                             />
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-list")} tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                 </_Builtin.Block>
-//                 <_Builtin.Block className={_utils.cx(_styles, "checklist-section")} tag="div">
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-hd")} data-w-id="2befca73-6a81-85c1-7742-afc4730babea" tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text-div")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "checklist-hd-text")} tag="div">
-//                                 {"Cross sell insurance plan - "}
-//                                 <_Builtin.Span className={_utils.cx(_styles, "checklist-count")}>{"4 items"}</_Builtin.Span>
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "icon-checklist-arrow")} tag="div">
-//                             <_Builtin.Image
-//                                 loading="lazy"
-//                                 width="auto"
-//                                 height="auto"
-//                                 alt=""
-//                                 src="/images/Asset-111.svg"
-//                             />
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                     <_Builtin.Block className={_utils.cx(_styles, "checklist-list")} tag="div">
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                         <_Builtin.Block className={_utils.cx(_styles, "checklist-row")} tag="div">
-//                             <_Builtin.Block className={_utils.cx(_styles, "icon-check", "hide")} tag="div">
-//                                 <_Builtin.Image
-//                                     loading="lazy"
-//                                     width="auto"
-//                                     height="auto"
-//                                     alt=""
-//                                     src="/images/Asset-110.svg"
-//                                 />
-//                             </_Builtin.Block>
-//                             <_Builtin.Block className={_utils.cx(_styles, "text-checklist-row")} tag="div">
-//                                 {"Closing statement"}
-//                             </_Builtin.Block>
-//                         </_Builtin.Block>
-//                     </_Builtin.Block>
-//                 </_Builtin.Block>
-//             </_Builtin.Block>
-//         </_Component>
-//     );
-// }

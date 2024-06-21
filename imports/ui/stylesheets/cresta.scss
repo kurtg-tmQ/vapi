@@ -2009,14 +2009,122 @@ a {
     display: flex;
 }
 
-.icon-check {
-    opacity: 0;
+// ICON CHECK ANIMATION
+@keyframes icon-check-appear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+  }
+  
+  .icon-check {
     width: 15px;
-}
-
-.icon-check.hd {
+  }
+  
+  .icon-check.show {
+    opacity: 1;
+    display: inline-block;
+    animation: icon-check-appear 1s ease-in-out forwards;
+    -webkit-animation: icon-check-appear 1s ease-in-out forwards;
+  }
+  
+  
+  .icon-check.hide {
     opacity: 0;
-}
+  }
+  
+  .line-checklist {
+    position: absolute;
+    left: 0%;
+    top: 45%;
+    right: 0%;
+    bottom: 0%;
+  
+    width: 100%;
+    height: 1.5px;
+  
+    background-color: #cacaca;
+  
+    opacity: 1;
+  
+    transform: scale3d(0, 1, 1);
+    transform-origin: 0% 50%;
+    transform-style: preserve-3d;
+  }
+  
+  .checklist-list {
+    margin-top: 5px;
+    display: none;
+  }
+  
+  .checklist-list.show {
+    display: block;
+  }
+  
+  .checklist-row {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    font-size: 12px;
+    display: flex;
+  }
+  
+  @keyframes strikeThrough {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+  }
+  
+  .text-checklist-row {
+  position: relative;
+  color: rgba(51, 51, 51, .6);
+  margin-left: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  }
+  
+  .text-checklist-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  width: 0;
+  background: rgba(51, 51, 51, .6);
+  transition: width 0.5s ease;
+  transform: translateY(-50%);
+  }
+  
+  .text-checklist-row.done {
+  color: rgb(202, 202, 202);
+  }
+  
+  .text-checklist-row.done::before {
+  width: 100%;
+  background: rgb(202, 202, 202);
+  animation: strikeThrough 0.5s forwards;
+  }
+  //////////// END OF ICON CHECK ANIMATION CHANGES
+  
+
+// .icon-check {
+//     opacity: 0;
+//     width: 15px;
+// }
+
+// .icon-check.hd {
+//     opacity: 0;
+// }
 
 .checklist-hd-text {
     margin-right: 5px;
@@ -2026,29 +2134,29 @@ a {
     display: flex;
 }
 
-.line-checklist {
-    opacity: 1;
-    transform-origin: 0%;
-    transform-style: preserve-3d;
-    background-color: #cacaca;
-    width: 100%;
-    height: 1.5px;
-    position: absolute;
-    top: 45%;
-    bottom: 0%;
-    left: 0%;
-    right: 0%;
-    transform: scale3d(0, 1, 1);
-}
+// .line-checklist {
+//     opacity: 1;
+//     transform-origin: 0%;
+//     transform-style: preserve-3d;
+//     background-color: #cacaca;
+//     width: 100%;
+//     height: 1.5px;
+//     position: absolute;
+//     top: 45%;
+//     bottom: 0%;
+//     left: 0%;
+//     right: 0%;
+//     transform: scale3d(0, 1, 1);
+// }
 
-.checklist-list {
-    margin-top: 5px;
-    display: none;
-}
+// .checklist-list {
+//     margin-top: 5px;
+//     display: none;
+// }
 
-.checklist-list.show {
-    display: block;
-}
+// .checklist-list.show {
+//     display: block;
+// }
 
 .checklist-count {
     color: #3786ee;
