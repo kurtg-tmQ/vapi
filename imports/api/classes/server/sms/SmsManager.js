@@ -1,7 +1,7 @@
 import { Intelliquent } from "./providers/intelliquent";
 import { TwilioSMS } from "./providers/twilio";
 import { Nexmo } from "./providers/nexmo";
-import Utilities from "../utilities";
+import Utilities from "../Utilities";
 
 export class SMSManager {
     #providers = {};

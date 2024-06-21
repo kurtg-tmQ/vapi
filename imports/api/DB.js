@@ -2,6 +2,10 @@ import { Meteor } from "meteor/meteor";
 import { Mongo } from "meteor/mongo";
 import moment from "moment";
 
+import { Intelliquent } from "./classes/server/sms/providers/intelliquent";
+import { TwilioSMS } from "./classes/server/sms/providers/twilio";
+import { Nexmo } from "./classes/server/sms/providers/nexmo";
+
 const createCollection = (name, option = { idGeneration: "MONGO" }) => {
     return new Mongo.Collection(name, option);
 };
@@ -47,6 +51,26 @@ export class Channels {
             },
         };
     }
+    get Api() {
+        return this.api;
+    }
+    get Provider() {
+        switch (this.api.network) {
+            case NETWORK.INTELLIQUENT:
+                return new Intelliquent(this.api.network, this.api.key, this.api.secret, this.number);
+            case NETWORK.NEXMO:
+                return new Nexmo(this.api.network, this.api.key, this.api.secret, this.number);
+            case NETWORK.TWILIO:
+                return new TwilioSMS(this.api.network, this.api.key, this.api.secret, this.number);
+            default:
+                return null;
+        }
+    }
+
+    sendSMS(to, message) {
+        return this.Provider.sendSMS(to, message);
+    }
+
     save() {
         if (this._id) {
             this.updatedAt = moment().valueOf();
@@ -139,6 +163,16 @@ export class Consumer {
     }
     verifyPassword(password) {
         return password === this.security.password;
+    }
+    sendOTP() {
+        if (this.contactInfo.mobile) {
+            const channel = DB.Channels.findOne({ businessId: this.businessId });
+            const ch = new Channels(channel);
+            return ch.sendSMS(this.contactInfo.mobile, "OTP: 1234");
+
+        } else {
+            return Promise.resolve("no number");
+        }
     }
     save() {
         if (this._id) {
