@@ -14,17 +14,13 @@ const _interactionsData = JSON.parse(
 export function TranscriptControls({ as: _Component = _Builtin.Block }) {
     _interactions.useInteractions(_interactionsData, _styles);
 
-    const onClickHandler = (data) => {
-        console.log("clicked", data);
-    };
-
     return (
         <_Component className={_utils.cx(_styles, "transcript-controls-hd")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "trasncript-duration")} tag="div">
-                <_Builtin.Block tag="div">{"2:31 / 8:32"}</_Builtin.Block>
+                <_Builtin.Block tag="div" id="durationInfo"></_Builtin.Block>
             </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "transcript-controls-btn")} tag="div">
-                <_Builtin.Block className={_utils.cx(_styles, "btn-forward")} tag="div" onClick={() => onClickHandler("BACKWARD")}>
+                <_Builtin.Block className={_utils.cx(_styles, "btn-forward")} tag="div" id="backwardButton">
                     <_Builtin.Block className={_utils.cx(_styles, "btn-icon", "m--3vw")} tag="div">
                         <_Builtin.Image
                             width="auto"
@@ -35,7 +31,7 @@ export function TranscriptControls({ as: _Component = _Builtin.Block }) {
                         />
                     </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block className={_utils.cx(_styles, "main-play-btn", "btn-default")} tag="div" onClick={() => onClickHandler("PLAY")}>
+                <_Builtin.Block className={_utils.cx(_styles, "main-play-btn", "btn-default")} tag="div">
                     <_Builtin.Block className={_utils.cx(_styles, "playbtn", "main")} tag="div" id="playButton">
                         <_Builtin.Block
                             className={_utils.cx(_styles, "playbtn-inner", "play-icon")}
@@ -71,7 +67,7 @@ export function TranscriptControls({ as: _Component = _Builtin.Block }) {
                         </_Builtin.Block>
                     </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block className={_utils.cx(_styles, "btn-forward")} tag="div" onClick={() => onClickHandler("FORWARD")}>
+                <_Builtin.Block className={_utils.cx(_styles, "btn-forward")} tag="div" id="forwardButton">
                     <_Builtin.Block className={_utils.cx(_styles, "btn-icon", "m--3vw")} tag="div">
                         <_Builtin.Image
                             width="auto"
