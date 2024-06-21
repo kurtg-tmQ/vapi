@@ -5,6 +5,7 @@ class TaskRoute extends FuncTemplate {
         super(async, server, messages, func, meta);
     }
     parseRequest(requestBody) {
+        console.log("<--------------------------parse : ", requestBody);
         let argument = requestBody.message.toolCalls[0].function.arguments;
         this.setResponse(
             200,
@@ -27,6 +28,8 @@ const messages = [
         timingMilliseconds: 4000,
     },
 ];
+
+
 const serv = {
     url: "https://kind-intensely-herring.ngrok-free.app/birthdayUpdate",
 };
@@ -40,7 +43,7 @@ const func = {
             }
         },
     },
-    description: "Provide the destination for the transfer.",
+    description: "Provide the destination deatails BEFORE transfering the call.",
 };
 const meta = {
     title: "Transfer call according to request.",
