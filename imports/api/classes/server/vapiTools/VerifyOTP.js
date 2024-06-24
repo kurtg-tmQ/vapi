@@ -74,6 +74,7 @@ const otp = {
 };
 const meta = {
     title: "Verify OTP",
+    systemMsg: "Validating OTP",
 };
 
 export default new VerifyOTP(otp.async, otp.server, otp.messages, otp.function, meta);

@@ -84,6 +84,7 @@ const zipcode = {
 };
 const meta = {
     title: "Zip Code",
+    systemMsg: "Verifying Zip Code",
 };
 
 export default new ZipCodeTemp(false, zipcode.server, zipcode.messages, zipcode.function, meta);

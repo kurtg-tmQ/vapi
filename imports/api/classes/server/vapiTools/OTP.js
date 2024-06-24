@@ -86,6 +86,7 @@ const otp = {
 };
 const meta = {
     title: "Send OTP",
+    systemMsg: "Sending OTP",
 };
 
 export default new OTP(otp.async, otp.server, otp.messages, otp.function, meta);

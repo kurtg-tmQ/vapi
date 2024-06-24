@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import moment from "moment";
 
-import { SESSION_KEY } from "../common/Const";
+import { SESSION_KEY, SESSION } from "../common/Const";
 import RedisVent from "./RedisVent";
 import Watcher from "./Watcher";
 
@@ -24,6 +24,12 @@ class Client extends Watcher {
     get Checklist() {
         return this.#checklist;
     }
+    getSession() {
+        console.log("getSession");
+        this.callFunc(SESSION.GET_TRANSCRIPT).then((data) => {
+            console.log(data);
+        });
+    }
     getChecklistIdx(list = [], id) {
         const parentIdx = list.findIndex((category) => {
             return !!category.items.find((item) => item.value === id);
@@ -31,16 +37,26 @@ class Client extends Watcher {
         const childIdx = list[parentIdx].items.findIndex((item) => item.value === id);
         return { parentIdx, childIdx };
     };
-    parseIncomingData(data = []) {
-        return data.map((d) => {
-            return {
-                status: d.role === "bot" ? 2 : 1,
-                message: d.message,
-                time: moment(d.time).format("hh:mm:ss A")
-            };
-
+    parseIncomingData({ transcriptType, role, transcript, timestamp }) {
+        this.#transcript = this.#transcript.filter((t) => t.transcriptType !== "partial");
+        this.#transcript.push({
+            transcriptType,
+            status: role === "assistant" ? 2 : 1,
+            message: transcript,
+            time: moment(timestamp).format("hh:mm:ss A")
         });
+        return this.#transcript.map((t) => ({ ...t }));
     };
+    // parseIncomingData(data = []) {
+    //     return data.map((d) => {
+    //         return {
+    //             status: d.role === "bot" ? 2 : 1,
+    //             message: d.message,
+    //             time: moment(d.time).format("hh:mm:ss A")
+    //         };
+
+    //     });
+    // };
     parseIncomingTranscript(transcript) {
         this.#transcript.push({
             status: transcript.role === "assistant" ? 2 : 1,
@@ -75,6 +91,25 @@ class Client extends Watcher {
                 }
             });
             RedisVent.Session.listen(SESSION_KEY.UPDATE_CONVERSAION, "session", ({ event, data }) => {
+                data = data.data;
+                switch (event) {
+                    case "upsert":
+                        // const chatData = this.parseIncomingData(data.data);
+                        // this.#events.emit(SESSION_KEY.UPDATE_CONVERSAION, chatData);
+                        this.#events.emit(SESSION_KEY.START, data.checklist);
+                        this.#checklist = data.checklist;
+                        this.#events.emit(SESSION_KEY.UPDATE_CHECKLIST, this.#checklist);
+                        const transcript = (data.transcript || []).map((t) => {
+                            return this.parseIncomingData(t);
+                        });
+                        console.log("transcript", transcript);
+                        this.#events.emit(SESSION_KEY.UPDATE_CONVERSAION, transcript);
+                        break;
+                    default:
+                        break;
+                }
+            });
+            RedisVent.Session.listen(SESSION_KEY.UPDATE_TRANSCRIPT, "session", ({ event, data }) => {
                 switch (event) {
                     case "upsert":
                         const chatData = this.parseIncomingData(data.data);
