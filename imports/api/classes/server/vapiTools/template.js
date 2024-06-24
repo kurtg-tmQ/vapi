@@ -30,12 +30,15 @@ export class FuncTemplate {
     };
     #data = null;
     #meta = {};
+    #arguments = {};
+    #temp = {};
     constructor(async, server, messages = [], func = {}, meta = {}) {
         this.#async = async;
         this.#func = func;
         this.#server = server;
         this.#messages = messages;
         this.#meta = meta;
+        this.#temp = meta;
     }
     get Id() {
         return this.#func.name;
@@ -48,6 +51,24 @@ export class FuncTemplate {
     }
     get Meta() {
         return this.#meta;
+    }
+    get Arguments() {
+        return this.#arguments;
+    }
+    parseBody(requestBody) {
+        const obj = {};
+        if (requestBody && requestBody.message && requestBody.message.toolCalls && requestBody.message.toolCalls.length) {
+            const func = requestBody.message.toolCalls[0].function;
+            if (func && func.arguments) {
+                for (const [key, value] of Object.entries(func.arguments)) {
+                    obj[key] = value;
+                    if (this.#func.parameters.properties[key]) {
+                        this.#meta.systemMsg = this.#temp.systemMsg.replace(".", "") + ` - ${value}`;
+                    }
+                }
+            }
+        }
+        this.#arguments = obj;
     }
     /**
      * 
@@ -62,6 +83,7 @@ export class FuncTemplate {
         this.#response.message = message;
         this.#response.valid = valid;
         this.#response.info = info;
+        this.#response.id = this.Id;
     }
     setServer(server) {
         if (server) {
@@ -103,7 +125,7 @@ export class FuncTemplate {
         for (const result of this.#response.message.results) {
             if (!result.toolCallId || typeof result.toolCallId !== "string")
                 throw new Error("Missing toolCallId!");
-            if (!result.result || typeof result.result !== "string")
+            if (!result.result)
                 throw new Error("Missing result!");
         }
         return Promise.resolve(this.#response);
