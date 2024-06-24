@@ -258,7 +258,7 @@ export class Vapi {
             };
             const body = { members: [] };
             const taskRouter = { assistantId: "", assistantDestinations: [] };
-            const messageTemplate = "Please wait a moment.";
+            const messageTemplate = "Please wait a moment while i am tranferring this call...";
             for (const id in this.#assistants) {
                 const assistant = this.#assistants[id];
                 if (assistant && assistant.name.includes("Task Router")) {

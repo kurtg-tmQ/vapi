@@ -19,7 +19,7 @@ class TaskRoute extends FuncTemplate {
 const messages = [
     {
         type: "request-start",
-        content: "Transferring call please wait.",
+        content: "I will just set up the destination for your call.",
     },
     {
         type: "request-response-delayed",
@@ -38,11 +38,11 @@ const func = {
         type: "object",
         properties: {
             destination: {
-                type: "string",
+                type: "string", //name of assistant
             }
         },
     },
-    description: "Provide the destination deatails BEFORE transfering the call.",
+    description: "Provide the destination deatails BEFORE transfering the call. This function will send to server the name of choses assistant.",
 };
 const meta = {
     title: "Transfer call according to request.",
