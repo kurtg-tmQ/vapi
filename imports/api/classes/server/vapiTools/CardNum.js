@@ -78,7 +78,7 @@ const card = {
             },
         },
         description:
-            "Retrieves card number and verify it. This will check if the card exist and if it require password or not.",
+            "Retrieves card number and verify it only if they have it. This will check if the card exist and if it require password or not.",
     },
     async: false,
     server: {
@@ -86,7 +86,7 @@ const card = {
     },
 };
 const meta = {
-    title: "Last four (4) Card Number/Account Number (if they have it)",
+    title: "Last four (4) Card/Account Number (if they have it)",
     systemMsg: "Verifying last four (4) Card Number/Account Number",
 };
 

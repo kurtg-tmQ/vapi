@@ -13,13 +13,14 @@ Meteor.startup(() => {
     Picker.route("/api/info", async function (params, request, response) {
         try {
             const retval = await Server.Vapi.parseRequest(request.body);
-            // console.log("Response: ");
             // console.dir(retval, { depth: null });
+            Utilities.showDebug("Response: ", JSON.stringify(retval));
             response.writeHead(retval.statusCode, { "Content-Type": "application/json" });
             response.end(JSON.stringify(retval.message));
         } catch (error) {
+            Utilities.showError("api/info error: %s", error);
             response.statusCode = 500;
-            response.end("Error: " + error);
+            response.end("Error: " + error.message || error);
         }
     });
     Picker.route("/api/session", async function (params, request, response) {

@@ -6,6 +6,10 @@ class OTP extends FuncTemplate {
         super(async, server, messages, func, meta);
     }
 
+    parseBody(requestBody) {
+        //will not be used
+    }
+
     verifyRequest() {
         const data = this.Data;
         if (data) {

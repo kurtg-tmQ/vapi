@@ -1,4 +1,4 @@
-import requestF from "request";
+import requestF, { del } from "request";
 import jwt from "jsonwebtoken";
 
 import { SESSION_KEY, SESSION_EVENTS } from "../common/Const";
@@ -85,7 +85,6 @@ export class Vapi {
     }
     listen() {
         this.on(SESSION_EVENTS.START, (sessionId) => {
-            console.log("Session started! id: ", sessionId);
             const session = this.getSession(sessionId);
             if (session) session.onStart();
         });
@@ -222,9 +221,15 @@ export class Vapi {
         }
     }
     getSessionId(parsed) {
-        if (parsed && parsed.message && parsed.message.call)
-            return parsed.message.call.squadId ? parsed.message.call.phoneCallProviderId : parsed.message.call.id;
-        return null;
+        let retval = null;
+        if (parsed && parsed.message && parsed.message.call) {
+            if (parsed.message.call.squadId && parsed.message.call.phoneCallProviderId) {
+                retval = parsed.message.call.phoneCallProviderId;
+            } else if (parsed.message.call.id) {
+                retval = parsed.message.call.id;
+            }
+        }
+        return retval;
     }
     /**
      * 
@@ -258,7 +263,7 @@ export class Vapi {
             };
             const body = { members: [] };
             const taskRouter = { assistantId: "", assistantDestinations: [] };
-            const messageTemplate = "Please wait a moment.";
+            const messageTemplate = "Please wait a moment while i am tranferring this call...";
             for (const id in this.#assistants) {
                 const assistant = this.#assistants[id];
                 if (assistant && assistant.name.includes("Task Router")) {
@@ -391,10 +396,13 @@ export class Vapi {
             const session = this.getSession(sessionId);
             const tool = this.getTool(parsed);
             if (tool && session) {
+                tool.parseBody(parsed);
                 tool.setMeta({ sessionId, consumerNumber: session.ConsumerNumber });
                 const data = session.Data;
                 if (data) tool.setData(data);
-                RedisVent.Session.triggerUpsert(SESSION_KEY.SYSTEM_MESSAGE, "session", { message: tool.Meta.systemMsg });
+                // RedisVent.Session.triggerUpsert(SESSION_KEY.SYSTEM_MESSAGE, "session", { message: tool.Meta.systemMsg });
+                const update = { transcriptType: "final", role: "system", transcript: tool.Meta.systemMsg, timestamp: parsed.message.timestamp };
+                session.updateTranscript(update);
                 tool.parseRequest(parsed).then((response) => {
                     if (tool.Data) session.setData(tool.Data);
                     const update = { valid: response.valid, id: tool.Id };
@@ -438,6 +446,7 @@ class Session {
         this.init(call);
         this.#event = event;
         this.#assistants = assistants;
+        this.onStart();
     }
     get Call() {
         return this.#call;
@@ -486,9 +495,15 @@ class Session {
         RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CONVERSAION, "session", { transcript: this.#transcript, checklist: this.#checklist });
     }
     onEnd() {
-        DB.Sessions.rawCollection().updateOne({ id: this.SessionId }, { $set: { ...this.#call, status: this.#status, transcript: this.#transcript } }).then(() => {
-            this.#event.emit(SESSION_EVENTS.END, this.SessionId);
-        });
+        const query = { id: this.SessionId };
+        if (this.IsSquadCall) {
+            delete query.id;
+            query.phoneCallProviderId = this.SessionId;
+        }
+        DB.Sessions.rawCollection().updateOne(query, { $set: { ...this.#call, status: this.#status, transcript: this.#transcript } })
+            .then(() => {
+                this.#event.emit(SESSION_EVENTS.END, this.SessionId);
+            });
     }
     setData(data) {
         this.#data = data;
@@ -497,24 +512,35 @@ class Session {
         DB.Sessions.insert(call);
     }
     updates(update, forced = false) {
+        const query = { id: this.SessionId };
+        if (this.IsSquadCall) {
+            delete query.id;
+            query.phoneCallProviderId = this.SessionId;
+        }
         if (forced) {
-            DB.Sessions.update({ id: this.SessionId }, { $set: update });
+            DB.Sessions.update(query, { $set: update });
             return;
         }
         if (this.#debounce) {
             clearTimeout(this.#debounce);
         }
         this.#debounce = setTimeout(Meteor.bindEnvironment(() => {
-            DB.Sessions.update({ id: this.SessionId }, { $set: update });
+            DB.Sessions.update(query, { $set: update });
         }), 1000 * 3);
-    }
-    updateTranscript(transcript) {
-        DB.Sessions.update({ id: this.SessionId }, { $push: { transcript } });
     }
     processConversations(conversation = []) {
         return conversation.filter((conv) => {
             return ["bot", "user"].includes(conv.role);
         });
+    }
+    formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', options);
+    }
+    updateTranscript({ transcriptType, role, transcript, timestamp }) {
+        if (transcriptType === "final") this.#transcript.push({ transcriptType, role, transcript, timestamp });
+        RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", { transcriptType, role, transcript, timestamp });
     }
     parseSession(requestBody) {
         let parsed = requestBody;
@@ -525,14 +551,12 @@ class Session {
         this.#call = parsed.message.call;
         switch (type) {
             case "transcript": {
-                const update = {
+                this.updateTranscript({
                     transcriptType: parsed.message.transcriptType,
                     role: parsed.message.role,
                     transcript: parsed.message.transcript,
                     timestamp
-                };
-                if (update.transcriptType === "final") this.#transcript.push(update);
-                RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", update);
+                });
                 break;
             }
             case "status-update":
@@ -558,7 +582,36 @@ class Session {
                 // }
                 break;
             case "end-of-call-report":
-                //call analytics and call summary
+                const callResult = {
+                    callSummary: {
+                        start: parsed.message.call.createdAt,
+                        end: parsed.message.timestamp,
+                    },
+                    callAnalytics: parsed.message.analysis
+                };
+                const readableSummary = `Call started at ${this.formatDate(callResult.callSummary.start)} and ended at ${this.formatDate(callResult.callSummary.end)}.`;
+                const ms = new Date(callResult.callSummary.end) - new Date(callResult.callSummary.start);
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+                const duration = `${minutes} mins ${seconds} seconds`;
+                const update = {
+                    transcriptType: "final",
+                    role: "assistant",
+                    transcript: `
+                        <h5>Call Info :</h5> <br>
+                        <b>Summary : </b>${readableSummary}<br>
+                        <b>Duration : </b> ${duration} <br> <br>
+
+
+                        <h5>Call Analytics : </h5><br>
+                        <b>Analysis : </b> ${callResult.callAnalytics.summary} <br>
+                        <b>Success Evaluation : </b> ${callResult.callAnalytics.successEvaluation} <br></br>
+                            
+                    `,
+                    timestamp: parsed.message.timestamp
+                };
+                this.updateTranscript(update);
                 this.#status = "completed";
                 RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: this.#status });
                 this.onEnd();

@@ -49,9 +49,21 @@ class Client extends Watcher {
     };
     parseIncomingData({ transcriptType, role, transcript, timestamp }) {
         this.#transcript = this.#transcript.filter((t) => t.transcriptType !== "partial");
+        let status = 1;
+        switch (role) {
+            case "assistant":
+            case "bot":
+                status = 2;
+                break;
+            case "system":
+                status = 3;
+                break;
+            default:
+                status = 1;
+                break;
+        }
         this.#transcript.push({
-            transcriptType,
-            status: role === "assistant" ? 2 : 1,
+            transcriptType, status,
             message: transcript,
             time: moment(timestamp).format("hh:mm:ss A")
         });
@@ -104,6 +116,8 @@ class Client extends Watcher {
                 data = data.data;
                 switch (event) {
                     case "upsert":
+                        this.#transcript = [];
+                        this.#checklist = [];
                         // const chatData = this.parseIncomingData(data.data);
                         // this.#events.emit(SESSION_KEY.UPDATE_CONVERSAION, chatData);
                         this.#events.emit(SESSION_KEY.START, data.checklist);
@@ -112,7 +126,6 @@ class Client extends Watcher {
                         const transcript = (data.transcript || []).map((t) => {
                             return this.parseIncomingData(t);
                         });
-                        console.log("transcript", transcript);
                         this.#events.emit(SESSION_KEY.UPDATE_CONVERSAION, transcript);
                         break;
                     default:
