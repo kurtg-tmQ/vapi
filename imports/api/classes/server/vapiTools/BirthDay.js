@@ -52,7 +52,7 @@ const birthday = {
     messages: [
         {
             type: "request-start",
-            content: "Updating ...",
+            content: "Validating ...",
         },
         {
             type: "request-response-delayed",
@@ -71,7 +71,7 @@ const birthday = {
             },
         },
         description:
-            "Validates birthday of customer. This will return if it is valid or not valid",
+            "Validates birthday of customer if it is valid or not valid. Send the birthday in server in this format yyyy-mm-dd.",
     },
     async: false,
     server: {
