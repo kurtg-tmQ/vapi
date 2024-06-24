@@ -23,7 +23,10 @@ class CardReplacement extends FuncTemplate {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: `Process complete. Possible delivery date is between ${result.start} and ${result.end}`,
+                            result: {
+                                success: true,
+                                dateRange: result
+                            }
                         },
                     ],
                 }, true);
@@ -32,7 +35,10 @@ class CardReplacement extends FuncTemplate {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: "Process failed. Please try again later",
+                            result: {
+                                success: false,
+                                message: "Process failed. Please try again later"
+                            },
                         },
                     ],
                 });
@@ -44,7 +50,10 @@ class CardReplacement extends FuncTemplate {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "Process failed. Please try again later",
+                        result: {
+                            success: false,
+                            message: "Process failed. Please try again later"
+                        },
                     },
                 ],
             });
