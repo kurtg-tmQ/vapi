@@ -57,5 +57,17 @@ export default {
         "provider": "11labs",
         "voiceId": "sarah"
     },
-    "responseDelaySeconds": 2
+    "responseDelaySeconds": 2,
+    "serverMessages": [
+        "conversation-update",
+        "end-of-call-report",
+        "function-call",
+        "hang",
+        "model-output", "phone-call-control", "transcript",
+        "speech-update",
+        "status-update",
+        "tool-calls",
+        "transfer-destination-request",
+        "user-interrupted", "voice-input"
+    ],
 };
