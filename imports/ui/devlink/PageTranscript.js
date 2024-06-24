@@ -96,20 +96,43 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
     }, [chatData]);
 
 
-    const chat = (isRight, message, time, index) => (
-        <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
-            <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
-                <_Builtin.Block tag="div">{message}</_Builtin.Block>
-            </_Builtin.Block>
-            <_Builtin.Block className={_utils.cx(_styles, "chat-details")} tag="div">
-                <_Builtin.Block className={_utils.cx(_styles, "chat-time")} tag="div">
-                    {time}
+    // const chat = (isRight, message, time, index) => (
+    //     <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
+    //         <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
+    //             <_Builtin.Block tag="div">{message}</_Builtin.Block>
+    //         </_Builtin.Block>
+    //         <_Builtin.Block className={_utils.cx(_styles, "chat-details")} tag="div">
+    //             <_Builtin.Block className={_utils.cx(_styles, "chat-time")} tag="div">
+    //                 {time}
+    //             </_Builtin.Block>
+    //             <_Builtin.Block className={_utils.cx(_styles, "circle-divider")} tag="div" />
+    //             {dropdownSuggestions()}
+    //         </_Builtin.Block>
+    //     </_Builtin.Block>
+    // );
+    const chat = (isRight, message, time, index) => {
+    const isHTML = /<\/?[a-z][\s\S]*>/i.test(message); 
+        return (
+            <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
+                <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
+                    <_Builtin.Block tag="div">
+                        {isHTML ? (
+                            <div dangerouslySetInnerHTML={{ __html: message }} />
+                        ) : (
+                            message
+                        )}
+                    </_Builtin.Block>
                 </_Builtin.Block>
-                <_Builtin.Block className={_utils.cx(_styles, "circle-divider")} tag="div" />
-                {dropdownSuggestions()}
+                <_Builtin.Block className={_utils.cx(_styles, "chat-details")} tag="div">
+                    <_Builtin.Block className={_utils.cx(_styles, "chat-time")} tag="div">
+                        {time}
+                    </_Builtin.Block>
+                    <_Builtin.Block className={_utils.cx(_styles, "circle-divider")} tag="div" />
+                    {dropdownSuggestions()}
+                </_Builtin.Block>
             </_Builtin.Block>
-        </_Builtin.Block>
-    );
+    );};
+
 
     const clickHandler = (data = "") => {
         console.log("clicked", data);

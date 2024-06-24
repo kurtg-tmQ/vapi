@@ -516,6 +516,11 @@ class Session {
             return ["bot", "user"].includes(conv.role);
         });
     }
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const date = new Date(dateString);
+      return date.toLocaleString('en-US', options);
+    }
     parseSession(requestBody) {
         let parsed = requestBody;
         if (typeof requestBody === "string")
@@ -525,6 +530,7 @@ class Session {
         this.#call = parsed.message.call;
         switch (type) {
             case "transcript": {
+                console.log(parsed)
                 const update = {
                     transcriptType: parsed.message.transcriptType,
                     role: parsed.message.role,
@@ -558,6 +564,41 @@ class Session {
                 // }
                 break;
             case "end-of-call-report":
+                const callResult = {
+                    callSummary: {
+                        start: parsed.message.call.createdAt,
+                        end: parsed.message.timestamp,
+                    },
+                    callAnalytics: parsed.message.analysis
+                }
+                const readableSummary = `Call started at ${this.formatDate(callResult.callSummary.start)} and ended at ${this.formatDate(callResult.callSummary.end)}.`;
+                const ms = new Date(callResult.callSummary.end) - new Date(callResult.callSummary.start);
+                const totalSeconds = Math.floor(ms / 1000);
+                const minutes = Math.floor(totalSeconds /60);
+                const seconds = totalSeconds % 60;
+                const duration = `${minutes} mins ${seconds} seconds`;
+                const update = {
+                    transcriptType: "final",
+                    role: "assistant",
+                    transcript: `
+                        <h5>Call Info :</h5> <br>
+                        <b>Summary : </b>${readableSummary}<br>
+                        <b>Duration : </b> ${duration} <br> <br>
+
+
+                        <h5>Call Analytics : </h5><br>
+                        <b>Analysis : </b> ${callResult.callAnalytics.summary} <br>
+                        <b>Success Evaluation : </b> ${callResult.callAnalytics.successEvaluation} <br></br>
+                            
+                    `,
+                    timestamp: parsed.message.timestamp
+                };
+                
+                console.log("End of the call", callResult);
+                console.log(update.transcript);
+                RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", update);
+                // console.log("call summary", new Date(parsed.message.call.createdAt).toString(), new Date(parsed.message.timestamp).toString())
+                // console.log("call analytics", parsed.message.analysis.summary, parsed.message.analysis.successEvaluation )
                 //call analytics and call summary
                 this.#status = "completed";
                 RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: this.#status });
