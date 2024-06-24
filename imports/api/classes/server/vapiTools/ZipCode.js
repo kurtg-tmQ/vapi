@@ -56,7 +56,7 @@ const zipcode = {
     messages: [
         {
             type: "request-start",
-            content: "Updating ...",
+            content: "Validating ...",
         },
         {
             type: "request-response-delayed",
@@ -75,7 +75,7 @@ const zipcode = {
             },
         },
         description:
-            "Verify zipcode. This will return valid or not valid",
+            "Validate zipcode. This will return valid or not valid",
     },
     async: false,
     server: {
