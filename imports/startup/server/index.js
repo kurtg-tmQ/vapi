@@ -1,8 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import fs from "fs";
 
 import Server from "../../api/classes/server/Server";
-import Path from "../../api/classes/server/Path";
+import "../../api/server";
 import "./routes";
 
 Meteor.startup(() => {
@@ -16,5 +15,6 @@ Meteor.startup(() => {
    \\  $/   | $$  | $$| $$       /$$$$$$
     \\_/    |__/  |__/|__/      |______/
 `;
+    Server.registerFunctions();
     Server.startup(banner);
 });

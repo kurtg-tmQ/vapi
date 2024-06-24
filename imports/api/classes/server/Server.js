@@ -15,6 +15,7 @@ class Server {
     #redisClient;
     #vapi;
     #redisPubSub;
+    #functions = {};
     constructor(settings) {
         this.#settings = settings;
         this.readConfig(Path.CONFIG + "settings.yml");
@@ -39,6 +40,19 @@ class Server {
     */
     get RedisPubSub() {
         return this.#redisPubSub;
+    }
+    registerFunctions() {
+        Meteor.methods(this.#functions);
+    }
+    /**
+     * 
+     * @param {String} name 
+     * @param {Function} func 
+     */
+    addFunction(name, func) {
+        if (typeof func != "function") throw new Error("func not a function");
+        if (this.#functions[name]) throw new Error(`function "${name}" is already registered`);
+        this.#functions[name] = func;
     }
     /**
    * Read configuration file

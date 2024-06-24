@@ -80,6 +80,7 @@ const birthday = {
 };
 const meta = {
     title: "Date of Birth",
+    systemMsg: "Validating Date of Birth",
 };
 
 export default new BirthDay(birthday.async, birthday.server, birthday.messages, birthday.function, meta);

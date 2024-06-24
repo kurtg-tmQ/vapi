@@ -86,6 +86,9 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
 
     useEffect(() => {
         Client.login("tmq.kurt.g@gmail.com", "P@ssword1");
+        if (!chatData.length) {
+            Client.getSession();
+        }
     }, []);
 
     useEffect(() => {

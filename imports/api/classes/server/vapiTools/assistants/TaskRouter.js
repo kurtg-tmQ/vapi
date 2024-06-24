@@ -1,7 +1,7 @@
 export default {
     "name": "Task Router",
     "firstMessageMode": "assistant-speaks-first",
-    "firstMessage": "Hello, How can I help you today?",
+    "firstMessage": "Thank you for calling Fortiva Card Services, How can I help you today?",
     "recordingEnabled": true,
     "hipaaEnabled": false,
     "silenceTimeoutSeconds": 30,

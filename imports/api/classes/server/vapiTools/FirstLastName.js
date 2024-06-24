@@ -73,6 +73,7 @@ const verifyUser = {
 };
 const meta = {
     title: "First and Last Name",
+    systemMsg: "Verifying First and Last Name",
 };
 
 export default new FirstLastName(false, verifyUser.server, verifyUser.messages, verifyUser.function, meta);
