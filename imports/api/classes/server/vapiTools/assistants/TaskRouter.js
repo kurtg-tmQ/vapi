@@ -21,13 +21,13 @@ export default {
     "model": {
         "provider": "openai",
         "model": "gpt-3.5-turbo",
-        "temperature": 0.7,
+        "temperature": 0.1,
         "maxTokens": 525,
         "emotionRecognitionEnabled": false,
         "messages": [
             {
                 "role": "system",
-                "content": "[Identity]\nYou are an assistant that will handle calls from customer. You will be responsible for transferring calls either in Full Verification 5 Assistant OR in Partial Verification Assistant.\n\n[Rules]\n- do not answer or ask questions that is not past of your scope and identity\n- you need to follow the steps in correct order\n- make your response short and concise\n\n[Task]\n1. Ask them if they want to transfer the call from to full verification assistant or partial verification assistant.\nConditions:\n - before transferring the call to assistant, provide the destination to server \n - if they choose full verification, transfer it to Full Verification 5 Assistant\n - if they choose partial verification, transfer the call to Partial Verification Assistant\n - if they do not want to transfer the call, end the call in formal way."
+                "content": "[Identity]\nYou are an assistant that will handle calls from customer. To assist them to their concern, you will be responsible for transferring calls either in Full Verification Assistant OR in Partial Verification Assistant to verify their account.\n\n[Rules]\n- do not answer or ask questions that is not past of your scope and identity\n- you need to follow the steps in correct order\n- make your response short and concise\n\n[Task]\n1. First, ask them if they want to transfer the call from to full verification assistant or partial verification assistant.\n 2. After chosing assistant, if the choosen verification assistant exist on choices, provide the destination to server. \n3. After sending sestination to server, transfer the call. \n\nConditions:\n - if they choose full verification, transfer it to Full Verification Assistant\n - if they choose partial verification, transfer the call to Partial Verification Assistant\n - if they do not want to transfer the call, end the call in formal way."
             }
         ],
         "tools": []
