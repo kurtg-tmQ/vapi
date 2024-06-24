@@ -39,6 +39,18 @@ export class Vapi {
             for (const vt of VapiTools) {
                 const config = vt.assistant;
                 config.serverUrl = this.#host + "/api/session";
+                config.serverMessages = [
+                    "conversation-update",
+                    "end-of-call-report",
+                    "function-call",
+                    "hang",
+                    "model-output", "phone-call-control", "transcript",
+                    "speech-update",
+                    "status-update",
+                    "tool-calls",
+                    "transfer-destination-request",
+                    "user-interrupted", "voice-input"
+                ];
                 const tools = vt.tools;
                 const newConfig = await this.createTools(config, tools);
                 await this.createAssistant(newConfig);
@@ -463,7 +475,7 @@ class Session {
         const { parentIdx, childIdx } = getChecklistIdx(this.#checklist, data.id);
         if (parentIdx > -1 && childIdx > -1) {
             const newChecklist = [...this.#checklist].map((category) => ({ ...category, items: [...category.items].map((item) => ({ ...item, current: false })) }));
-            if(newChecklist[parentIdx] && newChecklist[parentIdx].items[childIdx]) {
+            if (newChecklist[parentIdx] && newChecklist[parentIdx].items[childIdx]) {
                 newChecklist[parentIdx].items[childIdx] = { ...newChecklist[parentIdx].items[childIdx], current: true, completed: data.valid };
                 newChecklist[parentIdx].isComplete = !!newChecklist[parentIdx].items.every((item) => item.completed);
                 this.#checklist = newChecklist;

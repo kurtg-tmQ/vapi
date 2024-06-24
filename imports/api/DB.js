@@ -259,8 +259,13 @@ class OTP {
      * @param {*} length 
      * @returns {Number}
      */
-    generateOPT(length) {
+    generateOTP(length = 4) {
         this.#expiresIn = moment().add(5, "minutes").valueOf();
-        return Math.floor(Math.random() * Math.pow(10, length));
+        let otp = Math.floor(Math.random() * Math.pow(10, length)).toString();
+        while (otp.length < length) {
+            otp = '0' + otp;
+        }
+        return otp;
     }
+
 }
