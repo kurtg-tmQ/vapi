@@ -181,7 +181,7 @@ export class Consumer {
             if (number) phonenumber = number;
             const otp = new OTP();
             const idx = this.session.findIndex((s) => s.sessionId === sessionId);
-            const code = otp.generateOPT(4);
+            const code = otp.generateOTP(4);
             if (idx > -1) {
                 this.session[idx].otp = { code, expiresIn: otp.ExpiresIn };
             } else {

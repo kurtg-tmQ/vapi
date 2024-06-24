@@ -95,6 +95,25 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
         scrollToBottom();
     }, [chatData]);
 
+    const systemMessage = (message, time, index) => {
+        return (
+            <_Builtin.Block style={{
+                backgroundColor: "#f0f0f0",
+                color: "#333",
+                padding: "10px 15px",
+                margin: "10px 0",
+                borderRadius: "5px",
+                textAlign: "center",
+                fontWeight: "bold",
+                width: "calc(100% - 30px)",
+                boxSizing: "border-box"
+            }} tag="div" key={index}>
+                <_Builtin.Block tag="div">
+                    <_Builtin.Block tag="div">SYSTEM: {message} - {time}</_Builtin.Block>
+                </_Builtin.Block>
+            </_Builtin.Block>
+        );
+    };
 
     // const chat = (isRight, message, time, index) => (
     //     <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
@@ -188,6 +207,8 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
                         <_Builtin.Block className={_utils.cx(_styles, "main-page-bot")} tag="div">
                             <_Builtin.Block className={_utils.cx(_styles, "convo-trasncript")} tag="div" ref={chatContainerRef}>
                                 {chatData.map((chatItem, index) => {
+                                    if (chatItem.status === 3)
+                                        return systemMessage(chatItem.message, chatItem.time, index);
                                     return chat(chatItem.status === 2, chatItem.message, chatItem.time, index);
                                 })}
                             </_Builtin.Block>

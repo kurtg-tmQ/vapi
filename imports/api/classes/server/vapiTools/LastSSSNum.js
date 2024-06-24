@@ -28,9 +28,7 @@ class LastSssNumTemp extends FuncTemplate {
                                 result: "Incorrect",
                             },
                         ],
-                    },
-                    true
-                );
+                    });
             } else {
                 this.setResponse(200, {
                     results: [
@@ -39,7 +37,7 @@ class LastSssNumTemp extends FuncTemplate {
                             result: "Correct",
                         },
                     ],
-                });
+                }, true);
             }
         } catch (error) {
             this.setResponse(400, {
