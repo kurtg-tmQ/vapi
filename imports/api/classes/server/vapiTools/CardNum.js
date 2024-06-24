@@ -87,6 +87,7 @@ const card = {
 };
 const meta = {
     title: "Last four (4) Card Number/Account Number (if they have it)",
+    systemMsg: "Verifying last four (4) Card Number/Account Number",
 };
 
 export default new CardNum(card.async, card.server, card.messages, card.function, meta);

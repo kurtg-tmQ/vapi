@@ -5,4 +5,16 @@ export const SESSION_KEY = {
     START: "session-start",
     END: "session-end",
     UPDATE_TRANSCRIPT: "update-transcript",
+    SYSTEM_MESSAGE: "system-message",
+};
+
+export const SESSION = {
+    GET_TRANSCRIPT: "get-transcript",
+};
+
+export const SESSION_EVENTS = {
+    START: "start",
+    END: "end",
+    ERROR: "error",
+    UPDATE: "update"
 };

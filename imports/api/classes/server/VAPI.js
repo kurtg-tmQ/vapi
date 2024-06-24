@@ -1,21 +1,13 @@
 import requestF from "request";
 import jwt from "jsonwebtoken";
-import fs from "fs";
 
+import { SESSION_KEY, SESSION_EVENTS } from "../common/Const";
 import VapiTools from "./vapiTools/registry";
-import { SESSION_KEY } from "../common/Const";
 import RedisVent from "./RedisVent";
 import Utilities from "./Utilities";
 import EventEmitter from "events";
-import Path from "./Path";
 import DB from "../../DB";
 
-const SESSION_EVENTS = {
-    START: "start",
-    END: "end",
-    ERROR: "error",
-    UPDATE: "update"
-};
 
 export class Vapi {
     #token;
@@ -37,6 +29,9 @@ export class Vapi {
     }
     get Event() {
         return this.#event;
+    }
+    get SessionsIds() {
+        return Object.keys(this.#sessions);
     }
     async init() {
         try {
@@ -77,6 +72,11 @@ export class Vapi {
         }
     }
     listen() {
+        this.on(SESSION_EVENTS.START, (sessionId) => {
+            console.log("Session started! id: ", sessionId);
+            const session = this.getSession(sessionId);
+            if (session) session.onStart();
+        });
         this.on(SESSION_EVENTS.END, (sessionId) => {
             delete this.#sessions[sessionId];
             Utilities.showDebug("Session ended! id: %s", sessionId);
@@ -110,13 +110,15 @@ export class Vapi {
         };
         assistants.forEach(assistant => {
             const vt = VapiTools.find(vt => vt.assistant.name === assistant.name);
-            const tools = vt.tools;
-            this.#assistants[assistant.id] = {
-                name: assistant.name,
-                message: assistant.firstMessage,
-                description: assistant.model.messages[0].content,
-                tools: getTools(tools, assistant.model.tools)
-            };
+            if (vt) {
+                const tools = vt.tools;
+                this.#assistants[assistant.id] = {
+                    name: assistant.name,
+                    message: assistant.firstMessage,
+                    description: assistant.model.messages[0].content,
+                    tools: getTools(tools, assistant.model.tools)
+                };
+            }
         });
     }
     /**
@@ -377,9 +379,10 @@ export class Vapi {
             const session = this.getSession(sessionId);
             const tool = this.getTool(parsed);
             if (tool && session) {
-                tool.setMeta({ sessionId });
+                tool.setMeta({ sessionId, consumerNumber: session.ConsumerNumber });
                 const data = session.Data;
                 if (data) tool.setData(data);
+                RedisVent.Session.triggerUpsert(SESSION_KEY.SYSTEM_MESSAGE, "session", { message: tool.Meta.systemMsg });
                 tool.parseRequest(parsed).then((response) => {
                     if (tool.Data) session.setData(tool.Data);
                     const update = { valid: response.valid, id: tool.Id };
@@ -387,6 +390,7 @@ export class Vapi {
                         const assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name.includes(response.info.destination));
                         session.createCheckList(parsed, assistantId);
                     }
+                    session.updateChecklist(update);
                     RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CHECKLIST, "session", update);
                     resolve(response);
                 }).catch((error) => {
@@ -414,12 +418,20 @@ class Session {
     #data = null;
     #assistants = {};
     #other = {};
+    #transcript = [];
+    #checklist = [];
     constructor(call, event, assistants) {
         this.#call = call;
         // this.writeStream = fs.createWriteStream(Path.ASSETS + this.SessionId + ".json");
         this.init(call);
         this.#event = event;
         this.#assistants = assistants;
+    }
+    get Call() {
+        return this.#call;
+    }
+    get ConsumerNumber() {
+        return this.#call?.customer?.number;
     }
     get SessionId() {
         if (this.IsSquadCall)
@@ -437,6 +449,30 @@ class Session {
     }
     get OTP() {
         return this.#other.otp;
+    }
+    updateChecklist(data = { id: "", valid: false }) {
+        function getChecklistIdx(list = [], id) {
+            const parentIdx = list.findIndex((category) => {
+                return !!category.items.find((item) => item.value === id);
+            });
+            const childIdx = list[parentIdx].items.findIndex((item) => item.value === id);
+            return { parentIdx, childIdx };
+        };
+        const { parentIdx, childIdx } = getChecklistIdx(this.#checklist, data.id);
+        if (parentIdx > -1 && childIdx > -1) {
+            const newChecklist = [...this.#checklist].map((category) => ({ ...category, items: [...category.items].map((item) => ({ ...item, current: false })) }));
+            newChecklist[parentIdx].items[childIdx] = { ...newChecklist[parentIdx].items[childIdx], current: true, completed: data.valid };
+            newChecklist[parentIdx].isComplete = !!newChecklist[parentIdx].items.every((item) => item.completed);
+            this.#checklist = newChecklist;
+        }
+    }
+    onStart() {
+        RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CONVERSAION, "session", { transcript: this.#transcript, checklist: this.#checklist });
+    }
+    onEnd() {
+        DB.Sessions.rawCollection().updateOne({ id: this.SessionId }, { $set: { ...this.#call, status: this.#status, transcript: this.#transcript } }).then(() => {
+            this.#event.emit(SESSION_EVENTS.END, this.SessionId);
+        });
     }
     setData(data) {
         this.#data = data;
@@ -470,7 +506,19 @@ class Session {
             parsed = JSON.parse(requestBody);
         const type = parsed.message.type;
         const timestamp = parsed.message.timestamp;
+        this.#call = parsed.message.call;
         switch (type) {
+            case "transcript": {
+                const update = {
+                    transcriptType: parsed.message.transcriptType,
+                    role: parsed.message.role,
+                    transcript: parsed.message.transcript,
+                    timestamp
+                };
+                if (update.transcriptType === "final") this.#transcript.push(update);
+                RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", update);
+                break;
+            }
             case "status-update":
                 this.#status = parsed.message.status;
                 if (this.#status === "in-progress") {
@@ -487,17 +535,21 @@ class Session {
                 this.updates({ status: this.#status, timestamp, speechStatus: parsed.message.status });
                 break;
             case "conversation-update":
-                const conversation = parsed.message?.artifact?.messages;
-                if (conversation && conversation.length) {
-                    this.updates({ status: this.#status, timestamp, conversation }, true);
-                    RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CONVERSAION, "session", this.processConversations(conversation));
-                }
+                // const conversation = parsed.message?.artifact?.messages;
+                // if (conversation && conversation.length) {
+                //     this.updates({ status: this.#status, timestamp, conversation }, true);
+                //     RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CONVERSAION, "session", this.processConversations(conversation));
+                // }
                 break;
             case "end-of-call-report":
+                //call analytics and call summary
                 this.#status = "completed";
-                this.updates({ status: this.#status, timestamp }, true);
                 RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: this.#status });
-                this.#event.emit(SESSION_EVENTS.END, this.SessionId);
+                this.onEnd();
+                break;
+            case "phone-call-control":
+                this.#status = "hangup";
+                this.onEnd();
                 break;
         }
     }
@@ -531,6 +583,7 @@ class Session {
             }
             checklist.push(credentials);
         }
+        this.#checklist = checklist;
         Meteor.defer(() => {
             RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: "started", checklist });
         });

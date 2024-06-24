@@ -87,6 +87,7 @@ const sss = {
 };
 const meta = {
     title: "Last 4 of the Social Security Number",
+    systemMsg: "Verifying Last 4 of the Social Security Number",
 };
 
 export default new LastSssNumTemp(sss.async, sss.server, sss.messages, sss.function, meta);
