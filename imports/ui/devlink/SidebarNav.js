@@ -108,14 +108,14 @@ export function SidebarNav({ as: _Component = _Builtin.Block }) {
                                 {"Settings"}
                             </_Builtin.Block>
                         </_Builtin.Block>
-                        <_Builtin.Block className={_utils.cx(_styles, "sidebar-link", "logout")} tag="div" onClick={handleLogout}>
+                        {/* <_Builtin.Block className={_utils.cx(_styles, "sidebar-link", "logout")} tag="div" onClick={handleLogout}>
                             <_Builtin.Block className={_utils.cx(_styles, "icon-sidebar")} tag="div">
                                 <_Builtin.Image width="auto" height="auto" loading="lazy" alt="" src="/images/Asset-53.svg" />
                             </_Builtin.Block>
                             <_Builtin.Block className={_utils.cx(_styles, "text-sidebar-links")} tag="div">
                                 {"Logout"}
                             </_Builtin.Block>
-                        </_Builtin.Block>
+                        </_Builtin.Block> */}
                     </_Builtin.Block>
                 </_Builtin.Block>
             </_Builtin.Block>

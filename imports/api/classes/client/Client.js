@@ -14,6 +14,7 @@ class Client extends Watcher {
     constructor(parent) {
         super(parent);
         this.secureTransaction();
+        this.autoLogin();
     }
     /**
      * @returns {EventEmitter}
@@ -23,6 +24,15 @@ class Client extends Watcher {
     }
     get Checklist() {
         return this.#checklist;
+    }
+    autoLogin() {
+        if (!this.IsLoggedIn) {
+            this.login("admin", "admin", (err) => {
+                if (!err)
+                    window.location.reload();
+                console.log("login error", err);
+            });
+        }
     }
     getSession() {
         console.log("getSession");
