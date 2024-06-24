@@ -8,11 +8,13 @@ import birthday_update from "./BirthDay";
 import verify_user from "./FirstLastName";
 import retrieve_card_number from "./CardNum";
 import verify_account_password from "./Password";
+import process_card_replacement from "./CardReplacement"
 
 // Assistans
 import TaskRouter from "./assistants/TaskRouter";
 import FullVerification from "./assistants/FullVerification2";
 import PartialVerification from "./assistants/PartialVerification";
+import CardReplacement from "./assistants/CardReplacement";
 
 const FV = {
     assistant: FullVerification,
@@ -27,4 +29,9 @@ const TV = {
     tools: [task_route]
 };
 
-export default [TV, FV, PV];
+const CR = {
+    assistant: CardReplacement,
+    tools: [verify_user, send_otp, verify_otp, process_card_replacement]
+}
+
+export default [TV, FV, PV, CR];

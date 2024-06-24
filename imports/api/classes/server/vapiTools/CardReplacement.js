@@ -1,68 +1,72 @@
 import { FuncTemplate } from "./template";
 import { Consumer } from "../../../DB";
 
-class OTP extends FuncTemplate {
+class CardReplacement extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
 
-    parseBody(requestBody) {
-        //will not be used
-    }
-
     verifyRequest() {
         const data = this.Data;
+
         if (data) {
             const consumer = new Consumer(data);
-            const number = this.Meta.consumerNumber;
-            return consumer.sendOTP(number, this.Meta.sessionId);
+            return consumer.processCardReplacement();
         }
-        return Promise.resolve("no number");
+        return Promise.resolve({ verified: false });
     }
 
     parseRequest(request) {
-        // const { number } = request.message.toolCalls[0].function.arguments;
-        return this.verifyRequest().then((response) => {
-            if (response === "no number") {
+        return this.verifyRequest().then(({ verified, result }) => {
+            if(verified) {
                 this.setResponse(200, {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: "No number found",
+                            result: {
+                                success: true,
+                                dateRange: result
+                            }
                         },
                     ],
-                });
+                }, true);
             } else {
                 this.setResponse(200, {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: "OTP sent",
+                            result: {
+                                success: false,
+                                message: "Process failed. Please try again later"
+                            },
                         },
                     ],
-                }, true);
+                });
             }
             return this.checkResponse();
         }).catch((e) => {
-            console.error(e);
+            console.log(e);
             this.setResponse(200, {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: "no number found",
+                        result: {
+                            success: false,
+                            message: "Process failed. Please try again later"
+                        },
                     },
                 ],
             });
             return this.checkResponse();
-        });
+        })
     }
 }
-const otp = {
+const card = {
     type: "function",
     messages: [
         {
             type: "request-start",
-            content: "Sending OTP...",
+            content: "Processing request...",
         },
         {
             type: "request-response-delayed",
@@ -71,26 +75,22 @@ const otp = {
         },
     ],
     function: {
-        name: "send_otp",
+        name: "process_card_replacement",
         parameters: {
             type: "object",
             properties: {
-                number: {
-                    type: "string",
-                },
             },
         },
         description:
-            "Send OTP to the number available in the database. If response returns no number, request for a valid mobile number. If response returns success, proceed to the next step.",
+            "Process card replacement and returns possible delivery dates.",
     },
     async: false,
     server: {
-        url: "https://kind-intensely-herring.ngrok-free.app/card_num",
+        url: "https://kind-intensely-herring.ngrok-free.app/card_replacement",
     },
 };
 const meta = {
-    title: "Send OTP",
-    systemMsg: "Sending OTP",
+    title: "Process card replacement",
 };
 
-export default new OTP(otp.async, otp.server, otp.messages, otp.function, meta);
+export default new CardReplacement(card.async, card.server, card.messages, card.function, meta);

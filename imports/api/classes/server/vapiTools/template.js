@@ -125,7 +125,7 @@ export class FuncTemplate {
         for (const result of this.#response.message.results) {
             if (!result.toolCallId || typeof result.toolCallId !== "string")
                 throw new Error("Missing toolCallId!");
-            if (!result.result)
+            if (!result.result || (typeof result.result !== "string" && typeof result.result !== "object"))
                 throw new Error("Missing result!");
         }
         return Promise.resolve(this.#response);

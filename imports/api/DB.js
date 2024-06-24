@@ -217,6 +217,11 @@ export class Consumer {
         }
         return false;
     }
+
+    processCardReplacement() {
+        return Promise.resolve({ verified: true, result: {start:"2024-07-01", end:"2024-07-15"} })
+    }
+
     save() {
         if (this._id) {
             this.updatedAt = moment().valueOf();
