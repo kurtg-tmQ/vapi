@@ -130,7 +130,7 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
     //     </_Builtin.Block>
     // );
     const chat = (isRight, message, time, index) => {
-    const isHTML = /<\/?[a-z][\s\S]*>/i.test(message); 
+        const isHTML = /<\/?[a-z][\s\S]*>/i.test(message);
         return (
             <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
                 <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
@@ -150,7 +150,8 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
                     {dropdownSuggestions()}
                 </_Builtin.Block>
             </_Builtin.Block>
-    );};
+        );
+    };
 
 
     const clickHandler = (data = "") => {

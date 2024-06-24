@@ -155,7 +155,7 @@ export class Consumer {
         return this.session.otp;
     }
     verifyBirthday(birthday) {
-        return moment(birthday, "YYYY-MM-DD").isSame(moment(this.birthday, "YYYY-MM-DD"));
+        return birthday === this.birthday;
     }
     verifyZipCode(zipCode) {
         return parseInt(zipCode) === parseInt(this.zipCode);
@@ -219,7 +219,7 @@ export class Consumer {
     }
 
     processCardReplacement() {
-        return Promise.resolve({ verified: true, result: {start:"2024-07-01", end:"2024-07-15"} })
+        return Promise.resolve({ verified: true, result: { start: "2024-07-01", end: "2024-07-15" } });
     }
 
     save() {
