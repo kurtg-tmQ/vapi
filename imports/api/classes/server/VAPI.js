@@ -1,4 +1,4 @@
-import requestF, { del } from "request";
+import requestF from "request";
 import jwt from "jsonwebtoken";
 
 import { SESSION_KEY, SESSION_EVENTS } from "../common/Const";
@@ -120,11 +120,14 @@ export class Vapi {
             const vt = VapiTools.find(vt => vt.assistant.name === assistant.name);
             if (vt) {
                 const tools = vt.tools;
+                const members = vt.members;
                 this.#assistants[assistant.id] = {
+                    id: assistant.id,
                     name: assistant.name,
                     message: assistant.firstMessage,
                     description: assistant.model.messages[0].content,
-                    tools: getTools(tools, assistant.model.tools)
+                    tools: getTools(tools, assistant.model.tools),
+                    members
                 };
             }
         });
@@ -258,24 +261,69 @@ export class Vapi {
                 }
                 return false;
             };
-            const body = { members: [] };
-            const taskRouter = { assistantId: "", assistantDestinations: [] };
             const messageTemplate = "Please wait a moment while i am tranferring this call...";
-            for (const id in this.#assistants) {
-                const assistant = this.#assistants[id];
-                if (assistant && assistant.name.includes("Task Router")) {
-                    taskRouter.assistantId = id;
-                } else {
-                    taskRouter.assistantDestinations.push({
-                        type: "assistant",
-                        assistantName: assistant.name,
-                        message: messageTemplate,
-                        description: assistant.description
-                    });
-                    body.members.push({ assistantId: id });
+            const getMember = (memberName) => {
+                for (const id in this.#assistants) {
+                    const assistant = this.#assistants[id];
+                    if (assistant.name.includes(memberName)) {
+                        return assistant;
+                    }
+                }
+                return null;
+            };
+            const getParent = () => {
+                return getMember("Front Desk");
+            };
+
+
+            const createMember = (memberInfo_) => {
+                const info = { assistantId: memberInfo_.id, assistantDestinations: [] };
+                if (memberInfo_.members && memberInfo_.members.length) {
+                    for (const member of memberInfo_.members) {
+                        const memberInfo = getMember(member.assistant.name);
+                        if (!memberInfo) continue;
+                        info.assistantDestinations.push({
+                            type: "assistant",
+                            assistantName: memberInfo.name,
+                            message: messageTemplate,
+                            description: memberInfo.description
+                        });
+                    }
+                }
+                if (!info.assistantDestinations.length) delete info.assistantDestinations;
+                return info;
+            };
+            const loopThroughMembers = (members, body) => {
+                for (const member of members) {
+                    const memberInfo = getMember(member.assistant.name);
+                    if (!memberInfo) continue;
+                    const member_ = createMember(memberInfo);
+                    if (body.members.find(m => m.assistantId === memberInfo.id)) continue;
+                    body.members.push(member_);
+                    if (memberInfo.members && memberInfo.members.length) {
+                        loopThroughMembers(memberInfo.members, body);
+                    }
+                }
+            };
+            const parentInfo = getParent();
+            const body = { members: [] };
+            if (parentInfo) {
+                const memberIds = {};
+                const squadMember = createMember(parentInfo);
+                body.members.push(squadMember);
+                if (parentInfo.members && parentInfo.members.length) {
+                    for (const member of parentInfo.members) {
+                        const memberInfo = getMember(member.assistant.name);
+                        if (!memberInfo) continue;
+                        const member_ = createMember(memberInfo);
+                        body.members.push(member_);
+                        if (memberInfo.members && memberInfo.members.length) {
+                            loopThroughMembers(memberInfo.members, body);
+                        }
+                    }
                 }
             }
-            body.members.unshift(taskRouter);
+            // console.dir(body, { depth: null });
             const list = await this.listSquad();
             const exist = checkExists(body.members, list);
             if (exist) {
