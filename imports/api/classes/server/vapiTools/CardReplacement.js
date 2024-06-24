@@ -23,7 +23,7 @@ class CardReplacement extends FuncTemplate {
                     results: [
                         {
                             toolCallId: request.message.toolCalls[0].id,
-                            result: `Process complete. The date ranges for delivery is ${JSON.stringify(result)}`,
+                            result: `Process complete. Possible delivery date is between ${result.start} and ${result.end}`,
                         },
                     ],
                 }, true);
@@ -37,6 +37,7 @@ class CardReplacement extends FuncTemplate {
                     ],
                 });
             }
+            return this.checkResponse();
         }).catch((e) => {
             console.log(e);
             this.setResponse(200, {
@@ -47,7 +48,8 @@ class CardReplacement extends FuncTemplate {
                     },
                 ],
             });
-        }).finally(() => this.checkResponse());
+            return this.checkResponse();
+        })
     }
 }
 const card = {
@@ -68,9 +70,6 @@ const card = {
         parameters: {
             type: "object",
             properties: {
-                otp: {
-                    type: "string",
-                },
             },
         },
         description:

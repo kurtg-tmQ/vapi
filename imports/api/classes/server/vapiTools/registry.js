@@ -31,7 +31,7 @@ const TV = {
 
 const CR = {
     assistant: CardReplacement,
-    tools: [send_otp, verify_otp, process_card_replacement]
+    tools: [verify_user, send_otp, verify_otp, process_card_replacement]
 }
 
 export default [TV, FV, PV, CR];

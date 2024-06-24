@@ -17,8 +17,8 @@ class OTP extends FuncTemplate {
     }
 
     parseRequest(request) {
-        const { number } = request.message.toolCalls[0].function.arguments;
-        return this.verifyRequest(number).then((response) => {
+        // const { number } = request.message.toolCalls[0].function.arguments;
+        return this.verifyRequest().then((response) => {
             if (response === "no number") {
                 this.setResponse(200, {
                     results: [
