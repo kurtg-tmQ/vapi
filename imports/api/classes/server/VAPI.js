@@ -40,16 +40,13 @@ export class Vapi {
                 const config = vt.assistant;
                 config.serverUrl = this.#host + "/api/session";
                 config.serverMessages = [
-                    "conversation-update",
                     "end-of-call-report",
                     "function-call",
-                    "hang",
-                    "model-output", "phone-call-control", "transcript",
-                    "speech-update",
+                    "transcript",
                     "status-update",
                     "tool-calls",
                     "transfer-destination-request",
-                    "user-interrupted", "voice-input"
+                    "phone-call-control",
                 ];
                 const tools = vt.tools;
                 const newConfig = await this.createTools(config, tools);
@@ -446,7 +443,6 @@ class Session {
         this.init(call);
         this.#event = event;
         this.#assistants = assistants;
-        this.onStart();
     }
     get Call() {
         return this.#call;
@@ -500,10 +496,9 @@ class Session {
             delete query.id;
             query.phoneCallProviderId = this.SessionId;
         }
-        DB.Sessions.rawCollection().updateOne(query, { $set: { ...this.#call, status: this.#status, transcript: this.#transcript } })
-            .then(() => {
-                this.#event.emit(SESSION_EVENTS.END, this.SessionId);
-            });
+        DB.Sessions.rawCollection().updateOne(query, { $set: { ...this.#call, status: this.#status } }).then(() => {
+            this.#event.emit(SESSION_EVENTS.END, this.SessionId);
+        });
     }
     setData(data) {
         this.#data = data;
@@ -539,7 +534,10 @@ class Session {
         return date.toLocaleString('en-US', options);
     }
     updateTranscript({ transcriptType, role, transcript, timestamp }) {
-        if (transcriptType === "final") this.#transcript.push({ transcriptType, role, transcript, timestamp });
+        if (transcriptType === "final") {
+            this.#transcript.push({ transcriptType, role, transcript, timestamp });
+            DB.Sessions.rawCollection().updateOne({ id: this.SessionId }, { $push: { transcript: { transcriptType, role, transcript, timestamp } } });
+        }
         RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", { transcriptType, role, transcript, timestamp });
     }
     parseSession(requestBody) {
@@ -570,16 +568,6 @@ class Session {
                 }
                 this.updates({ status: this.#status, timestamp });
                 RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: this.#status });
-                break;
-            case "speech-update":
-                this.updates({ status: this.#status, timestamp, speechStatus: parsed.message.status });
-                break;
-            case "conversation-update":
-                // const conversation = parsed.message?.artifact?.messages;
-                // if (conversation && conversation.length) {
-                //     this.updates({ status: this.#status, timestamp, conversation }, true);
-                //     RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_CONVERSAION, "session", this.processConversations(conversation));
-                // }
                 break;
             case "end-of-call-report":
                 const callResult = {
@@ -613,7 +601,6 @@ class Session {
                 };
                 this.updateTranscript(update);
                 this.#status = "completed";
-                RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_STATUS, "session", { status: this.#status });
                 this.onEnd();
                 break;
             case "phone-call-control":
