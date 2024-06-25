@@ -20,7 +20,7 @@ class ChangeAddress extends FuncTemplate {
         const { address } = request.message.toolCalls[0].function.arguments;
 
         return this.verifyRequest(address).then(({ verified, result }) => {
-            if(verified) {
+            if (verified) {
                 this.setResponse(200, {
                     results: [
                         {
@@ -60,7 +60,7 @@ class ChangeAddress extends FuncTemplate {
                 ],
             });
             return this.checkResponse();
-        })
+        });
     }
 }
 const address = {
@@ -96,6 +96,7 @@ const address = {
 };
 const meta = {
     title: "Update account address.",
+    systemMsg: "Updating account address",
 };
 
 export default new ChangeAddress(address.async, address.server, address.messages, address.function, meta);

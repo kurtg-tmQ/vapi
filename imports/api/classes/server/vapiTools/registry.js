@@ -38,12 +38,12 @@ const TaskRouter_ = {
 };
 const FullVerification_ = {
     assistant: FullVerification,
-    tools: [verify_user, zipcode_update, birthday_update, sss_verify, retrieve_card_number, verify_account_password],
+    tools: [verify_user, zipcode_update, sss_verify, birthday_update, retrieve_card_number, verify_account_password, task_route],
     members: [TaskRouter_]
 };
 const PartialVerification_ = {
     assistant: PartialVerification,
-    tools: [verify_user, send_otp, verify_otp],
+    tools: [sss_verify, retrieve_card_number, zipcode_update, verify_user, task_route],
     members: [TaskRouter_]
 };
 const FrontDesk_ = {
