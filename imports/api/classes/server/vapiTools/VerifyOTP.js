@@ -12,7 +12,7 @@ class VerifyOTP extends FuncTemplate {
             const consumer = new Consumer(data);
             return consumer.verifyOTP(number, this.Meta.sessionId);
         }
-        return Promise.resolve({valid: false, reason:"invalid code"});
+        return Promise.resolve({ valid: false, reason: "invalid code" });
     }
 
     parseRequest(request) {
@@ -25,7 +25,7 @@ class VerifyOTP extends FuncTemplate {
                         result: response,
                     },
                 ],
-            }, response === "valid" ? true : false);
+            }, response.valid);
             return this.checkResponse();
         }).catch((e) => {
             console.error(e);
@@ -33,7 +33,7 @@ class VerifyOTP extends FuncTemplate {
                 results: [
                     {
                         toolCallId: request.message.toolCalls[0].id,
-                        result: {valid:false, reason: "error while validating"},
+                        result: { valid: false, reason: "error while validating" },
                     },
                 ],
             });
