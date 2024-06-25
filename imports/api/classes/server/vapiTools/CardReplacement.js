@@ -11,7 +11,7 @@ class CardReplacement extends FuncTemplate {
 
         if (data) {
             const consumer = new Consumer(data);
-            return consumer.processCardReplacement(formData);
+            return consumer.processCardReplacement();
         }
         return Promise.resolve({ verified: false });
     }
@@ -20,7 +20,7 @@ class CardReplacement extends FuncTemplate {
         const formData = request.message.toolCalls[0].function.arguments;
 
         return this.verifyRequest(formData).then(({ verified, result }) => {
-            if(verified) {
+            if (verified) {
                 this.setResponse(200, {
                     results: [
                         {
@@ -60,7 +60,7 @@ class CardReplacement extends FuncTemplate {
                 ],
             });
             return this.checkResponse();
-        })
+        });
     }
 }
 const card = {

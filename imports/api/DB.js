@@ -111,8 +111,8 @@ export class Business {
 
 export class Consumer {
     constructor({
-        _id, businessId, firstName, lastName, zipCode, birthday,
-        account = { cardNumber: "", sss: "", },
+        _id, businessId, firstName, lastName, zipCode, birthday, address,
+        account = { cardNumber: "", sss: "", status: "" },
         contactInfo = { email: "", phone: "", mobile: "" },
         security = { question: "", answer: "", password: "", passwordRequired: false },
         createdAt, updatedAt, session = []
@@ -129,6 +129,7 @@ export class Consumer {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.session = session;
+        this.address = address;
     }
     get Default() {
         return {
@@ -201,10 +202,14 @@ export class Consumer {
             return Promise.resolve("no number");
         }
     }
-    processCardReplacement(formData) {
+    processCardReplacement() {
+        this.account = { ...this.account, status: "A-01" };
+        this.save();
         return Promise.resolve({ verified: true, result: { start: "2024-07-01", end: "2024-07-15" } });
     }
     processChangeAddress(address) {
+        this.address = address;
+        this.save();
         return Promise.resolve({ verified: true, result: { cost: "3.15 USD" } });
     }
     async verifyOTP(code, sessionId) {

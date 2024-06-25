@@ -7,7 +7,7 @@ class OTP extends FuncTemplate {
     }
 
     parseBody(requestBody) {
-        //will not be used
+        this.setCustomSystemMessage("Sending OTP");
     }
 
     verifyRequest() {
