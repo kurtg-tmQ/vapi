@@ -1,7 +1,7 @@
 export default {
     "name": "Full Verification",
     "firstMessageMode": "assistant-speaks-first",
-    "firstMessage": "Hello, How can I help you today?",
+    "firstMessage": "Hello, this is full verification, How can I help you today?",
     "recordingEnabled": true,
     "hipaaEnabled": false,
     "silenceTimeoutSeconds": 30,
