@@ -172,6 +172,9 @@ export class Consumer {
     verifyPassword(password) {
         return password === this.security.password;
     }
+    checkCellPhoneNUmber(cellphone){
+        return cellphone === this.contactInfo.mobile;
+    }
     sendOTP(number, sessionId) {
         if (this.contactInfo.mobile || number) {
             const channel = DB.Channels.findOne({ businessId: this.businessId });

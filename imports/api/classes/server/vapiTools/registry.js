@@ -9,7 +9,7 @@ import verify_user from "./FirstLastName";
 import retrieve_card_number from "./CardNum";
 import verify_account_password from "./Password";
 import process_card_replacement from "./CardReplacement";
-
+import check_cell_phone_number from "./CheckCellPhone";
 // Assistans
 import FrontDesk from "./assistants/FrontDesk";
 import TaskRouter from "./assistants/TaskRouter";
@@ -46,7 +46,7 @@ const PartialVerification_ = {
 };
 const FrontDesk_ = {
     assistant: FrontDesk,
-    tools: [task_route],
+    tools: [check_cell_phone_number, task_route],
     members: [FullVerification_, PartialVerification_]
 };
 
