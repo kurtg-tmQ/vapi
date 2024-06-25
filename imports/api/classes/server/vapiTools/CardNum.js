@@ -11,7 +11,7 @@ class CardNum extends FuncTemplate {
         const data = this.Data;
         if (data) {
             const consumer = new Consumer(data);
-            retval.passRequired = consumer.requirePassword();
+            // retval.passRequired = consumer.requirePassword();
             retval.verified = consumer.verifyCardNumber(number);
         }
         return retval;
@@ -21,25 +21,14 @@ class CardNum extends FuncTemplate {
         const { number } = request.message.toolCalls[0].function.arguments;
         const { verified, passRequired } = this.verifyRequest(number);
         if (verified) {
-            if (!passRequired) {
-                this.setResponse(200, {
-                    results: [
-                        {
-                            toolCallId: request.message.toolCalls[0].id,
-                            result: "Card number exist and DOES NOT requires password",
-                        },
-                    ],
-                }, true);
-            } else {
-                this.setResponse(200, {
-                    results: [
-                        {
-                            toolCallId: request.message.toolCalls[0].id,
-                            result: "Card exist BUT requires password.",
-                        },
-                    ],
-                }, true);
-            }
+            this.setResponse(200, {
+                results: [
+                    {
+                        toolCallId: request.message.toolCalls[0].id,
+                        result: "Card number exist.",
+                    },
+                ], 
+            }, true);
         } else {
             this.setResponse(200, {
                 results: [
