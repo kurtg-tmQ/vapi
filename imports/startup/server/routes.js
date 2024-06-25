@@ -18,7 +18,7 @@ Meteor.startup(() => {
             response.writeHead(retval.statusCode, { "Content-Type": "application/json" });
             response.end(JSON.stringify(retval.message));
         } catch (error) {
-            Utilities.log("api/info error: %s", error.message || error);
+            console.error(error);
             response.statusCode = 500;
             response.end("Error: " + error.message || error);
         }

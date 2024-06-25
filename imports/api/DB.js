@@ -172,7 +172,7 @@ export class Consumer {
     verifyPassword(password) {
         return password === this.security.password;
     }
-    checkCellPhoneNUmber(cellphone){
+    checkCellPhoneNUmber(cellphone) {
         return cellphone === this.contactInfo.mobile;
     }
     sendOTP(number, sessionId) {
@@ -182,14 +182,9 @@ export class Consumer {
             let phonenumber = this.contactInfo.mobile;
             // if (!phonenumber && number) phonenumber = number;
             if (number) phonenumber = number;
-            const otp = new OTP();
-            const idx = this.session.findIndex((s) => s.sessionId === sessionId);
+            const otp = new OTP({});
             const code = otp.generateOTP(4);
-            if (idx > -1) {
-                this.session[idx].otp = { code, expiresIn: otp.ExpiresIn };
-            } else {
-                this.session.push({ sessionId, otp: { code, expiresIn: otp.ExpiresIn } });
-            }
+
             //TESTING
             // this.save();
             // return Promise.resolve("OTP sent");
@@ -198,6 +193,7 @@ export class Consumer {
                 if (errorStatus.includes(response.status)) {
                     return Promise.reject("OTP not sent");
                 }
+                this.session.push({ sessionId, otp: { code, expiresIn: otp.ExpiresIn } });
                 this.save();
                 return Promise.resolve("OTP sent");
             });
@@ -205,28 +201,33 @@ export class Consumer {
             return Promise.resolve("no number");
         }
     }
-    async verifyOTP(code, sessionId) {
-        const idx = this.session.findIndex((s) => s.sessionId === sessionId);
-        if (idx > -1) {
-            if (this.session[idx].otp.used) return "used";
-            const o = new OTP(this.session[idx].otp.code, this.session[idx].otp.expiresIn);
-            const isValid = o.getIsValid(code);
-            if (isValid) {
-                this.session[idx].otp.expiresIn = moment().valueOf();
-                this.session[idx].otp.used = true;
-                this.save();
-            }
-            return isValid ? "valid" : "invalid";
-        }
-        return false;
-    }
-
     processCardReplacement(formData) {
         return Promise.resolve({ verified: true, result: { start: "2024-07-01", end: "2024-07-15" } });
     }
-
     processChangeAddress(address) {
         return Promise.resolve({ verified: true, result: { cost: "3.15 USD" } });
+    }
+    async verifyOTP(code, sessionId) {
+        const otps = this.session.filter((s) => s.sessionId === sessionId);
+        const last = otps[otps.length - 1];
+        if (last) {
+            const otp = new OTP(last.otp);
+            if (otp.getIsValid(code)) {
+                last.otp.used = true;
+                this.save();
+                return "valid";
+            }
+        }
+        return "invalid";
+    }
+    getLast2digitsOfOTP(sessionId) {
+        const otps = this.session.filter((s) => s.sessionId === sessionId);
+        const last = otps[otps.length - 1];
+        if (last) {
+            const otp = new OTP(last.otp);
+            if (!otp.IsExpired) return otp.OTP.slice(-2);
+        }
+        return "expired";
     }
 
     save() {
@@ -242,24 +243,27 @@ export class Consumer {
 }
 
 class OTP {
-    #otp;
+    #code;
     #expiresIn;
-    constructor(otp, expiresIn) {
-        this.#otp = otp;
+    #used;
+    constructor({ code = "", expiresIn = 0, used = false }) {
+        this.#code = code;
         this.#expiresIn = expiresIn;
+        this.#used = used;
     }
     get ExpiresIn() {
         return this.#expiresIn;
     }
     get OTP() {
-        return this.#otp;
+        return this.#code;
     }
     get IsExpired() {
+        if (this.#used) return true;
         return moment().isAfter(this.#expiresIn);
     }
     getIsValid(otp) {
         if (this.IsExpired) return false;
-        return parseInt(otp) === parseInt(this.#otp);
+        return parseInt(otp) === parseInt(this.#code);
     }
     /**
      * @description generate digit OTP based on length
@@ -272,6 +276,8 @@ class OTP {
         while (otp.length < length) {
             otp = '0' + otp;
         }
+        this.#code = otp;
+        this.#used = false;
         return otp;
     }
 
