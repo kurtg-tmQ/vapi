@@ -33,6 +33,21 @@ export function SidebarNav({ as: _Component = _Builtin.Block }) {
                             button={false}
                             block="inline"
                             options={{
+                                href: "https://smarty.so/dashboard/"
+                            }}
+                        >
+                            <_Builtin.Block className={_utils.cx(_styles, "icon-sidebar")} tag="div">
+                                <_Builtin.Image width="auto" height="auto" loading="lazy" alt="" src="/images/home.svg" />
+                            </_Builtin.Block>
+                            <_Builtin.Block className={_utils.cx(_styles, "text-sidebar-links")} tag="div">
+                                {"Home"}
+                            </_Builtin.Block>
+                        </_Builtin.Link>
+                        <_Builtin.Link
+                            className={_utils.cx(_styles, "sidebar-link")}
+                            button={false}
+                            block="inline"
+                            options={{
                                 href: Navigation.AvailableRoutes.HOME.path
                             }}
                         >
