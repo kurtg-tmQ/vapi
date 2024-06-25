@@ -1,7 +1,7 @@
 export default {
     "name": "Partial Verification",
     "firstMessageMode": "assistant-speaks-first",
-    "firstMessage": "Hello, How can I help you today?",
+    "firstMessage": "Hello, this is partial verification , how can I help you today?",
     "recordingEnabled": true,
     "hipaaEnabled": false,
     "silenceTimeoutSeconds": 30,

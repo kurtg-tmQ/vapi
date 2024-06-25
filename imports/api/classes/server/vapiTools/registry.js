@@ -11,6 +11,7 @@ import verify_account_password from "./Password";
 import process_card_replacement from "./CardReplacement";
 import process_new_address from "./ChangeAddress";
 
+import check_cell_phone_number from "./CheckCellPhone";
 // Assistans
 import FrontDesk from "./assistants/FrontDesk";
 import TaskRouter from "./assistants/TaskRouter";
@@ -48,7 +49,7 @@ const PartialVerification_ = {
 };
 const FrontDesk_ = {
     assistant: FrontDesk,
-    tools: [task_route],
+    tools: [check_cell_phone_number, task_route],
     members: [FullVerification_, PartialVerification_]
 };
 
