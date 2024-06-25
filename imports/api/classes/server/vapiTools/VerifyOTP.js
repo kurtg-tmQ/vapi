@@ -46,7 +46,7 @@ const otp = {
     messages: [
         {
             type: "request-start",
-            content: "Validating otp...",
+            content: "Verifying otp...",
         },
         {
             type: "request-response-delayed",
