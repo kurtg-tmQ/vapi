@@ -7,6 +7,7 @@ import zipcode_update from "./ZipCode";
 import birthday_update from "./BirthDay";
 import verify_user from "./FirstLastName";
 import retrieve_card_number from "./CardNum";
+import get_2_digits_otp from "./Get2DigitsOTP";
 import verify_account_password from "./Password";
 import process_card_replacement from "./CardReplacement";
 import process_new_address from "./ChangeAddress";
@@ -23,12 +24,12 @@ import CardReplacement from "./assistants/CardReplacement";
 
 const ChangeCard = {
     assistant: CardReplacement,
-    tools: [send_otp, verify_otp, process_card_replacement],
+    tools: [send_otp, verify_otp, process_card_replacement, get_2_digits_otp],
     members: []
 };
 const ChangeAddress_ = {
     assistant: ChangeAddress,
-    tools: [send_otp, verify_otp, process_new_address],
+    tools: [send_otp, verify_otp, process_new_address, get_2_digits_otp],
     members: []
 };
 const TaskRouter_ = {
