@@ -9,6 +9,8 @@ import verify_user from "./FirstLastName";
 import retrieve_card_number from "./CardNum";
 import verify_account_password from "./Password";
 import process_card_replacement from "./CardReplacement";
+import process_new_address from "./ChangeAddress";
+
 import check_cell_phone_number from "./CheckCellPhone";
 // Assistans
 import FrontDesk from "./assistants/FrontDesk";
@@ -21,12 +23,12 @@ import CardReplacement from "./assistants/CardReplacement";
 
 const ChangeCard = {
     assistant: CardReplacement,
-    tools: [verify_user, send_otp, verify_otp, process_card_replacement],
+    tools: [send_otp, verify_otp, process_card_replacement],
     members: []
 };
 const ChangeAddress_ = {
     assistant: ChangeAddress,
-    tools: [],
+    tools: [send_otp, verify_otp, process_new_address],
     members: []
 };
 const TaskRouter_ = {
@@ -49,8 +51,5 @@ const FrontDesk_ = {
     tools: [check_cell_phone_number, task_route],
     members: [FullVerification_, PartialVerification_]
 };
-
-
-
 
 export default [TaskRouter_, FullVerification_, PartialVerification_, FrontDesk_, ChangeCard, ChangeAddress_];

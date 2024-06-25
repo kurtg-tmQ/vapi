@@ -221,8 +221,12 @@ export class Consumer {
         return false;
     }
 
-    processCardReplacement() {
+    processCardReplacement(formData) {
         return Promise.resolve({ verified: true, result: { start: "2024-07-01", end: "2024-07-15" } });
+    }
+
+    processChangeAddress(address) {
+        return Promise.resolve({ verified: true, result: { cost: "3.15 USD" } });
     }
 
     save() {

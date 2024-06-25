@@ -1,25 +1,25 @@
 import { FuncTemplate } from "./template";
 import { Consumer } from "../../../DB";
 
-class CardReplacement extends FuncTemplate {
+class ChangeAddress extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
 
-    verifyRequest(formData) {
+    verifyRequest(address) {
         const data = this.Data;
 
         if (data) {
             const consumer = new Consumer(data);
-            return consumer.processCardReplacement(formData);
+            return consumer.processChangeAddress(address);
         }
         return Promise.resolve({ verified: false });
     }
 
     parseRequest(request) {
-        const formData = request.message.toolCalls[0].function.arguments;
+        const { address } = request.message.toolCalls[0].function.arguments;
 
-        return this.verifyRequest(formData).then(({ verified, result }) => {
+        return this.verifyRequest(address).then(({ verified, result }) => {
             if(verified) {
                 this.setResponse(200, {
                     results: [
@@ -27,7 +27,7 @@ class CardReplacement extends FuncTemplate {
                             toolCallId: request.message.toolCalls[0].id,
                             result: {
                                 success: true,
-                                dateRange: result
+                                data: result
                             }
                         },
                     ],
@@ -63,7 +63,7 @@ class CardReplacement extends FuncTemplate {
         })
     }
 }
-const card = {
+const address = {
     type: "function",
     messages: [
         {
@@ -77,25 +77,25 @@ const card = {
         },
     ],
     function: {
-        name: "process_card_replacement",
+        name: "process_new_address",
         parameters: {
             type: "object",
             properties: {
                 address: {
                     type: "string"
                 }
-            }
+            },
         },
         description:
-            "Process card replacement and returns possible delivery dates.",
+            "Updates account's address and returns chargeable materials.",
     },
     async: false,
     server: {
-        url: "https://kind-intensely-herring.ngrok-free.app/card_replacement",
+        url: "https://kind-intensely-herring.ngrok-free.app/change_address",
     },
 };
 const meta = {
-    title: "Processes card replacement request.",
+    title: "Update account address.",
 };
 
-export default new CardReplacement(card.async, card.server, card.messages, card.function, meta);
+export default new ChangeAddress(address.async, address.server, address.messages, address.function, meta);
