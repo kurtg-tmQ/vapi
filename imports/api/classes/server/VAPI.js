@@ -446,7 +446,7 @@ export class Vapi {
                 const data = session.Data;
                 if (data) tool.setData(data);
                 // RedisVent.Session.triggerUpsert(SESSION_KEY.SYSTEM_MESSAGE, "session", { message: tool.Meta.systemMsg });
-                const update = { transcriptType: "final", role: "system", transcript: tool.Meta.systemMsg, timestamp: parsed.message.timestamp };
+                const update = { transcriptType: "final", role: "system", transcript: tool.SystemMessage, timestamp: parsed.message.timestamp };
                 session.updateTranscript(update);
                 tool.parseRequest(parsed).then((response) => {
                     if (tool.Data) session.setData(tool.Data);
