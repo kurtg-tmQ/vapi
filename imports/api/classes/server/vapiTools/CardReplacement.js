@@ -95,7 +95,7 @@ const card = {
     },
 };
 const meta = {
-    title: "Update account address.",
+    title: "Processes card replacement request.",
 };
 
-export default new ChangeAddress(card.async, card.server, card.messages, card.function, meta);
+export default new CardReplacement(card.async, card.server, card.messages, card.function, meta);
