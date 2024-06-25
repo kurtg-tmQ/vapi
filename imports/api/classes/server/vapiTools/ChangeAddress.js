@@ -27,6 +27,7 @@ class ChangeAddress extends FuncTemplate {
                             toolCallId: request.message.toolCalls[0].id,
                             result: {
                                 success: true,
+                                message: "Process successful, chargeable materials is given in this response",
                                 data: result
                             }
                         },

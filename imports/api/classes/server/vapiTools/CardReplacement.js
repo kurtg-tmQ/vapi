@@ -27,6 +27,7 @@ class CardReplacement extends FuncTemplate {
                             toolCallId: request.message.toolCalls[0].id,
                             result: {
                                 success: true,
+                                message: "Process successful, delivery dates is given in this response",
                                 dateRange: result
                             }
                         },
