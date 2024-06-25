@@ -65,7 +65,7 @@ export class FuncTemplate {
                 for (const [key, value] of Object.entries(func.arguments)) {
                     obj[key] = value;
                     if (this.#func.parameters.properties[key]) {
-                        const systemMsg = this.#temp.systemMsg?.replace(".", "") || this.Id;
+                        const systemMsg = this.#meta?.systemMsg?.replace(".", "") || this.Id;
                         this.#temp.systemMsg = "";
                         this.#temp.systemMsg = systemMsg + ` - ${value}`;
                     }
