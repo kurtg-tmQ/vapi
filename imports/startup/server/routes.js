@@ -24,7 +24,8 @@ Meteor.startup(() => {
         }
     });
     Picker.route("/api/session", async function (params, request, response) {
-        // console.dir(request.body, { depth: null });
+        if(request.body.message.type === "end-of-call-report")
+            console.dir(request.body, { depth: null }); 
         const session = Server.Vapi.createSession(request.body);
         session.parseSession(request.body);
         response.writeHead(200, { "Content-Type": "application/json" });
