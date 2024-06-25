@@ -1,7 +1,7 @@
 import { FuncTemplate } from "./template";
 import { Consumer } from "../../../DB";
 
-class CardReplacement extends FuncTemplate {
+class ChangeAddress extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
         super(async, server, messages, func, meta);
     }
@@ -63,7 +63,7 @@ class CardReplacement extends FuncTemplate {
         })
     }
 }
-const card = {
+const address = {
     type: "function",
     messages: [
         {
@@ -81,6 +81,9 @@ const card = {
         parameters: {
             type: "object",
             properties: {
+                address: {
+                    type: "string"
+                }
             },
         },
         description:
@@ -95,4 +98,4 @@ const meta = {
     title: "Process card replacement",
 };
 
-export default new CardReplacement(card.async, card.server, card.messages, card.function, meta);
+export default new ChangeAddress(address.async, address.server, address.messages, address.function, meta);
