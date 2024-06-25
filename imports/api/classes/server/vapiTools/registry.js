@@ -40,12 +40,12 @@ const TaskRouter_ = {
 const FullVerification_ = {
     assistant: FullVerification,
     tools: [verify_user, zipcode_update, sss_verify, birthday_update, retrieve_card_number, verify_account_password, task_route],
-    members: [TaskRouter_]
+    members: [ChangeCard, ChangeAddress_]
 };
 const PartialVerification_ = {
     assistant: PartialVerification,
     tools: [sss_verify, retrieve_card_number, zipcode_update, verify_user, task_route],
-    members: [TaskRouter_]
+    members: [ChangeCard, ChangeAddress_]
 };
 const FrontDesk_ = {
     assistant: FrontDesk,
@@ -53,4 +53,4 @@ const FrontDesk_ = {
     members: [FullVerification_, PartialVerification_]
 };
 
-export default [TaskRouter_, FullVerification_, PartialVerification_, FrontDesk_, ChangeCard, ChangeAddress_];
+export default [FullVerification_, PartialVerification_, FrontDesk_, ChangeCard, ChangeAddress_];
