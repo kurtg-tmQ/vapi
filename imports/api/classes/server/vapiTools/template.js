@@ -31,14 +31,13 @@ export class FuncTemplate {
     #data = null;
     #meta = {};
     #arguments = {};
-    #temp = {};
+    #temp = { systemMsg: "" };
     constructor(async, server, messages = [], func = {}, meta = {}) {
         this.#async = async;
         this.#func = func;
         this.#server = server;
         this.#messages = messages;
         this.#meta = meta;
-        this.#temp = meta;
     }
     get Id() {
         return this.#func.name;
@@ -55,6 +54,9 @@ export class FuncTemplate {
     get Arguments() {
         return this.#arguments;
     }
+    get SystemMessage() {
+        return this.#temp.systemMsg;
+    }
     parseBody(requestBody) {
         const obj = {};
         if (requestBody && requestBody.message && requestBody.message.toolCalls && requestBody.message.toolCalls.length) {
@@ -63,7 +65,9 @@ export class FuncTemplate {
                 for (const [key, value] of Object.entries(func.arguments)) {
                     obj[key] = value;
                     if (this.#func.parameters.properties[key]) {
-                        this.#meta.systemMsg = this.#temp.systemMsg.replace(".", "") + ` - ${value}`;
+                        const systemMsg = this.#temp.systemMsg?.replace(".", "") || this.Id;
+                        this.#temp.systemMsg = "";
+                        this.#temp.systemMsg = systemMsg + ` - ${value}`;
                     }
                 }
             }

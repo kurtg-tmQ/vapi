@@ -225,9 +225,9 @@ export class Consumer {
         const last = otps[otps.length - 1];
         if (last) {
             const otp = new OTP(last.otp);
-            if (!otp.IsExpired) return otp.OTP.slice(-2);
+            if (!otp.IsExpired) return Promise.resolve(otp.OTP.slice(-2));
         }
-        return "expired";
+        return Promise.resolve("expired");
     }
 
     save() {
