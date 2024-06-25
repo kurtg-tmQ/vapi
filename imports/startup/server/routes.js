@@ -18,14 +18,14 @@ Meteor.startup(() => {
             response.writeHead(retval.statusCode, { "Content-Type": "application/json" });
             response.end(JSON.stringify(retval.message));
         } catch (error) {
-            Utilities.showError("api/info error: %s", error);
+            Utilities.log("api/info error: %s", error.message || error);
             response.statusCode = 500;
             response.end("Error: " + error.message || error);
         }
     });
     Picker.route("/api/session", async function (params, request, response) {
-        if(request.body.message.type === "end-of-call-report")
-            console.dir(request.body, { depth: null }); 
+        // if(request.body.message.type === "end-of-call-report")
+        // console.dir(request.body, { depth: null }); 
         const session = Server.Vapi.createSession(request.body);
         session.parseSession(request.body);
         response.writeHead(200, { "Content-Type": "application/json" });
