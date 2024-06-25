@@ -81,6 +81,9 @@ const card = {
         parameters: {
             type: "object",
             properties: {
+                address: {
+                    type: "string"
+                }
             },
         },
         description:
