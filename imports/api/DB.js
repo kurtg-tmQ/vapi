@@ -220,10 +220,10 @@ export class Consumer {
             if (otp.getIsValid(code)) {
                 last.otp.used = true;
                 this.save();
-                return "valid";
+                return {valid: true, reason:"valid"};
             }
         }
-        return "invalid";
+        return {valid:false, reason:"invalid code"};
     }
     getLast2digitsOfOTP(sessionId) {
         const otps = this.session.filter((s) => s.sessionId === sessionId);
