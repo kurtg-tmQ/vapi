@@ -32,6 +32,7 @@ export class FuncTemplate {
     #meta = {};
     #arguments = {};
     #temp = { systemMsg: "" };
+
     constructor(async, server, messages = [], func = {}, meta = {}) {
         this.#async = async;
         this.#func = func;
@@ -57,17 +58,22 @@ export class FuncTemplate {
     get SystemMessage() {
         return this.#temp.systemMsg;
     }
+    setCustomSystemMessage(message) {
+        this.#temp.systemMsg = message;
+    }
     parseBody(requestBody) {
         const obj = {};
+        let systemMsg = this.#meta?.systemMsg?.replace(".", "") || this.Id;
+        this.#temp.systemMsg = "";
+        this.#temp.systemMsg = systemMsg;
         if (requestBody && requestBody.message && requestBody.message.toolCalls && requestBody.message.toolCalls.length) {
             const func = requestBody.message.toolCalls[0].function;
             if (func && func.arguments) {
                 for (const [key, value] of Object.entries(func.arguments)) {
                     obj[key] = value;
                     if (this.#func.parameters.properties[key]) {
-                        const systemMsg = this.#meta?.systemMsg?.replace(".", "") || this.Id;
                         this.#temp.systemMsg = "";
-                        this.#temp.systemMsg = systemMsg + ` - ${value}`;
+                        this.#temp.systemMsg = systemMsg += ` - ${value}`;
                     }
                 }
             }
