@@ -18,6 +18,7 @@ import FullVerification from "./assistants/FullVerification2";
 import PartialVerification from "./assistants/PartialVerification";
 import ChangeAddress from "./assistants/ChangeAddress";
 import CardReplacement from "./assistants/CardReplacement";
+import ChangeAddress from "./assistants/ChangeAddress";
 
 
 const ChangeCard = {

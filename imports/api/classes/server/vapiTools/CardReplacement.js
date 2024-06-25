@@ -77,7 +77,7 @@ const card = {
         },
     ],
     function: {
-        name: "process_new_address",
+        name: "process_card_replacement",
         parameters: {
             type: "object",
             properties: {
@@ -87,15 +87,15 @@ const card = {
             }
         },
         description:
-            "Updates account's address and returns chargeable materials",
+            "Process card replacement and returns possible delivery dates.",
     },
     async: false,
     server: {
-        url: "https://kind-intensely-herring.ngrok-free.app/change_address",
+        url: "https://kind-intensely-herring.ngrok-free.app/card_replacement",
     },
 };
 const meta = {
     title: "Update account address.",
 };
 
-export default new CardReplacement(card.async, card.server, card.messages, card.function, meta);
+export default new ChangeAddress(card.async, card.server, card.messages, card.function, meta);
