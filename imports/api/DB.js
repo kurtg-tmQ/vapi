@@ -295,10 +295,10 @@ class OTP {
         return this.#code;
     }
     get IsExpired() {
-        if (this.#used) return true;
         return moment().isAfter(this.#expiresIn);
     }
     getIsValid(otp) {
+        if (this.#used) return true;
         if (this.IsExpired) return false;
         return parseInt(otp) === parseInt(this.#code);
     }
