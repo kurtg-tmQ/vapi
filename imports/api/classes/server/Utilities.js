@@ -69,6 +69,9 @@ class Utilities {
     generateBearerToken(username, password) {
         return Buffer.from(`${username}:${password}`).toString("base64");
     }
+    getLast4Digits(str) {
+        return str.substring(str.length - 4, str.length);
+    };
 }
 
 export default Util = new Utilities();

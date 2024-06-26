@@ -1,7 +1,7 @@
-import { FuncTemplate } from "./template";
 import DB, { Consumer } from "../../../DB";
-import { string } from "prop-types";
-
+import { FuncTemplate } from "./template";
+import Utilities from "../Utilities";
+import Server from "../Server";
 
 class CheckCellPhone extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
@@ -9,12 +9,23 @@ class CheckCellPhone extends FuncTemplate {
     }
 
     checkCellPhoneNumber() {
-        const number = this.Meta.consumerNumber;
-        const isExist = DB.Consumers.findOne({"contactInfo.mobile": number})
-
-        
+        const consumerNumber = this.Meta.consumerNumber;
+        // const billing = RemoteDatabase.getCollection("billings");
+        const isExist = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber });
         if (isExist) {
-            this.setData(isExist);
+            const account = Consumer.Default.account;
+            const consumer = new Consumer({
+                firstName: isExist.firstName,
+                lastName: isExist.lastName,
+                account: {
+                    cardNumber: Utilities.getLast4Digits(isExist.account_identifier),
+                    sss: account.sss,
+                    status: account.sss,
+                },
+                contactInfo: { mobile: consumerNumber }
+            });
+            consumer.saveTemp();
+            this.setData(consumer.toObject());
             return Promise.resolve({ verified: true });
         }
         return Promise.resolve({ verified: false });
@@ -22,7 +33,7 @@ class CheckCellPhone extends FuncTemplate {
 
     parseRequest(request) {
         return this.checkCellPhoneNumber().then(({ verified, result }) => {
-            if(verified) {
+            if (verified) {
                 this.setResponse(200, {
                     results: [
                         {
@@ -30,7 +41,7 @@ class CheckCellPhone extends FuncTemplate {
                             result: {
                                 success: true,
                                 message: "Exist"
-                                
+
                             }
                         },
                     ],
@@ -63,7 +74,7 @@ class CheckCellPhone extends FuncTemplate {
                 ],
             });
             return this.checkResponse();
-        })
+        });
     }
 }
 const phone = {
