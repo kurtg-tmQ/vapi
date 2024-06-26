@@ -138,7 +138,7 @@ export class Consumer {
             lastName: "",
             zipCode: "30328",
             birthday: "2000-01-01",
-            businessId: new Mongo.ObjectID("dda651f795392e2436b0421b"),
+            businessId: new Mongo.ObjectID("7c3ab4effedcbf75dc0cee13"),
             account: { cardNumber: "", sss: "4567", },
             contactInfo: { email: "", phone: "", mobile: "" },
             security: { question: "", answer: "", password: "", passwordRequired: false },
@@ -197,7 +197,8 @@ export class Consumer {
     }
     sendOTP(number, sessionId) {
         if (this.contactInfo.mobile || number) {
-            const channel = DB.Channels.findOne({ businessId: this.businessId });
+            const channel = DB.Channels.findOne({ businessId: Consumer.Default.businessId });
+            if (!channel) return Promise.reject("no channel");
             const ch = new Channels(channel);
             let phonenumber = this.contactInfo.mobile;
             // if (!phonenumber && number) phonenumber = number;
