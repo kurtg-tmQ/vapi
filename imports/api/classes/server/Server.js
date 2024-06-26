@@ -3,8 +3,9 @@ import yaml from "js-yaml";
 import Path from './Path';
 import fs from 'fs';
 
-import { RedisClient } from "./RedisClient";
 import DB, { INDEXES, Business, Channels, Consumer } from "../../DB";
+import { RedisClient } from "./RedisClient";
+import { RemoteDatabase } from "../../RemoteDB";
 import Utilities from './Utilities';
 import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
@@ -16,6 +17,7 @@ class Server {
     #vapi;
     #redisPubSub;
     #functions = {};
+    #remoteDB;
     constructor(settings) {
         this.#settings = settings;
         this.readConfig(Path.CONFIG + "settings.yml");
@@ -43,6 +45,12 @@ class Server {
     }
     registerFunctions() {
         Meteor.methods(this.#functions);
+    }
+    /**
+     * @returns {RemoteDatabase}
+     */
+    get RemoteDB() {
+        return this.#remoteDB;
     }
     /**
      * 
@@ -86,6 +94,8 @@ class Server {
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
                 this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId);
+            if (this.Config.remoteDB)
+                this.#remoteDB = new RemoteDatabase(this.Config.remoteDB.name, this.Config.remoteDB.uri);
             this.createDefaultData();
         } catch (error) {
             Utilities.showError("Error starting up server! err: %s", error.message);

@@ -28,6 +28,7 @@ const DB = {
     Consumers: (() => createCollection("consumers"))(),
     Sessions: (() => createCollection("sessions"))(),
     Channels: (() => createCollection("channels"))(),
+    Temps: (() => createCollection("temps"))(),
     Users: Meteor.users,
 };
 
@@ -118,32 +119,33 @@ export class Consumer {
         createdAt, updatedAt, session = []
     }) {
         this._id = _id;
-        this.businessId = businessId;
+        this.businessId = businessId || Consumer.Default.businessId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.zipCode = zipCode;
-        this.birthday = birthday;
-        this.account = account;
+        this.zipCode = zipCode || Consumer.Default.zipCode;
+        this.birthday = birthday || Consumer.Default.birthday;
+        this.account = account || Consumer.Default.account;
         this.contactInfo = contactInfo;
         this.security = security;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.session = session;
-        this.address = address;
+        this.address = address || Consumer.Default.address;
     }
-    get Default() {
+    static get Default() {
         return {
             firstName: "",
             lastName: "",
-            zipCode: "",
-            birthday: "",
-            businessId: "",
-            account: { cardNumber: "", sss: "", },
+            zipCode: "30328",
+            birthday: "2000-01-01",
+            businessId: new Mongo.ObjectID("dda651f795392e2436b0421b"),
+            account: { cardNumber: "", sss: "4567", },
             contactInfo: { email: "", phone: "", mobile: "" },
             security: { question: "", answer: "", password: "", passwordRequired: false },
             session: [
                 { sessionId: "", createdAt: "", updatedAt: "", active: false, otp: { code: "", expiresIn: "" } },
-            ]
+            ],
+            address: "1234 Main St, Minneapolis, MN 55416",
         };
     }
     get CardNumber() {
@@ -154,6 +156,23 @@ export class Consumer {
     }
     get OTP() {
         return this.session.otp;
+    }
+    toObject() {
+        return {
+            _id: this._id,
+            businessId: this.businessId,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            zipCode: this.zipCode,
+            birthday: this.birthday,
+            account: this.account,
+            contactInfo: this.contactInfo,
+            security: this.security,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+            session: this.session,
+            address: this.address,
+        };
     }
     verifyBirthday(birthday) {
         return birthday === this.birthday;
@@ -220,10 +239,10 @@ export class Consumer {
             if (otp.getIsValid(code)) {
                 last.otp.used = true;
                 this.save();
-                return {valid: true, reason:"valid"};
+                return { valid: true, reason: "valid" };
             }
         }
-        return {valid:false, reason:"invalid code"};
+        return { valid: false, reason: "invalid code" };
     }
     getLast2digitsOfOTP(sessionId) {
         const otps = this.session.filter((s) => s.sessionId === sessionId);
@@ -238,11 +257,23 @@ export class Consumer {
     save() {
         if (this._id) {
             this.updatedAt = moment().valueOf();
-            DB.Consumers.update({ _id: this._id }, this);
+            DB.Consumers.update({ _id: this._id }, this, { upsert: true });
         } else {
             this.createdAt = moment().valueOf();
             delete this._id;
             this._id = DB.Consumers.insert(this);
+        }
+    }
+    saveTemp() {
+        const exist = DB.Temps.findOne({ "contactInfo.mobile": this.contactInfo.mobile });
+        if (exist) {
+            this._id = exist._id;
+            this.updatedAt = moment().valueOf();
+            DB.Temps.update({ _id: this._id }, this);
+        } else {
+            this.createdAt = moment().valueOf();
+            delete this._id;
+            this._id = DB.Temps.insert(this);
         }
     }
 }

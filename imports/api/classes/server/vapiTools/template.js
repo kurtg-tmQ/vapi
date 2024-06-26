@@ -26,7 +26,8 @@ export class FuncTemplate {
             ]
         },
         valid: false,
-        info: {}
+        info: {},
+        arguments: {}
     };
     #data = null;
     #meta = {};
@@ -94,6 +95,7 @@ export class FuncTemplate {
         this.#response.valid = valid;
         this.#response.info = info;
         this.#response.id = this.Id;
+        this.#response.arguments = this.#arguments;
     }
     setServer(server) {
         if (server) {

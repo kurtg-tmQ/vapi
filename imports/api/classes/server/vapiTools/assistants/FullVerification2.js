@@ -20,7 +20,7 @@ export default {
     },
     "model": {
         "provider": "openai",
-        "model": "gpt-4o",
+        "model": "gpt-4-turbo",
         "temperature": 0.0,
         "maxTokens": 525,
         "emotionRecognitionEnabled": false,
