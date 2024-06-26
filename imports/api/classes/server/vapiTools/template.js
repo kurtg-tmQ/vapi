@@ -27,7 +27,8 @@ export class FuncTemplate {
         },
         valid: false,
         info: {},
-        arguments: {}
+        arguments: {},
+        sessionId: "",
     };
     #data = null;
     #meta = {};
@@ -96,6 +97,7 @@ export class FuncTemplate {
         this.#response.info = info;
         this.#response.id = this.Id;
         this.#response.arguments = this.#arguments;
+        this.#response.sessionId = this.#meta.sessionId;
     }
     setServer(server) {
         if (server) {
