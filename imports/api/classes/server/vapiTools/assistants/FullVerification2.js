@@ -21,7 +21,7 @@ export default {
     "model": {
         "provider": "openai",
         "model": "gpt-4-turbo",
-        "temperature": 0.0,
+        "temperature": 0.7,
         "maxTokens": 525,
         "emotionRecognitionEnabled": false,
         "messages": [
