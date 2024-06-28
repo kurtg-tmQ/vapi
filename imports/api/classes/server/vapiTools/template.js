@@ -34,13 +34,15 @@ export class FuncTemplate {
     #meta = {};
     #arguments = {};
     #temp = { systemMsg: "" };
+    #otherInfo = {};
 
-    constructor(async, server, messages = [], func = {}, meta = {}) {
+    constructor(async, server, messages = [], func = {}, meta = {}, otherInfo = {}) {
         this.#async = async;
         this.#func = func;
         this.#server = server;
         this.#messages = messages;
         this.#meta = meta;
+        this.#otherInfo = otherInfo;
     }
     get Id() {
         return this.#func.name;
@@ -127,7 +129,8 @@ export class FuncTemplate {
             type: this.#type,
             server: this.#server,
             function: this.#func,
-            messages: this.#messages
+            messages: this.#messages,
+            ...this.#otherInfo
         };
     }
     setData(data) {

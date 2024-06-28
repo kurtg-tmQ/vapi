@@ -5,6 +5,7 @@ import moment from "moment";
 import { Intelliquent } from "./classes/server/sms/providers/intelliquent";
 import { TwilioSMS } from "./classes/server/sms/providers/twilio";
 import { Nexmo } from "./classes/server/sms/providers/nexmo";
+import { TwilioCall } from "./classes/server/call/twilioCall";
 
 const createCollection = (name, option = { idGeneration: "MONGO" }) => {
     return new Mongo.Collection(name, option);
@@ -139,7 +140,8 @@ export class Consumer {
             zipCode: "30328",
             birthday: "2000-01-01",
             businessId: new Mongo.ObjectID("7c3ab4effedcbf75dc0cee13"),
-            account: { cardNumber: "", sss: "4567", },
+            inboundBusinessId: new Mongo.ObjectID("dda651f795392e2436b0421b"),
+            account: { cardNumber: "1234", sss: "4567", status: "" },
             contactInfo: { email: "", phone: "", mobile: "" },
             security: { question: "", answer: "", password: "", passwordRequired: false },
             session: [
@@ -194,6 +196,11 @@ export class Consumer {
     }
     checkCellPhoneNUmber(cellphone) {
         return cellphone === this.contactInfo.mobile;
+    }
+    verifyFirstLastName(firstName, lastName) {
+        const frist = new RegExp(firstName, "i");
+        const last = new RegExp(lastName, "i");
+        return frist.test(this.firstName) && last.test(this.lastName);
     }
     sendOTP(number, sessionId) {
         if (this.contactInfo.mobile || number) {

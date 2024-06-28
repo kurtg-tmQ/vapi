@@ -13,14 +13,14 @@ class CheckCellPhone extends FuncTemplate {
         // const billing = RemoteDatabase.getCollection("billings");
         const isExist = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber });
         if (isExist) {
-            const account = Consumer.Default.account;
+            const defaultAccount = Consumer.Default.account;
             const consumer = new Consumer({
                 firstName: isExist.firstName,
                 lastName: isExist.lastName,
                 account: {
                     cardNumber: Utilities.getLast4Digits(isExist.account_identifier),
-                    sss: account.sss,
-                    status: account.sss,
+                    sss: defaultAccount.sss,
+                    status: defaultAccount.status,
                 },
                 contactInfo: { mobile: consumerNumber }
             });

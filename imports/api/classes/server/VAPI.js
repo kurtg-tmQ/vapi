@@ -7,6 +7,7 @@ import RedisVent from "./RedisVent";
 import Utilities from "./Utilities";
 import EventEmitter from "events";
 import DB from "../../DB";
+import Server from "./Server";
 
 
 export class Vapi {
@@ -241,9 +242,10 @@ export class Vapi {
         if (typeof requestBody === "string") {
             parsed = JSON.parse(requestBody);
         }
+        const status = parsed.message.status;
         const sessionId = this.getSessionId(parsed);
         if (sessionId) {
-            if (!this.#sessions[sessionId])
+            if (!this.#sessions[sessionId] && status === "in-progress")
                 this.#sessions[sessionId] = new Session(parsed.message.call, this.#event, this.#assistants);
             return this.#sessions[sessionId];
         }
@@ -271,11 +273,9 @@ export class Vapi {
                 }
                 return null;
             };
-            const getParent = () => {
-                return getMember("Front Desk");
+            const getParent = (parentName = "Front Desk") => {
+                return getMember(parentName);
             };
-
-
             const createMember = (memberInfo_) => {
                 const info = { assistantId: memberInfo_.id, assistantDestinations: [] };
                 if (memberInfo_.members && memberInfo_.members.length) {
@@ -305,10 +305,9 @@ export class Vapi {
                     }
                 }
             };
-            const parentInfo = getParent();
+            const parentInfo = getParent("Front Desk");
             const body = { members: [] };
             if (parentInfo) {
-                const memberIds = {};
                 const squadMember = createMember(parentInfo);
                 body.members.push(squadMember);
                 if (parentInfo.members && parentInfo.members.length) {
@@ -544,7 +543,7 @@ class Session {
             delete query.id;
             query.phoneCallProviderId = this.SessionId;
         }
-        DB.Sessions.rawCollection().updateOne(query, { $set: { ...this.#call, status: this.#status } }).then(() => {
+        DB.Sessions.rawCollection().updateOne(query, { $set: { ...this.#call, status: this.#status, transcript: this.#transcript } }).then(() => {
             this.#event.emit(SESSION_EVENTS.END, this.SessionId);
         });
     }
@@ -662,6 +661,16 @@ class Session {
     }
     createCheckList(parsed, id = null) {
         let assistantId = parsed.message?.call?.assistantId;
+        const isFrontDesk = (message) => {
+            const type = message.type;
+            if (type === "status-update" && message.status === "in-progress") {
+                return true;
+            }
+            return false;
+        };
+        if (isFrontDesk(parsed.message)) {
+            assistantId = Object.keys(this.#assistants).find(key => this.#assistants[key].name === "Front Desk");
+        }
         if (id) assistantId = id;
         const checklist = [
             {

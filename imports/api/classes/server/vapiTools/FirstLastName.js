@@ -14,51 +14,49 @@ class FirstLastName extends FuncTemplate {
      * @returns 
      */
     verifyFirstLastName(firstName, lastName) {
-        // const firstname = new RegExp(firstName, "i");
-        // const lastname = new RegExp(lastName, "i");
-        // const exist = DB.Consumers.findOne({ firstName: { $regex: firstname }, lastName: { $regex: lastname } });
-        // const consumerNumber = this.Meta.consumerNumber;
-        // const isExist = RemoteDB.getCollection("billings").findOne({ consumerNumber });
+        if (this.Data) {
+            const consumer = new Consumer(this.Data);
+            return consumer.verifyFirstLastName(firstName, lastName);
+        } else {
+            const first = new RegExp(`${firstName} ${lastName}`, "i");
+            const firstOnly = new RegExp(firstName, "i");
+            const lastOnly = new RegExp(lastName, "i");
+            const businessId = new Mongo.ObjectID("52b102029fd56ada5b3ea3bd");
+            let existing = null;
+            let query = { businessId, first: firstOnly, partial: lastName.toUpperCase() };
+            let sort = { createdAt: -1 };
 
-        const first = new RegExp(`${firstName} ${lastName}`, "i");
-        const businessId = new Mongo.ObjectID("52b102029fd56ada5b3ea3bd");
-        const isExist = Server.RemoteDB.getCollection("consumer_info").findOne({ businessId, first });
-        if (isExist) {
-            const billingInfo = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber: isExist.consumerNumber });
-            if (billingInfo) {
-                const account = Consumer.Default.account;
-                const consumer = new Consumer({
-                    firstName: billingInfo.firstName,
-                    lastName: billingInfo.lastName,
-                    account: {
-                        cardNumber: Utilities.getLast4Digits(billingInfo.account_identifier),
-                        sss: account.sss,
-                        status: account.sss,
-                    },
-                    contactInfo: { mobile: isExist.consumerNumber }
-                });
-                consumer.saveTemp();
-                this.setData(consumer.toObject());
-                return true;
+            existing = Server.RemoteDB.getCollection("consumer_info").findOne(query);
+            // if (!existing) {
+            //     query = { businessId, first };
+            //     console.time("2nd query")
+            //     existing = Server.RemoteDB.getCollection("consumer_info").findOne(query);
+            //     console.timeEnd("2nd query")
+            // }
+            if (!existing) {
+                query = { firstName: firstOnly, lastName: lastOnly };
+                existing = DB.Consumers.findOne(query);
+            }
+            if (existing) {
+                const billingInfo = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber: existing.consumerNumber }, { sort });
+                if (billingInfo) {
+                    const account = Consumer.Default.account;
+                    const consumer = new Consumer({
+                        firstName: billingInfo.firstName,
+                        lastName: billingInfo.lastName,
+                        account: {
+                            cardNumber: Utilities.getLast4Digits(billingInfo.account_identifier || Consumer.Default.account.cardNumber),
+                            sss: account.sss,
+                            status: account.sss,
+                        },
+                        contactInfo: { mobile: existing.consumerNumber }
+                    });
+                    consumer.saveTemp();
+                    this.setData(consumer.toObject());
+                    return true;
+                }
             }
         }
-        // if (isExist) {
-        //     const account = Consumer.Default.account;
-        //     const consumer = new Consumer({
-        //         firstName: isExist.firstName,
-        //         lastName: isExist.lastName,
-        //         account: {
-        //             cardNumber: getLast4Digits(isExist.account_identifier),
-        //             sss: account.sss,
-        //             status: account.sss,
-        //         },
-        //         contactInfo: { mobile: consumerNumber }
-        //     });
-        //     consumer.saveTemp();
-        //     this.setData(consumer.toObject());
-        // }
-        // if (exist) this.setData(exist);
-        // return !!exist;
         return false;
     }
     parseRequest(requestBody) {
@@ -96,7 +94,7 @@ const verifyUser = {
         },
         {
             type: "request-response-delayed",
-            content: "Wait a sec...",
+            content: "Hold on a second",
             timingMilliseconds: 2000,
         },
     ],
