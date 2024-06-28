@@ -27,6 +27,11 @@ Meteor.startup(() => {
         // if(request.body.message.type === "end-of-call-report")
         // console.dir(request.body, { depth: null }); 
         const session = Server.Vapi.createSession(request.body);
+        if (!session) {
+            response.writeHead(500, { "Content-Type": "application/json" });
+            response.end();
+            return;
+        }
         session.parseSession(request.body);
         response.writeHead(200, { "Content-Type": "application/json" });
         response.end();

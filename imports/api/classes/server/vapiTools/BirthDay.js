@@ -1,6 +1,5 @@
 import { FuncTemplate } from "./template";
 import { Consumer } from "../../../DB";
-import moment from "moment";
 
 class BirthDay extends FuncTemplate {
     constructor(async, server, messages, func, meta) {
