@@ -11,7 +11,7 @@ class CheckCellPhone extends FuncTemplate {
     checkCellPhoneNumber() {
         const consumerNumber = this.Meta.consumerNumber;
         // const billing = RemoteDatabase.getCollection("billings");
-        const isExist = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber });
+        const isExist = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber, account_identifier: { $exists: true } });
         if (isExist) {
             const defaultAccount = Consumer.Default.account;
             const consumer = new Consumer({
