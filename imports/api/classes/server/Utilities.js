@@ -92,15 +92,6 @@ class Utilities {
             }))
         })
     }
-    extractTitle(text) {
-        const lines = text.split('\n');
-        for (const line of lines) {
-            if (line.startsWith('Title:')) {
-                return line.replace('Title:', '').trim();
-            }
-        }
-        return ''; // Return empty string if title not found
-    }
 
 }
 
