@@ -15,18 +15,18 @@ def fetch_html(url):
     except requests.exceptions.RequestException as e:
         sys.exit(1)
 
-def compose_final_output(markdown, meta):
-    output = {}
-    if meta.get("title"):
-        output["title"] = meta["title"]
-    if meta.get("url"):
-        output["url"] = meta["url"]
-    if meta.get("date"):
-        output["date"] = meta["date"]
-    if markdown:
-        output["markdown"] = markdown
+def compose_final_output(markdown, metadata):
+    outputstring = ""
+    if meta["title"]:
+        outputstring += f"Title: {meta['title']}\n\n"
+    if meta["url"]:
+        outputstring += f"URL Source:({meta['url']})\n\n"
+    if meta["date"]:
+        outputstring += f"Published Time: {meta['date']}\n\n"
+    if(markdown):
+        outputstring += f"Markdown Content:\n{markdown}"
 
-    return json.dumps(output)
+    return outputstring
 
 if __name__ == "__main__":
     url = sys.argv[1] 

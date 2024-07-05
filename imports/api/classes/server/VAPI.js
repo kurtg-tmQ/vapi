@@ -176,8 +176,8 @@ export class Vapi {
     }
     async updateAssistantFile(markdownString) {
         try {
-            const markdownJSON = JSON.parse(markdownString);
-            const response = Server.Vapi.uploadFile(markdownString, markdownJSON.title);
+            const title = Utilities.extractTitle(markdownString);
+            const response = Server.Vapi.uploadFile(markdownString, title);
             const assistants = await this.listAssistants();
             const targetIndex = assistants.findIndex(obj => obj.name === "Front Desk");
             const assistant = assistants[targetIndex]
@@ -193,10 +193,10 @@ export class Vapi {
             config.model.messages = [
                 {
                     "role": "system",
-                    "content": `You are an assitant that provide information about ${markdownJSON.title}.`
+                    "content": `You are an assitant that provide information about ${title}.`
                 }
             ]
-            config.firstMessage = `Good day! Thank you for calling. I can provide information about ${markdownJSON.title}. How can I assist you today?`;
+            config.firstMessage = `Good day! Thank you for calling. I can provide information about ${title}. How can I assist you today?`;
             await this.updateAssistant(assistant.id, config);
         } catch (error) {
             Utilities.showError(error)
