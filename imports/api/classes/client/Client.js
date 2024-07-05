@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import moment from "moment";
 
-import { SESSION_KEY, SESSION } from "../common/Const";
+import { SESSION_KEY, SESSION, SCRAPE } from "../common/Const";
 import RedisVent from "./RedisVent";
 import Watcher from "./Watcher";
 
@@ -166,6 +166,16 @@ class Client extends Watcher {
     }
     reset() {
         this.#checklist = [];
+    }
+
+    submitURL(url) {
+        return new Promise((resolve, reject) => {
+            this.callFunc(SCRAPE.SCRAPE_URL, url).then(() => {
+                resolve();
+            }).catch((error) => {
+                reject(error)
+            })
+        })
     }
 }
 

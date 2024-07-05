@@ -1,0 +1,37 @@
+certifi
+courlan>=1.1.0
+htmldate>=1.8.1
+justext>=3.0.1
+
+[:platform_system != "Darwin" or python_version > "3.8"]
+lxml>=5.2.2
+
+[:platform_system == "Darwin" and python_version <= "3.8"]
+lxml==4.9.2
+
+[:python_version < "3.7"]
+charset_normalizer>=3.0.1
+urllib3<2,>=1.26
+
+[:python_version < "3.8"]
+importlib_metadata
+
+[:python_version >= "3.7"]
+charset_normalizer>=3.2.0
+urllib3<3,>=1.26
+
+[all]
+brotli
+htmldate[speed]>=1.8.1
+py3langid>=0.2.2
+pycurl>=7.45.3
+zstandard>=0.20.0
+
+[all:python_version < "3.11"]
+cchardet>=2.1.7
+
+[all:python_version >= "3.11"]
+faust-cchardet>=2.1.19
+
+[gui]
+Gooey>=1.0.1

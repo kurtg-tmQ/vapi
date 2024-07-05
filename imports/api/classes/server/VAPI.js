@@ -8,7 +8,9 @@ import Utilities from "./Utilities";
 import EventEmitter from "events";
 import DB from "../../DB";
 import Server from "./Server";
-
+import FormData from "form-data";
+import { HTTP } from "meteor/http";
+import registry from "./vapiTools/registry";
 
 export class Vapi {
     #token;
@@ -170,6 +172,35 @@ export class Vapi {
             throw new Error("Missing assistantId or configuration!");
         } catch (error) {
             Utilities.showError("Error updating assistant! err: %s", error.message || error);
+        }
+    }
+    async updateAssistantFile(markdownString) {
+        try {
+            const markdownJSON = JSON.parse(markdownString);
+            const response = Server.Vapi.uploadFile(markdownString);
+            const assistants = await this.listAssistants();
+            const targetIndex = assistants.findIndex(obj => obj.name === "Front Desk");
+            const assistant = assistants[targetIndex]
+            const fileId = response.data.id;
+            let configIndex = registry.findIndex(obj => obj.assistant.name === "Front Desk");
+            let config = registry[configIndex].assistant;
+            config.model.knowledgeBase = {
+                "provider": "canonical",
+                "fileIds": [
+                    fileId
+                ]
+            }
+            config.model.messages = [
+                {
+                    "role": "system",
+                    "content": `You are an assitant that provide information about ${markdownJSON.title}.`
+                }
+            ]
+            config.firstMessage = `Good day! Thank you for calling. I can provide information about ${markdownJSON.title}. How can I assist you today?`;
+            await this.updateAssistant(assistant.id, config);
+        } catch (error) {
+            Utilities.showError(error)
+            throw new Error(error)
         }
     }
     async createAssistant(config) {
@@ -411,6 +442,30 @@ export class Vapi {
             return this.#tools[lastMessage.function.name];
         }
         return null;
+    }
+    uploadFile(markdownString) {
+        const formdata = new FormData();
+        formdata.append('file', Buffer.from(markdownString), {
+            filename: "panda_meteor.txt",
+            contentType: "text/plain"
+        });
+        try {
+            const response = HTTP.post(
+                "https://api.vapi.ai/file",
+                {
+                    headers: {
+                        Authorization: this.Bearer,
+                        ...formdata.getHeaders(),
+                    },
+                    content: formdata.getBuffer(),
+                }
+            );
+
+            return response;
+        } catch (error) {
+            console.error("Error:", error);
+
+        }
     }
     /**
      * 

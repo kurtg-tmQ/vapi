@@ -1,5 +1,5 @@
 import { parsePhoneNumber } from "awesome-phonenumber";
-
+import { spawn } from "child_process";
 class Utilities {
     constructor() { }
     isValidString(str) {
@@ -72,6 +72,27 @@ class Utilities {
     getLast4Digits(str) {
         return str.substring(str.length - 4, str.length);
     };
+    scrapeURL(url) {
+        return new Promise((resolve, reject) => {
+            const python = process.env.PWD + "/imports/api/classes/server/trafilatura/venv/bin/python3"
+            const scraper = process.env.PWD + "/imports/api/classes/server/trafilatura/scrape.py"
+            const scrape = spawn(python, [scraper, url])
+            let markdownString = ''
+            scrape.stdout.on('data', (data) => {
+                markdownString = markdownString + data.toString()
+            })
+
+            scrape.stderr.on('data', (err) => {
+                console.log("Error in trifalatura", err.toString())
+                reject();
+            })
+
+            scrape.stdout.on('close', Meteor.bindEnvironment(() => {
+                resolve(markdownString);
+            }))
+        })
+    }
+
 }
 
 export default Util = new Utilities();
