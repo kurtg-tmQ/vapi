@@ -177,7 +177,7 @@ export class Vapi {
     async updateAssistantFile(markdownString) {
         try {
             const markdownJSON = JSON.parse(markdownString);
-            const response = Server.Vapi.uploadFile(markdownString);
+            const response = Server.Vapi.uploadFile(markdownString, markdownJSON.title);
             const assistants = await this.listAssistants();
             const targetIndex = assistants.findIndex(obj => obj.name === "Front Desk");
             const assistant = assistants[targetIndex]
@@ -443,10 +443,10 @@ export class Vapi {
         }
         return null;
     }
-    uploadFile(markdownString) {
+    uploadFile(markdownString, filename) {
         const formdata = new FormData();
         formdata.append('file', Buffer.from(markdownString), {
-            filename: "panda_meteor.txt",
+            filename: filename,
             contentType: "text/plain"
         });
         try {
