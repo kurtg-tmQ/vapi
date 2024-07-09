@@ -1,20 +1,22 @@
 import { EventEmitter } from "events";
 import moment from "moment";
 
-import { SESSION_KEY, SESSION } from "../common/Const";
+import { TwilioStreamCall } from "./callmanager/TwilioStreams";
+import { SESSION_KEY, SESSION, CALL } from "../common/Const";
 import RedisVent from "./RedisVent";
 import Watcher from "./Watcher";
-
 
 class Client extends Watcher {
     #checklist = [];
     #check = null;
     #events = new EventEmitter();
     #transcript = [];
+    #callManager = null;
     constructor(parent) {
         super(parent);
         this.secureTransaction();
         this.autoLogin();
+        this.#callManager = new TwilioStreamCall();
     }
     /**
      * @returns {EventEmitter}
@@ -24,6 +26,12 @@ class Client extends Watcher {
     }
     get Checklist() {
         return this.#checklist;
+    }
+    /**
+     * @returns {TwilioStreamCall}
+     */
+    get CallManager() {
+        return this.#callManager;
     }
     autoLogin() {
         if (!this.IsLoggedIn) {
@@ -55,6 +63,9 @@ class Client extends Watcher {
                 break;
             case "system":
                 status = 3;
+                break;
+            case "coach":
+                status = 4;
                 break;
             default:
                 status = 1;
@@ -166,6 +177,38 @@ class Client extends Watcher {
     }
     reset() {
         this.#checklist = [];
+    }
+    getToken() {
+        return this.callFunc(CALL.GET_TOKEN);
+    }
+    loadScript(url) {
+        fetch(url)
+            .then(response => response.text())
+            .then(scriptContent => {
+                const scriptElement = document.createElement('script');
+                scriptElement.text = scriptContent;
+                document.body.appendChild(scriptElement);
+            })
+            .catch(error => console.error('Error loading script:', error));
+    }
+    renderCSSJS(preset) {
+        return new Promise((resolve) => {
+            const files = (preset || this.Settings.static || []);
+            for (let idx in files) {
+                const item = files[idx];
+                item.files.forEach((data) => {
+                    let num = Math.random();
+                    let file = [data.file, "?v=", num].join("");
+                    console.log("file", file);
+                    switch (data.type) {
+                        case "css": $("head link").last().after(`<link rel="stylesheet" media="${data.media}" href="${file}" />`); break;
+                        case "js": this.loadScript(file); break;
+                    }
+                });
+                break;
+            }
+            setTimeout(resolve, 500);
+        });
     }
 }
 

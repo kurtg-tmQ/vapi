@@ -4,12 +4,14 @@ import Path from './Path';
 import fs from 'fs';
 
 import DB, { INDEXES, Business, Channels, Consumer } from "../../DB";
-import { RedisClient } from "./RedisClient";
 import { RemoteDatabase } from "../../RemoteDB";
+import { SESSION_KEY } from '../common/Const';
+import { RedisClient } from "./RedisClient";
 import Utilities from './Utilities';
 import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
 import { Vapi } from "./VAPI";
+import moment from 'moment';
 
 class Server {
     #settings;
@@ -51,6 +53,17 @@ class Server {
      */
     get RemoteDB() {
         return this.#remoteDB;
+    }
+    get GPTCMD() {
+        return {
+            GPT_MESSAGE: (data) => {
+                const transcriptType = data.transcriptType || "final";
+                const role = data.role;
+                const transcript = data.message;
+                const timestamp = moment().valueOf();
+                RedisVent.Session.triggerUpsert(SESSION_KEY.UPDATE_TRANSCRIPT, "session", { transcriptType, role, transcript, timestamp });
+            }
+        };
     }
     /**
      * 
@@ -130,7 +143,9 @@ class Server {
                     RedisVent.publish();
                     this.#redisPubSub = new PubSub();
                     this.RedisPubSub.poolResponse();
-                    resolve(Utilities.showStatus("Redis ready!"));
+                    this.RedisPubSub.startSub(this.GPTCMD).then(() => {
+                        resolve(Utilities.showStatus("Redis ready!"));
+                    });
                 })
             );
         });

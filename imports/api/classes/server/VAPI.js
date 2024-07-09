@@ -21,8 +21,8 @@ export class Vapi {
         this.#token = this.generateToken(orgId, key);
         this.#host = host;
         this.#phoneId = phoneId;
-        this.listen();
-        this.init();
+        // this.listen();
+        // this.init();
     }
     get Bearer() {
         return `Bearer ${this.#token}`;

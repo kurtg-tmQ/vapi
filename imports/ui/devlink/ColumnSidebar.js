@@ -5,7 +5,7 @@ import * as _utils from "./utils";
 import _styles from "./ColumnSidebar.module.css";
 
 // eslint-disable-next-line func-style
-export function ColumnSidebar({ as: _Component = _Builtin.Block, onToggleChecklist }) {
+export function ColumnSidebar({ as: _Component = _Builtin.Block, onToggleChecklist, setShowDialer }) {
     return (
         <_Component className={_utils.cx(_styles, "column-sidebar")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "icon-sidenav")} tag="div">
@@ -66,6 +66,7 @@ export function ColumnSidebar({ as: _Component = _Builtin.Block, onToggleCheckli
                     height="auto"
                     alt=""
                     src="/images/Asset-77.svg"
+                    onClick={setShowDialer}
                 />
             </_Builtin.Block>
             <_Builtin.Block className={_utils.cx(_styles, "icon-sidenav")} tag="div">

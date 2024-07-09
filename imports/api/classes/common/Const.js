@@ -18,3 +18,7 @@ export const SESSION_EVENTS = {
     ERROR: "error",
     UPDATE: "update"
 };
+
+export const CALL = {
+    GET_TOKEN: "get-token",
+};

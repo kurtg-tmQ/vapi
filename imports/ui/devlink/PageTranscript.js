@@ -19,8 +19,36 @@ import _styles from "./PageTranscript.module.css";
 
 import { SESSION_KEY } from "../../api/classes/common/Const";
 import Client from "../../api/classes/client/Client";
+import { CALL_EVENTS } from "../../api/classes/client/callmanager/TwilioStreams";
+import Draggable from "react-draggable";
 
-const sampleChatData = [];
+const sampleChatData = [
+    // {
+    //     status: 2,
+    //     message: "Hello, how can I help you today?",
+    //     time: "12:00 PM"
+    // },
+    // {
+    //     status: 1,
+    //     message: "I'm having trouble with my account",
+    //     time: "12:01 PM"
+    // },
+    // {
+    //     status: 2,
+    //     message: "I can help with that. What seems to be the problem?",
+    //     time: "12:02 PM"
+    // },
+    // {
+    //     status: 3,
+    //     message: "I can't log in",
+    //     time: "12:03 PM"
+    // },
+    // {
+    //     status: 4,
+    //     message: "I can help you reset your password. Please provide me with your email address.",
+    //     time: "12:04 PM"
+    // },
+];
 
 const DROPDOWN_OPTIONS = [
     {
@@ -58,11 +86,139 @@ const sampleChecklistData = [
         ]
     }
 ];
+function Dialer({ twilioCall, onClose }) {
+    const [number, setNumber] = useState('');
+    const [currentCall, setCurrentCall] = useState(null);
+
+    const makeCall = () => {
+        if (twilioCall.isAValidPhoneNumber(number)) {
+            const call = twilioCall.makeCall(number);
+            setCurrentCall(call);
+        } else {
+            alert('Invalid phone number');
+        }
+    };
+
+    const hangUp = () => {
+        if (currentCall) {
+            currentCall.disconnect();
+            setCurrentCall(null);
+        }
+    };
+
+    return (
+        <Draggable handle=".modal-header">
+            <div className="modal dialer">
+                <div className="modal-header">
+                    Dialer
+                    <button className="close-button" onClick={onClose}>×</button>
+                </div>
+                <div className="modal-body">
+                    <input
+                        type="tel"
+                        value={number}
+                        onChange={(e) => setNumber(e.target.value)}
+                        placeholder="Enter phone number"
+                    />
+                    <button onClick={makeCall} disabled={currentCall}>Call</button>
+                    {currentCall && <button onClick={hangUp}>Hang Up</button>}
+                </div>
+            </div>
+        </Draggable>
+    );
+}
+function IncomingCall({ callData, onClose }) {
+    const [callStatus, setCallStatus] = useState('incoming');
+    const [duration, setDuration] = useState(0);
+    const [muted, setMuted] = useState(false);
+
+    useEffect(() => {
+        let timer;
+        if (callStatus === 'active') {
+            timer = setInterval(() => {
+                setDuration(prev => prev + 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [callStatus]);
+
+    useEffect(() => {
+        if (Client.CallManager.IsMuted) {
+            setMuted(true);
+        } else {
+            setMuted(false);
+        }
+    }, [Client.CallManager.IsMuted]);
+
+    useEffect(() => {
+        Client.CallManager.Event.on(CALL_EVENTS.DISCONNECT, () => {
+            onClose();
+        });
+        Client.CallManager.Event.on(CALL_EVENTS.ACCEPT, () => {
+            setCallStatus('active');
+        });
+    }, []);
+
+    const acceptCall = () => {
+        Client.CallManager.acceptIncomingCall();
+    };
+
+    const rejectCall = () => {
+        Client.CallManager.endCall();
+    };
+
+    const formatDuration = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
+
+    return (
+        <Draggable handle=".modal-header">
+            <div className="modal incoming-call">
+                <div className="modal-header">
+                    {callStatus === 'incoming' ? 'Incoming Call' : 'Active Call'}
+                </div>
+                <div className="modal-body">
+                    <p>From: {callData.From}</p>
+                    {callStatus === 'active' && (
+                        <>
+                            <p>Status: Active</p>
+                            <p>Duration: {formatDuration(duration)}</p>
+                            <p>Call SID: {callData.CallSid}</p>
+                        </>
+                    )}
+                    {callStatus === 'incoming' && (
+                        <button onClick={acceptCall}>Accept</button>
+                    )}
+                    <button onClick={rejectCall}>
+                        {callStatus === 'incoming' ? 'Reject' : 'End Call'}
+                    </button>
+                    {callStatus === 'active' && (
+                        <button onClick={() => {
+                            console.log("muted", muted);
+                            if (!muted) {
+                                Client.CallManager.muteCall();
+                            } else {
+                                Client.CallManager.unmuteCall();
+                            }
+                        }}>{muted ? "Unmute" : "Mute"}</button>
+                    )}
+                </div>
+            </div>
+        </Draggable>
+    );
+}
+
 
 // eslint-disable-next-line func-style
 export function PageTranscript({ as: _Component = _Builtin.Block }) {
     const [isChecklistVisible, setIsChecklistVisible] = useState(false);
     const [chatData, setChatData] = useState(sampleChatData);
+
+    const [incomingCall, setIncomingCall] = useState(null);
+    const [showDialer, setShowDialer] = useState(false);
+
     Client.listen();
     Client.on(SESSION_KEY.UPDATE_CONVERSAION, (data) => {
         setChatData(data);
@@ -89,6 +245,14 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
         if (!chatData.length) {
             Client.getSession();
         }
+        Client.getToken().then(token => {
+            console.log("token", token);
+            Client.CallManager.initialize(token);
+            Client.CallManager.Event.on(CALL_EVENTS.INCOMING, (call) => {
+                console.log("incoming call", call);
+                setIncomingCall(call.parameters);
+            });
+        });
     }, []);
 
     useEffect(() => {
@@ -106,7 +270,8 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
                 textAlign: "center",
                 fontWeight: "bold",
                 width: "calc(100% - 30px)",
-                boxSizing: "border-box"
+                boxSizing: "border-box",
+                fontSize: "1.6em"
             }} tag="div" key={index}>
                 <_Builtin.Block tag="div">
                     <_Builtin.Block tag="div">SYSTEM: {message} - {time}</_Builtin.Block>
@@ -114,26 +279,30 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
             </_Builtin.Block>
         );
     };
+    const coachMessage = (message, time, index) => {
 
-    // const chat = (isRight, message, time, index) => (
-    //     <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
-    //         <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
-    //             <_Builtin.Block tag="div">{message}</_Builtin.Block>
-    //         </_Builtin.Block>
-    //         <_Builtin.Block className={_utils.cx(_styles, "chat-details")} tag="div">
-    //             <_Builtin.Block className={_utils.cx(_styles, "chat-time")} tag="div">
-    //                 {time}
-    //             </_Builtin.Block>
-    //             <_Builtin.Block className={_utils.cx(_styles, "circle-divider")} tag="div" />
-    //             {dropdownSuggestions()}
-    //         </_Builtin.Block>
-    //     </_Builtin.Block>
-    // );
+        return (
+            <_Builtin.Block className={_utils.cx(_styles, "bubble-container", "right")} tag="div" key={index}>
+                <_Builtin.Block className={_utils.cx(_styles, "card-bubble", "white")} tag="div"
+                    style={{ backgroundImage: "linear-gradient(#dbcc96, #fff)", fontSize: "1.6em" }}>
+                    <_Builtin.Block tag="div">
+                        <b>COACH:</b> {message}
+                    </_Builtin.Block>
+                </_Builtin.Block>
+                <_Builtin.Block className={_utils.cx(_styles, "chat-details")} tag="div">
+                    <_Builtin.Block className={_utils.cx(_styles, "chat-time")} tag="div">
+                        {time}
+                    </_Builtin.Block>
+                    <_Builtin.Block className={_utils.cx(_styles, "circle-divider")} tag="div" />
+                </_Builtin.Block>
+            </_Builtin.Block>
+        );
+    };
     const chat = (isRight, message, time, index) => {
         const isHTML = /<\/?[a-z][\s\S]*>/i.test(message);
         return (
             <_Builtin.Block className={_utils.cx(_styles, "bubble-container", isRight ? "right" : "")} tag="div" key={index}>
-                <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div">
+                <_Builtin.Block className={_utils.cx(_styles, "card-bubble", isRight ? "white" : "")} tag="div" style={{ fontSize: "1.6em" }}>
                     <_Builtin.Block tag="div">
                         {isHTML ? (
                             <div dangerouslySetInnerHTML={{ __html: message }} />
@@ -156,6 +325,10 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
 
     const clickHandler = (data = "") => {
         console.log("clicked", data);
+    };
+
+    const toggleShowDialer = () => {
+        setShowDialer(!showDialer);
     };
 
     const dropdownSuggestions = () => (
@@ -188,6 +361,7 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
         </_Builtin.Block>
     );
 
+
     return (
         <_Component className={_utils.cx(_styles, "page-wrapper")} tag="div">
             <SidebarNav />
@@ -208,9 +382,14 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
                         <_Builtin.Block className={_utils.cx(_styles, "main-page-bot")} tag="div">
                             <_Builtin.Block className={_utils.cx(_styles, "convo-trasncript")} tag="div" ref={chatContainerRef}>
                                 {chatData.map((chatItem, index) => {
-                                    if (chatItem.status === 3)
-                                        return systemMessage(chatItem.message, chatItem.time, index);
-                                    return chat(chatItem.status === 2, chatItem.message, chatItem.time, index);
+                                    switch (chatItem.status) {
+                                        case 3:
+                                            return systemMessage(chatItem.message, chatItem.time, index);
+                                        case 4:
+                                            return coachMessage(chatItem.message, chatItem.time, index);
+                                        default:
+                                            return chat(chatItem.status === 2, chatItem.message, chatItem.time, index);
+                                    }
                                 })}
                             </_Builtin.Block>
                             <_Builtin.Block className={_utils.cx(_styles, "transcript-timeline")} tag="div">
@@ -222,7 +401,10 @@ export function PageTranscript({ as: _Component = _Builtin.Block }) {
                     </_Builtin.Block>
                     <_Builtin.Block className={_utils.cx(_styles, "transcript-page-column")} tag="div">
                         <TrasncriptPageColumn />
-                        <ColumnSidebar onToggleChecklist={toggleChecklist} />
+                        <ColumnSidebar onToggleChecklist={toggleChecklist} setShowDialer={toggleShowDialer} />
+                        {incomingCall && <IncomingCall callData={incomingCall} onClose={() => setIncomingCall(null)} />
+                        }
+                        {showDialer && <Dialer twilioCall={Client.CallManager.TwilioCall} onClose={() => setShowDialer(false)} />}
                     </_Builtin.Block>
                     {isChecklistVisible && <Checklist />}
                 </_Builtin.Block>

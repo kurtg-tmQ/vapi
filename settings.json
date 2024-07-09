@@ -1,5 +1,17 @@
 {
-    "public": {},
+    "public": {
+        "static": [
+            {
+                "path": "*",
+                "files": [
+                    {
+                        "file": "/js/twilio.min.js",
+                        "type": "js"
+                    }
+                ]
+            }
+        ]
+    },
     "redisOplog": {
         "redis": {
             "port": 6379,
