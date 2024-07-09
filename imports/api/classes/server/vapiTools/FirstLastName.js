@@ -38,7 +38,7 @@ class FirstLastName extends FuncTemplate {
                 existing = DB.Consumers.findOne(query);
             }
             if (existing) {
-                const billingInfo = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber: existing.consumerNumber }, { sort });
+                const billingInfo = Server.RemoteDB.getCollection("billings").findOne({ consumerNumber: existing.consumerNumber, account_identifier: { $exists: true } }, { sort });
                 if (billingInfo) {
                     const account = Consumer.Default.account;
                     const consumer = new Consumer({
