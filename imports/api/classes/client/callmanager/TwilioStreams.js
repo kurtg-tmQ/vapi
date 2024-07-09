@@ -28,6 +28,7 @@ export class TwilioStreamCall {
 
     async initialize(token) {
         try {
+            // eslint-disable-next-line no-undef
             this.device = new Twilio.Device();
             this.device.setup(token, { debug: true });
             console.log('Twilio device registered successfully');
