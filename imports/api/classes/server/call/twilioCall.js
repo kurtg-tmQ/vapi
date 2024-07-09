@@ -82,7 +82,11 @@ export class TwilioCall {
     fetchAppSid() {
         if (this.Instance)
             return this.Instance.applications.list({ friendlyName: this.#friendlyName, limit: 1 })
-                .then((applications) => applications);
+                .then((applications) => {
+                    if (applications.length)
+                        return applications[0].sid;
+                    return null;
+                });
         return Promise.resolve(null);
     }
     createAppSid() {
@@ -114,7 +118,7 @@ export class TwilioCall {
                 return null;
             }
             let appSid = await this.fetchAppSid();
-            if (appSid) appSid = await this.createAppSid();
+            if (!appSid) appSid = await this.createAppSid();
             if (appSid) {
                 const capability = new ClientCapability({
                     accountSid: this.#key,
@@ -132,9 +136,10 @@ export class TwilioCall {
                 const token = capability.toJwt();
                 Utilities.showStatus("Generated token from `%s`", appSid);
                 return token;
-            }
+            } else
+                throw new Error('Failed to create appSid');
         } catch (error) {
-            Utilities.showError('Failed to generate Twilio token:', error);
+            Utilities.showError('Failed to generate Twilio token:', error.message || error.reason || error);
             return null;
         }
     }
@@ -143,9 +148,6 @@ export class TwilioCall {
         twiml.start().stream({
             url: Server.Config.transcripUrl,
             track: "both_tracks",
-        }).parameter({
-            name: "webhook",
-            value: `${Server.Config.host}/handler/inbound/coach`
         });
         twiml.dial({
             callerId: From
