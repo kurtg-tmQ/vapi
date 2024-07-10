@@ -1,5 +1,7 @@
 import { parsePhoneNumber } from "awesome-phonenumber";
 import { spawn } from "child_process";
+import Path from "./Path";
+import path from "path";
 class Utilities {
     constructor() { }
     isValidString(str) {
@@ -74,8 +76,8 @@ class Utilities {
     };
     scrapeURL(url) {
         return new Promise((resolve, reject) => {
-            const python = process.env.PWD + "/imports/api/classes/server/trafilatura/venv/bin/python3"
-            const scraper = process.env.PWD + "/imports/api/classes/server/trafilatura/scrape.py"
+            const python = path.join(Path.BASE, ".trafilatura/venv/bin/python3");
+            const scraper = path.join(Path.BASE, ".trafilatura/scrape.py");
             const scrape = spawn(python, [scraper, url])
             let markdownString = ''
             scrape.stdout.on('data', (data) => {
