@@ -1,11 +1,12 @@
 import { Meteor } from "meteor/meteor";
-import { Mongo } from "meteor/mongo";
+import { Mongo, MongoInternals } from "meteor/mongo";
 import moment from "moment";
 
 import { Intelliquent } from "./classes/server/sms/providers/intelliquent";
 import { TwilioSMS } from "./classes/server/sms/providers/twilio";
 import { Nexmo } from "./classes/server/sms/providers/nexmo";
 import { TwilioCall } from "./classes/server/call/twilioCall";
+import Utilities from "./classes/server/Utilities";
 
 const createCollection = (name, option = { idGeneration: "MONGO" }) => {
     return new Mongo.Collection(name, option);
@@ -23,6 +24,13 @@ export const INDEXES = {
     Consumers: [{ key: { createdAt: -1 } }, { key: { firstname: 1 } }, { key: { lastname: 1 } }],
     Sessions: [{ key: { timestanmp: -1 } }],
 };
+const createBucket = (bucketName) => {
+    const options = bucketName ? { bucketName } : undefined;
+    return new MongoInternals.NpmModule.GridFSBucket(
+        MongoInternals.defaultRemoteCollectionDriver().mongo.db,
+        options
+    );
+};
 
 const DB = {
     Business: (() => createCollection("business"))(),
@@ -30,11 +38,59 @@ const DB = {
     Sessions: (() => createCollection("sessions"))(),
     Channels: (() => createCollection("channels"))(),
     Temps: (() => createCollection("temps"))(),
+    Pools: (() => createCollection("pools"))(),
+    KnowledgeFiles: (() => createBucket("knowledgefiles"))(),
     Users: Meteor.users,
 };
 
 export default DB;
 
+
+export class KnowledgeBase {
+    saveKnowledgeBaseFile(string, url) {
+        const buffer = Buffer.from(string, 'utf-8');
+        const metadata = {
+            fileType: 'text',
+            url: url,
+            createdAt: moment().valueOf(),
+            updatedAt: moment().valueOf(),
+        };
+        const uploadStream = DB.KnowledgeFiles.openUploadStream(url, { metadata })
+        uploadStream.end(buffer);
+        return uploadStream.id;
+    }
+    findFile(baseUrl) {
+        return new Promise((resolve, reject) => {
+            DB.KnowledgeFiles.find({ "metadata.url": baseUrl }).toArray((err, files) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(files);
+                };
+            });
+        })
+    }
+    getFile(fileId) {
+        return new Promise((resolve, reject) => {
+            const downloadStream = DB.KnowledgeFiles.openDownloadStream(fileId);
+
+            let fileData = '';
+            downloadStream.on('data', (chunk) => {
+                fileData += chunk.toString('utf8');
+            });
+
+            downloadStream.on('error', (error) => {
+                reject(error);
+            });
+
+            downloadStream.on('end', () => {
+                resolve(fileData);
+            });
+        });
+    }
+
+
+}
 export class Channels {
     constructor({ _id, businessId, number, createdAt, updatedAt, api = { key: "", secret: "", network: "" } }) {
         this._id = _id;
@@ -84,6 +140,57 @@ export class Channels {
         }
     }
 }
+
+
+export class Pools {
+    constructor({ _id, id, orgId, assistantId, number, createdAt, updatedAt, twilioAccountSid, twilioAuthToken, name, provider, isAvailable }) {
+        this._id = _id;
+        this.phoneId = id;
+        this.orgId = orgId;
+        this.assistantId = assistantId;
+        this.number = number;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.twilioAccountSid = twilioAccountSid;
+        this.twilioAuthToken = twilioAuthToken;
+        this.name = name;
+        this.provider = provider;
+        // this.isAvailable = isAvailable;
+    }
+    get Default() {
+        return {
+            _id: "",
+            phoneId: "",
+            orgId: "",
+            assistantId: "",
+            number: "",
+            createdAt: "",
+            updatedAt: "",
+            twilioAccountSid: "",
+            twilioAuthToken: "",
+            name: "",
+            provider: "",
+            // isAvailable: "",
+        };
+    }
+
+    get PhoneNumber() {
+        return this;
+    }
+
+    save() {
+        if (this._id) {
+            this.updatedAt = moment().valueOf();
+            DB.Pools.update({ _id: this._id }, this);
+        } else {
+            this.createdAt = moment().valueOf();
+            this.updatedAt = moment().valueOf();
+            delete this._id;
+            this._id = DB.Pools.insert(this);
+        }
+    }
+}
+
 
 export class Business {
     constructor({ _id, name, address, createdAt, updatedAt }) {
@@ -326,3 +433,4 @@ class OTP {
     }
 
 }
+

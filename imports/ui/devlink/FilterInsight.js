@@ -9,7 +9,7 @@ import Client from "../../api/classes/client/Client";
 export function FilterInsight({ as: _Component = _Builtin.Block, clickHandler }) {
     const [activeButton, setActiveButton] = useState("");
     const [url, setURL] = useState("");
-    const [isDoneScraping, setisScrapingDone] = useState(true)
+    const [isDoneScraping, setisScrapingDone] = useState(true);
 
     const onClickHandler = (buttonName) => {
         clickHandler(buttonName);
@@ -31,7 +31,7 @@ export function FilterInsight({ as: _Component = _Builtin.Block, clickHandler })
                     }, 500)
                 } catch (error) {
                     setTimeout(() => {
-                        alert("Something went wrong...")
+                        alert(error.reason || "Something went wrong...")
                     }, 500)
                 }
                 setisScrapingDone(true)
@@ -132,9 +132,10 @@ export function FilterInsight({ as: _Component = _Builtin.Block, clickHandler })
             {
                 isDoneScraping ? (
                     <button style={{ backgroundColor: "skyblue", borderRadius: "7px", marginLeft: "10px" }} onClick={scrapeURL().submitURL}>Scrape</button>
-                ) : (
-                    <div className="loader-scraper"></div>
-                )
+                ) :
+                    (
+                        <div className="loader-scraper"></div>
+                    )
             }
 
         </_Component>

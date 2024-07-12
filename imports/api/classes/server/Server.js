@@ -3,7 +3,7 @@ import yaml from "js-yaml";
 import Path from './Path';
 import fs from 'fs';
 
-import DB, { INDEXES, Business, Channels, Consumer } from "../../DB";
+import DB, { INDEXES, Business, Channels, Consumer, Pools } from "../../DB";
 import { RedisClient } from "./RedisClient";
 import { RemoteDatabase } from "../../RemoteDB";
 import Utilities from './Utilities';
@@ -146,7 +146,38 @@ class Server {
         }
     }
 
-    createDefaultData() {
+
+    async createDefaultData() {
+        if (DB.Pools.find().count() === 0) {
+            const pools = this.Config.pools;
+            const registeredPhones = await this.Vapi.listPhoneNumbers();
+            console.log("Registered Phone", registeredPhones)
+            console.log("ppols", pools)
+            let poolItem = []
+            pools.forEach(pool => {
+                const match = registeredPhones.find(phone => phone.number === pool.number);
+                if (match) {
+                    poolItem.push(match);
+                }
+            });
+            console.log("Pool Item", poolItem)
+            if (poolItem && poolItem.length) {
+                for (const poolMember of poolItem) {
+                    const pl = new Pools({
+                        id: poolMember.id,
+                        orgId: poolMember.orgId,
+                        assistantId: poolMember.assistantId,
+                        number: poolMember.number,
+                        twilioAccountSid: poolMember.twilioAccountSid,
+                        twilioAuthToken: poolMember.twilioAuthToken,
+                        name: poolMember.name,
+                        provider: poolMember.provider,
+                    });
+                    pl.save()
+                }
+            }
+        }
+
         if (DB.Business.find().count()) {
             Utilities.showStatus("Default data already exists!");
             return;
