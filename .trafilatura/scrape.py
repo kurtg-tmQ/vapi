@@ -16,17 +16,31 @@ def fetch_html(url):
         sys.exit(1)
 
 def compose_final_output(markdown, meta):
-    output = {}
-    if meta.get("title"):
-        output["title"] = meta["title"]
-    if meta.get("url"):
-        output["url"] = meta["url"]
-    if meta.get("date"):
-        output["date"] = meta["date"]
-    if markdown:
-        output["markdown"] = markdown
+    outputstring = ""
+    if meta["title"]:
+        print("Title:", meta["title"])
+        outputstring += f"Title: {meta['title']}\n\n"
+    if meta["url"]:
+        print("URL:", meta["url"])
+        outputstring += f"URL Source:({meta['url']})\n\n"
+    if meta["date"]:
+        print("Date:", meta["date"])
+        outputstring += f"Published Time: {meta['date']}\n\n"
+    if(markdown):
+        outputstring += f"Markdown Content:\n{markdown}"
 
-    return json.dumps(output)
+    return outputstring
+    # output = {}
+    # if meta.get("title"):
+    #     output["title"] = meta["title"]
+    # if meta.get("url"):
+    #     output["url"] = meta["url"]
+    # if meta.get("date"):
+    #     output["date"] = meta["date"]
+    # if markdown:
+    #     output["markdown"] = markdown
+
+    # return output
 
 if __name__ == "__main__":
     url = sys.argv[1] 

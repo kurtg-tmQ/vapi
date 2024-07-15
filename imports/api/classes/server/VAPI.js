@@ -15,6 +15,7 @@ import moment from "moment";
 import pool from "./poolOfNumbers/pool";
 
 
+
 export class Vapi {
     #token;
     #tools = {};
@@ -24,8 +25,10 @@ export class Vapi {
     #assistants = {};
     #pool;
     #phoneId;
-    constructor(orgId, key, host, phoneId) {
+    #openai
+    constructor(orgId, key, host, phoneId, openai) {
         this.#token = this.generateToken(orgId, key);
+        this.#openai = openai;
         this.#host = host;
         this.#phoneId = phoneId;
         this.#pool = pool;
@@ -120,7 +123,6 @@ export class Vapi {
     }
     recordAssistants(assistants = []) {
         const getTools = (toolsInstances, tools) => {
-
             if (tools) {
                 return tools.map(tool => {
                     const instance = toolsInstances.find(t => t.Id === tool.function.name);
@@ -211,6 +213,11 @@ export class Vapi {
             Utilities.showError("Error updating assistant! err: %s", error.message || error);
         }
     }
+    async generateKnowledgeBase(markdown) {
+        const knowledge = await this.#openai.GenerateKNowledgeBase(markdown);
+        const title = await this.#openai.GenerateTitle(knowledge);
+        return { knowledge: knowledge, title: title }
+    }
     /**
      * This function will scrape the url provided if not present in the database then update a assitant associated
      * with a phone number that pulled from the pool.
@@ -221,27 +228,32 @@ export class Vapi {
         let knowledgeBase = new KnowledgeBase();
         const baseUrl = Utilities.getBaseUrl(url);
         const existingFile = await knowledgeBase.findFile(baseUrl);
-        // const availablePhone = DB.Pools.findOne({}, { sort: { updatedAt: 1 } });
         const availablePhone = this.#pool.getPhone();
         if (availablePhone) {
             try {
                 let markdownString = ""
+                let knowledgeTitle = "";
                 if (existingFile && existingFile.length > 0) {
                     Utilities.showStatus("Pulling the file from database");
                     markdownString = await knowledgeBase.getFile(existingFile[0]._id);
+                    knowledgeTitle = existingFile[0].metadata.title;
                 } else {
                     Utilities.showStatus("Scraping the site for first time");
-                    markdownString = await Utilities.scrapeURL(url)
+                    const content = await Utilities.scrapeURL(url)
+                    const knowledge = this.generateKnowledgeBase(content);
+                    markdownString = (await knowledge).knowledge;
+                    knowledgeTitle = (await knowledge).title;
                 }
-                const markdownJSON = JSON.parse(markdownString);
-                const domainName = Utilities.getBaseUrl(markdownJSON.url);
+
+                // const markdownJSON = JSON.parse(markdownString);
+
                 try {
                     if (!existingFile || existingFile.length === 0)
-                        knowledgeBase.saveKnowledgeBaseFile(markdownString, domainName)
+                        knowledgeBase.saveKnowledgeBaseFile(markdownString, baseUrl, knowledgeTitle)
                 } catch (error) {
                     Utilities.showError("Error uploading file", error);
                 }
-                const response = this.uploadFile(markdownString, domainName);
+                const response = this.uploadFile(markdownString, baseUrl);
                 const fileId = response.data.id;
                 let configIndex = registry.findIndex(obj => obj.assistant.name === availablePhone.name);
                 let config = registry[configIndex].assistant;
@@ -254,15 +266,14 @@ export class Vapi {
                 config.model.messages = [
                     {
                         "role": "system",
-                        "content": `You are an assitant that provide information about ${markdownJSON.title}.`
+                        "content": `Use the content for ${baseUrl}.txt to answer questions regarding ${knowledgeTitle} subject matter.`
                     }
                 ]
-                config.firstMessage = `Good day! Thank you for calling. I can provide information about ${markdownJSON.title}. How can I assist you today?`;
+                config.firstMessage = `Good day! Thank you for calling. I can provide information about ${knowledgeTitle}. How can I assist you today?`;
                 await this.updateAssistant(availablePhone.assistantId, config);
-                // DB.Pools.update({ _id: availablePhone._id }, { $set: { updatedAt: moment().valueOf() } })
                 this.#pool.updateIndex();
                 console.log("Updated", availablePhone.number)
-                return;
+                return availablePhone.number;
             } catch (error) {
                 console.log(error)
                 throw new Error("Something went wrong...");
@@ -517,6 +528,7 @@ export class Vapi {
         return null;
     }
     uploadFile(markdownString, filename) {
+        console.log(markdownString)
         const formdata = new FormData();
         formdata.append('file', Buffer.from(markdownString), {
             filename: `${filename}.txt`,

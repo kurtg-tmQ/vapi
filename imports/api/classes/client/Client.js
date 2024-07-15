@@ -170,7 +170,8 @@ class Client extends Watcher {
 
     submitURL(url) {
         return new Promise((resolve, reject) => {
-            this.callFunc(SCRAPE.SCRAPE_URL, url).then(() => {
+            this.callFunc(SCRAPE.SCRAPE_URL, url).then((number) => {
+                console.log(number)
                 resolve();
             }).catch((error) => {
                 reject(error)

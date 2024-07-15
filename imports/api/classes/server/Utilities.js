@@ -94,16 +94,15 @@ class Utilities {
             }))
         })
     }
-    getDomainFromUrl(url) {
-        let domain = url.replace(/(^\w+:|^)\/\//, '');
-        domain = domain.split('/')[0];
-        domain = domain.split(':')[0];
-        return domain;
-    }
     getBaseUrl(urlString) {
-        const url = new URL(urlString);
-        const baseUrl = `${url.hostname}`;
-        return baseUrl;
+        try {
+            const url = new URL(urlString);
+            const baseUrl = `${url.hostname}`;
+            return baseUrl;
+        } catch (error) {
+            this.showError('Error in extractin base url, returning full url instead')
+            return urlString;
+        }
     }
 
 }

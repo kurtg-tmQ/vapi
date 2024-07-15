@@ -10,6 +10,7 @@ import Utilities from './Utilities';
 import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
 import { Vapi } from "./VAPI";
+import OpenAi from './openai/KnowledgeGenerator';
 
 class Server {
     #settings;
@@ -18,9 +19,11 @@ class Server {
     #redisPubSub;
     #functions = {};
     #remoteDB;
+    #openai;
     constructor(settings) {
         this.#settings = settings;
         this.readConfig(Path.CONFIG + "settings.yml");
+        this.#openai = new OpenAi(this.Config.openai);
     }
     get Config() {
         return this.#settings;
@@ -93,7 +96,7 @@ class Server {
             Utilities.showStatus("Starting up server...");
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
-                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId);
+                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId, this.#openai);
             if (this.Config.remoteDB)
                 this.#remoteDB = new RemoteDatabase(this.Config.remoteDB.name, this.Config.remoteDB.uri);
             this.createDefaultData();

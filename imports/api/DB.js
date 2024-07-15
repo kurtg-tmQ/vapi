@@ -47,11 +47,12 @@ export default DB;
 
 
 export class KnowledgeBase {
-    saveKnowledgeBaseFile(string, url) {
+    saveKnowledgeBaseFile(string, url, title) {
         const buffer = Buffer.from(string, 'utf-8');
         const metadata = {
             fileType: 'text',
             url: url,
+            title: title,
             createdAt: moment().valueOf(),
             updatedAt: moment().valueOf(),
         };
