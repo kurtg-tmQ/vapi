@@ -234,14 +234,13 @@ export class Vapi {
                     markdownString = await Utilities.scrapeURL(url)
                 }
                 const markdownJSON = JSON.parse(markdownString);
-                const domainName = Utilities.getBaseUrl(markdownJSON.url);
                 try {
                     if (!existingFile || existingFile.length === 0)
-                        knowledgeBase.saveKnowledgeBaseFile(markdownString, domainName)
+                        knowledgeBase.saveKnowledgeBaseFile(markdownString, baseUrl)
                 } catch (error) {
                     Utilities.showError("Error uploading file", error);
                 }
-                const response = this.uploadFile(markdownString, domainName);
+                const response = this.uploadFile(markdownString, baseUrl);
                 const fileId = response.data.id;
                 let configIndex = registry.findIndex(obj => obj.assistant.name === availablePhone.name);
                 let config = registry[configIndex].assistant;
