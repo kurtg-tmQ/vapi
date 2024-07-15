@@ -227,6 +227,7 @@ export class Vapi {
     async updateAssistantFile(url) {
         let knowledgeBase = new KnowledgeBase();
         const baseUrl = Utilities.getBaseUrl(url);
+
         const existingFile = await knowledgeBase.findFile(baseUrl);
         const availablePhone = this.#pool.getPhone();
         if (availablePhone) {

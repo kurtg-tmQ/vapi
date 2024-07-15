@@ -11,6 +11,7 @@ import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
 import { Vapi } from "./VAPI";
 import OpenAi from './openai/KnowledgeGenerator';
+import startWebSocketServer from './websocket/Socket';
 
 class Server {
     #settings;
@@ -94,6 +95,7 @@ class Server {
         try {
             if (banner) Utilities.log("\n " + banner);
             Utilities.showStatus("Starting up server...");
+            startWebSocketServer();
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
                 this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId, this.#openai);

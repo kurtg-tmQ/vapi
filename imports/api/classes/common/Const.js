@@ -22,3 +22,9 @@ export const SESSION_EVENTS = {
     ERROR: "error",
     UPDATE: "update"
 };
+
+
+export const SOCKET = {
+    PORT: 7000,
+    CLIENT: "http://localhost:3002",
+}
