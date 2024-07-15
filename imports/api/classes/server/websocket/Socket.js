@@ -58,6 +58,7 @@ export default function startWebSocketServer() {
                 }, interval);
                 let phone = await Server.Vapi.updateAssistantFile(url)
                 clearInterval(intervalId);
+                timer = 21000;
                 events.sendUpdate(`0`)
                 if (phone) {
                     events.sendNumber(phone);

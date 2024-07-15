@@ -181,6 +181,7 @@ class Server {
                     pl.save()
                 }
             }
+            this.Vapi.initPools();
         }
 
         if (DB.Business.find().count()) {

@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import Brand from "./Brand";
 import { useWebSocket } from "./WebSocket";
 function DemoCountdown({ setShowComponent }) {
-    const { progress, number } = useWebSocket();
+    let { progress, isComplete, setIsComplete } = useWebSocket();
     const [countdown, setCountdown] = useState(10);
 
 
     useEffect(() => {
-        if (progress && progress <= 0) {
+        if (isComplete) {
+            setIsComplete(false);
             setShowComponent("showNumber")
         }
-    }, [progress,]);
+    }, [isComplete]);
 
     return (
         <div className="democountdown">

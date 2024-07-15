@@ -44,9 +44,11 @@ export class Vapi {
     get SessionsIds() {
         return Object.keys(this.#sessions);
     }
+    initPools() {
+        this.#pool.init();
+    }
     async init() {
         try {
-            this.#pool.init();
             for (const vt of VapiTools) {
                 const config = vt.assistant;
                 config.serverUrl = this.#host + "/api/session";

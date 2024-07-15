@@ -59,7 +59,7 @@ export const WebSocketProvider = ({ children }) => {
     };
 
     return (
-        <WebSocketContext.Provider value={{ socket, progress, sendRequest, number, isComplete }}>
+        <WebSocketContext.Provider value={{ socket, progress, sendRequest, number, isComplete, setIsComplete }}>
             {children}
         </WebSocketContext.Provider>
     );
