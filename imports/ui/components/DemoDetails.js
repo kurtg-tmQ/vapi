@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Brand from "./Brand";
+import { useWebSocket } from "./WebSocket";
 
 function DemoDetails({ setShowComponent }) {
+    const { progress, sendRequest } = useWebSocket();
     const [formData, setFormData] = useState({
         name: "",
         companyName: "",
@@ -14,6 +16,7 @@ function DemoDetails({ setShowComponent }) {
         // Check if all fields have input
         if (formData.name && formData.companyName && formData.websiteAddress) {
             console.log("Form Data:", formData);
+            sendRequest(formData.websiteAddress);
             setShowComponent("countdown");
         } else {
             alert("Please fill in all fields");

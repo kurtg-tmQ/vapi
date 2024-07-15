@@ -1,11 +1,15 @@
-import { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 const SERVER_URL = "ws://localhost:7000";
 
-const useWebSocket = () => {
+const WebSocketContext = createContext(null);
+
+export const WebSocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [progress, setProgress] = useState(0);
+    const [number, setNumber] = useState(null);
+    const [isComplete, setIsComplete] = useState(false);
 
     useEffect(() => {
         const newSocket = io(SERVER_URL);
@@ -16,20 +20,24 @@ const useWebSocket = () => {
         });
 
         newSocket.on('progress', (progress) => {
-            console.log(progress)
+            console.log(progress);
             setProgress(progress);
         });
 
         newSocket.on('number', (number) => {
-            setProgress(`Process Completed, call ${number}`)
+            // setProgress(`Process Completed, call ${number}`);
+            setNumber(number)
         });
 
         newSocket.on('error', (error) => {
-            console.log(error.reason)
+            console.log(error.reason);
         });
+
         newSocket.on('complete', () => {
-            console.log("Successfully completed")
+            console.log("Successfully completed");
+            setIsComplete(true)
         });
+
         newSocket.on('disconnect', () => {
             console.log('Disconnected from WebSocket server');
         });
@@ -50,7 +58,13 @@ const useWebSocket = () => {
         }
     };
 
-    return { socket, progress, sendRequest };
+    return (
+        <WebSocketContext.Provider value={{ socket, progress, sendRequest, number, isComplete }}>
+            {children}
+        </WebSocketContext.Provider>
+    );
 };
 
-export default useWebSocket;
+export const useWebSocket = () => {
+    return useContext(WebSocketContext);
+};

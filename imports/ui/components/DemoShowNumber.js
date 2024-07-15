@@ -1,7 +1,9 @@
 import React from "react";
 import Brand from "./Brand";
+import { useWebSocket } from "./WebSocket";
 
 function DemoShowNumber({ setShowComponent }) {
+    const { number } = useWebSocket();
     return (
         <div className="demoshownumber">
             <Brand />
@@ -11,7 +13,7 @@ function DemoShowNumber({ setShowComponent }) {
                         <h4 className="demo-form-header text-center">Here's the number you can call</h4>
                     </div>
                     <div className="phone-number-div">
-                        <div>1234-5678-9012</div>
+                        <div>{number ? number : ""}</div>
                     </div>
                 </div>
                 <div className="popup_close_btn" onClick={() => setShowComponent("details")}>

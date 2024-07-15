@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Brand from "./Brand";
-
+import { useWebSocket } from "./WebSocket";
 function DemoCountdown({ setShowComponent }) {
+    const { progress, number } = useWebSocket();
     const [countdown, setCountdown] = useState(10);
 
+
     useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-            return () => clearTimeout(timer);
-        } else {
-            setShowComponent("showNumber");
+        if (progress && progress <= 0) {
+            setShowComponent("showNumber")
         }
-    }, [countdown, setShowComponent]);
+    }, [progress,]);
 
     return (
         <div className="democountdown">
@@ -19,7 +18,7 @@ function DemoCountdown({ setShowComponent }) {
             <div className="ry_card_sign-in-style1">
                 <div className="countdowndiv">
                     <div id="countdown" className="demo-countdown-text">
-                        {countdown}
+                        {progress ? progress : ""}
                     </div>
                     <div className="demo-countdown-waitingtext">Preparing your demo, please wait...</div>
                 </div>

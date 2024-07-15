@@ -26,5 +26,5 @@ export const SESSION_EVENTS = {
 
 export const SOCKET = {
     PORT: 7000,
-    CLIENT: "http://localhost:3002",
+    CLIENT: "http://localhost:3000",
 }
