@@ -52,7 +52,7 @@ a {
 }
 
 .brand {
-    background-color: #e6e1ec;
+    // background-color: #e6e1ec;
     border-radius: 5px;
     height: 50px;
     margin-left: 5px;
@@ -2019,107 +2019,111 @@ a {
         transform: scale(0);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.5);
         opacity: 1;
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
     }
-  }
-  
-  .icon-check {
+}
+
+.icon-check {
     width: 15px;
-  }
-  
-  .icon-check.show {
+}
+
+.icon-check.show {
     opacity: 1;
     display: inline-block;
     animation: icon-check-appear 1s ease-in-out forwards;
     -webkit-animation: icon-check-appear 1s ease-in-out forwards;
-  }
-  
-  
-  .icon-check.hide {
+}
+
+
+.icon-check.hide {
     opacity: 0;
-  }
-  
-  .line-checklist {
+}
+
+.line-checklist {
     position: absolute;
     left: 0%;
     top: 45%;
     right: 0%;
     bottom: 0%;
-  
+
     width: 100%;
     height: 1.5px;
-  
+
     background-color: #cacaca;
-  
+
     opacity: 1;
-  
+
     transform: scale3d(0, 1, 1);
     transform-origin: 0% 50%;
     transform-style: preserve-3d;
-  }
-  
-  .checklist-list {
+}
+
+.checklist-list {
     margin-top: 5px;
     display: none;
-  }
-  
-  .checklist-list.show {
+}
+
+.checklist-list.show {
     display: block;
-  }
-  
-  .checklist-row {
+}
+
+.checklist-row {
     padding-top: 2px;
     padding-bottom: 2px;
     font-size: 12px;
     display: flex;
-  }
-  
-  @keyframes strikeThrough {
-  0% {
+}
+
+@keyframes strikeThrough {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.text-checklist-row {
+    position: relative;
+    color: rgba(51, 51, 51, .6);
+    margin-left: 5px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.text-checklist-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 2px;
     width: 0;
-  }
-  100% {
+    background: rgba(51, 51, 51, .6);
+    transition: width 0.5s ease;
+    transform: translateY(-50%);
+}
+
+.text-checklist-row.done {
+    color: rgb(202, 202, 202);
+}
+
+.text-checklist-row.done::before {
     width: 100%;
-  }
-  }
-  
-  .text-checklist-row {
-  position: relative;
-  color: rgba(51, 51, 51, .6);
-  margin-left: 5px;
-  font-size: 13px;
-  font-weight: 500;
-  }
-  
-  .text-checklist-row::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 2px;
-  width: 0;
-  background: rgba(51, 51, 51, .6);
-  transition: width 0.5s ease;
-  transform: translateY(-50%);
-  }
-  
-  .text-checklist-row.done {
-  color: rgb(202, 202, 202);
-  }
-  
-  .text-checklist-row.done::before {
-  width: 100%;
-  background: rgb(202, 202, 202);
-  animation: strikeThrough 0.5s forwards;
-  }
-  //////////// END OF ICON CHECK ANIMATION CHANGES
-  
+    background: rgb(202, 202, 202);
+    animation: strikeThrough 0.5s forwards;
+}
+
+//////////// END OF ICON CHECK ANIMATION CHANGES
+
 
 // .icon-check {
 //     opacity: 0;
@@ -2404,6 +2408,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Pt Root Ui";
     src: url("https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e10_PT%20Root%20UI_Medium.otf") format("opentype");
@@ -2411,6 +2416,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Pt Root Ui";
     src: url("https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831df4_PT%20Root%20UI_Bold.otf") format("opentype");
@@ -2418,6 +2424,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Pt Root Ui";
     src: url("https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e0b_PT%20Root%20UI_Regular.otf") format("opentype");
@@ -2425,6 +2432,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-BoldOblique.otf") format("opentype");
@@ -2433,6 +2441,7 @@ a {
     font-style: italic;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-DemiBold.otf") format("opentype");
@@ -2440,6 +2449,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-DemiBoldOblique.otf") format("opentype");
@@ -2448,6 +2458,7 @@ a {
     font-style: italic;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-ExtraBold.otf") format("opentype");
@@ -2456,6 +2467,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-Medium.otf") format("opentype");
@@ -2464,6 +2476,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     src: url("/font/ArticulatCF-Normal.otf") format("opentype");
@@ -2472,6 +2485,7 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Articulat";
     // src: url('https://assets.website-files.com/66706867b675938e0e831dbe/66706867b675938e0e831e1b_Fontspring-DEMO-articulatcf-regular-BF64a38d8b1d671.otf') format('opentype');
@@ -2480,10 +2494,10 @@ a {
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "webflow-icons";
-    src: url("data:application/x-font-ttf;charset=utf-8;base64,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")
-        format("truetype");
+    src: url("data:application/x-font-ttf;charset=utf-8;base64,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") format("truetype");
     font-weight: normal;
     font-style: normal;
 }

@@ -4,6 +4,7 @@ import InsightsPage from "../../ui/pages/InsightsPage";
 import ConversationPage from "../../ui/pages/ConversationPage";
 import Login from "../../ui/pages/Login";
 import DiscoveryPage from "../../ui/pages/DiscoveryPage";
+import Twity from "../../ui/pages/Twity";
 
 export const UNAUTHENTICATED_ROUTES = {
     DEFAULT: {
@@ -23,29 +24,29 @@ export const UNAUTHENTICATED_ROUTES = {
 
 export const AUTHENTICATED_ROUTES = {
     HOME: {
-        path: "/transcript",
-        component: <TranscriptPage />,
+        path: "/frontdesk",
+        component: <Twity />,
         isAuthenticated: true,
         excludeFromSidebar: true
     },
-    INSIGHTS: {
-        path: "/topic-discovery-insights",
-        component: <InsightsPage />,
-        isAuthenticated: true,
-        excludeFromSidebar: true
-    },
-    CONVERSATION: {
-        path: "/topic-discovery-conversations",
-        component: <ConversationPage />,
-        isAuthenticated: true,
-        excludeFromSidebar: true
-    },
-    DISCOVERY: {
-        path: "/topic-discovery",
-        component: <DiscoveryPage />,
-        isAuthenticated: true,
-        excludeFromSidebar: true
-    }
+    // INSIGHTS: {
+    //     path: "/topic-discovery-insights",
+    //     component: <InsightsPage />,
+    //     isAuthenticated: true,
+    //     excludeFromSidebar: true
+    // },
+    // CONVERSATION: {
+    //     path: "/topic-discovery-conversations",
+    //     component: <ConversationPage />,
+    //     isAuthenticated: true,
+    //     excludeFromSidebar: true
+    // },
+    // DISCOVERY: {
+    //     path: "/topic-discovery",
+    //     component: <DiscoveryPage />,
+    //     isAuthenticated: true,
+    //     excludeFromSidebar: true
+    // }
 };
 
 export default {
