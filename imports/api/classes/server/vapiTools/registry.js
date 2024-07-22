@@ -23,6 +23,8 @@ import FullVerification from "./assistants/FullVerification2";
 import PartialVerification from "./assistants/PartialVerification";
 import ChangeAddress from "./assistants/ChangeAddress";
 import CardReplacement from "./assistants/CardReplacement";
+import WebAssistant1 from "./assistants/WebAssistant1";
+import WebAssistant2 from "./assistants/WebAssistant2";
 
 
 const ChangeCard = {
@@ -55,5 +57,15 @@ const FrontDesk_ = {
     tools: [check_cell_phone_number, task_route],
     members: [FullVerification_, PartialVerification_]
 };
+const WebAssistant1_ = {
+    assistant: WebAssistant1,
+    tools: [],
+    members: [],
+}
+const WebAssistant2_ = {
+    assistant: WebAssistant2,
+    tools: [],
+    members: []
+}
 
-export default [FullVerification_, PartialVerification_, FrontDesk_, ChangeCard, ChangeAddress_];
+export default [WebAssistant1_, WebAssistant2_];

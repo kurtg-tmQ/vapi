@@ -3,16 +3,45 @@ import React, { useState } from "react";
 import * as _Builtin from "./_Builtin";
 import * as _utils from "./utils";
 import _styles from "./FilterInsight.module.css";
+import Client from "../../api/classes/client/Client";
 
 // eslint-disable-next-line func-style
 export function FilterInsight({ as: _Component = _Builtin.Block, clickHandler }) {
     const [activeButton, setActiveButton] = useState("");
+    const [url, setURL] = useState("");
+    const [isDoneScraping, setisScrapingDone] = useState(true);
 
     const onClickHandler = (buttonName) => {
         clickHandler(buttonName);
         setActiveButton(buttonName);
     };
 
+    const scrapeURL = () => {
+        const handleURLInputChanged = (event) => {
+            setURL(event.target.value)
+        }
+        const submitURL = async () => {
+            if (url) {
+                try {
+                    setisScrapingDone(false);
+                    await Client.submitURL(url)
+
+                    setTimeout(() => {
+                        alert("Done scraping...")
+                    }, 500)
+                } catch (error) {
+                    setTimeout(() => {
+                        alert(error.reason || "Something went wrong...")
+                    }, 500)
+                }
+                setisScrapingDone(true)
+            } else {
+                alert("Please input url first")
+            }
+
+        }
+        return { handleURLInputChanged, submitURL }
+    }
     return (
         <_Component className={_utils.cx(_styles, "filter-nav-topic")} tag="div">
             <_Builtin.Block className={_utils.cx(_styles, "filter-button-div")} tag="div">
@@ -99,6 +128,16 @@ export function FilterInsight({ as: _Component = _Builtin.Block, clickHandler })
                     {"Conversation: All"}
                 </_Builtin.Link>
             </_Builtin.Block>
+            <input type="text" placeholder="Enter your url here..." onChange={scrapeURL().handleURLInputChanged} />
+            {
+                isDoneScraping ? (
+                    <button style={{ backgroundColor: "skyblue", borderRadius: "7px", marginLeft: "10px" }} onClick={scrapeURL().submitURL}>Scrape</button>
+                ) :
+                    (
+                        <div className="loader-scraper"></div>
+                    )
+            }
+
         </_Component>
     );
 }

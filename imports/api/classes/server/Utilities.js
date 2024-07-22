@@ -1,5 +1,7 @@
 import { parsePhoneNumber } from "awesome-phonenumber";
-
+import { spawn } from "child_process";
+import Path from "./Path";
+import path from "path";
 class Utilities {
     constructor() { }
     isValidString(str) {
@@ -72,6 +74,37 @@ class Utilities {
     getLast4Digits(str) {
         return str.substring(str.length - 4, str.length);
     };
+    scrapeURL(url) {
+        return new Promise((resolve, reject) => {
+            const python = path.join(Path.BASE, ".trafilatura/venv/bin/python3");
+            const scraper = path.join(Path.BASE, ".trafilatura/scrape.py");
+            const scrape = spawn(python, [scraper, url])
+            let markdownString = ''
+            scrape.stdout.on('data', (data) => {
+                markdownString = markdownString + data.toString()
+            })
+
+            scrape.stderr.on('data', (err) => {
+                console.log("Error in trifalatura", err.toString())
+                reject();
+            })
+
+            scrape.stdout.on('close', Meteor.bindEnvironment(() => {
+                resolve(markdownString);
+            }))
+        })
+    }
+    getBaseUrl(urlString) {
+        try {
+            const url = new URL(urlString);
+            const baseUrl = `${url.hostname}`;
+            return baseUrl;
+        } catch (error) {
+            this.showError('Error in extractin base url, returning full url instead')
+            return urlString;
+        }
+    }
+
 }
 
 export default Util = new Utilities();

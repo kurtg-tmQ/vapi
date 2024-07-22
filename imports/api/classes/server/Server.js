@@ -3,13 +3,15 @@ import yaml from "js-yaml";
 import Path from './Path';
 import fs from 'fs';
 
-import DB, { INDEXES, Business, Channels, Consumer } from "../../DB";
+import DB, { INDEXES, Business, Channels, Consumer, Pools } from "../../DB";
 import { RedisClient } from "./RedisClient";
 import { RemoteDatabase } from "../../RemoteDB";
 import Utilities from './Utilities';
 import RedisVent from "./RedisVent";
 import { PubSub } from "./PubSub";
 import { Vapi } from "./VAPI";
+import OpenAi from './openai/KnowledgeGenerator';
+import startWebSocketServer from './websocket/Socket';
 
 class Server {
     #settings;
@@ -18,9 +20,11 @@ class Server {
     #redisPubSub;
     #functions = {};
     #remoteDB;
+    #openai;
     constructor(settings) {
         this.#settings = settings;
         this.readConfig(Path.CONFIG + "settings.yml");
+        this.#openai = new OpenAi(this.Config.openai);
     }
     get Config() {
         return this.#settings;
@@ -91,9 +95,10 @@ class Server {
         try {
             if (banner) Utilities.log("\n " + banner);
             Utilities.showStatus("Starting up server...");
+            startWebSocketServer();
             await Promise.all([this.registerIndexes(), this.startRedis()]);
             if (this.Config.vapi)
-                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId);
+                this.#vapi = new Vapi(this.Config.vapi.orgId, this.Config.vapi.key, this.Config.host, this.Config.phoneId, this.#openai);
             if (this.Config.remoteDB)
                 this.#remoteDB = new RemoteDatabase(this.Config.remoteDB.name, this.Config.remoteDB.uri);
             this.createDefaultData();
@@ -146,7 +151,39 @@ class Server {
         }
     }
 
-    createDefaultData() {
+
+    async createDefaultData() {
+        if (DB.Pools.find().count() === 0) {
+            const pools = this.Config.pools;
+            const registeredPhones = await this.Vapi.listPhoneNumbers();
+            console.log("Registered Phone", registeredPhones)
+            console.log("ppols", pools)
+            let poolItem = []
+            pools.forEach(pool => {
+                const match = registeredPhones.find(phone => phone.number === pool.number);
+                if (match) {
+                    poolItem.push(match);
+                }
+            });
+            console.log("Pool Item", poolItem)
+            if (poolItem && poolItem.length) {
+                for (const poolMember of poolItem) {
+                    const pl = new Pools({
+                        id: poolMember.id,
+                        orgId: poolMember.orgId,
+                        assistantId: poolMember.assistantId,
+                        number: poolMember.number,
+                        twilioAccountSid: poolMember.twilioAccountSid,
+                        twilioAuthToken: poolMember.twilioAuthToken,
+                        name: poolMember.name,
+                        provider: poolMember.provider,
+                    });
+                    pl.save()
+                }
+            }
+            this.Vapi.initPools();
+        }
+
         if (DB.Business.find().count()) {
             Utilities.showStatus("Default data already exists!");
             return;

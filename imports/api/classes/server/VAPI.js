@@ -6,8 +6,14 @@ import VapiTools from "./vapiTools/registry";
 import RedisVent from "./RedisVent";
 import Utilities from "./Utilities";
 import EventEmitter from "events";
-import DB from "../../DB";
+import DB, { KnowledgeBase } from "../../DB";
 import Server from "./Server";
+import FormData from "form-data";
+import { HTTP } from "meteor/http";
+import registry from "./vapiTools/registry";
+import moment from "moment";
+import pool from "./poolOfNumbers/pool";
+
 
 
 export class Vapi {
@@ -17,11 +23,15 @@ export class Vapi {
     #host;
     #event = new EventEmitter();
     #assistants = {};
+    #pool;
     #phoneId;
-    constructor(orgId, key, host, phoneId) {
+    #openai
+    constructor(orgId, key, host, phoneId, openai) {
         this.#token = this.generateToken(orgId, key);
+        this.#openai = openai;
         this.#host = host;
         this.#phoneId = phoneId;
+        this.#pool = pool;
         this.listen();
         this.init();
     }
@@ -34,9 +44,11 @@ export class Vapi {
     get SessionsIds() {
         return Object.keys(this.#sessions);
     }
+    initPools() {
+        this.#pool.init();
+    }
     async init() {
         try {
-
             for (const vt of VapiTools) {
                 const config = vt.assistant;
                 config.serverUrl = this.#host + "/api/session";
@@ -56,10 +68,12 @@ export class Vapi {
             // const squads = await this.listSquad();
             // const response = await this.deleteSquad(squads[0].id);
             // console.log("Squad deleted! response: ", response);
-            const response = await this.createSquad();
-            Utilities.showDebug("Squad created! response: %s", JSON.stringify(response));
-            const updatePhone = await this.updatePhonenumber(this.#phoneId, response.id);
-            Utilities.showDebug("Phone number updated! response: %s", JSON.stringify(updatePhone));
+
+            //Disable creating squad for a phone number
+            // const response = await this.createSquad();
+            // Utilities.showDebug("Squad created! response: %s", JSON.stringify(response));
+            // const updatePhone = await this.updatePhonenumber(this.#phoneId, response.id);
+            // Utilities.showDebug("Phone number updated! response: %s", JSON.stringify(updatePhone));
         } catch (error) {
             Utilities.showError("Error initializing VAPI! err: %s", error.message || error);
         }
@@ -111,11 +125,15 @@ export class Vapi {
     }
     recordAssistants(assistants = []) {
         const getTools = (toolsInstances, tools) => {
-            return tools.map(tool => {
-                const instance = toolsInstances.find(t => t.Id === tool.function.name);
-                if (instance) return instance;
-                return null;
-            });
+            if (tools) {
+                return tools.map(tool => {
+                    const instance = toolsInstances.find(t => t.Id === tool.function.name);
+                    if (instance) return instance;
+                    return null;
+                });
+            } else {
+                return []
+            }
         };
         assistants.forEach(assistant => {
             const vt = VapiTools.find(vt => vt.assistant.name === assistant.name);
@@ -154,6 +172,31 @@ export class Vapi {
             Utilities.showError("Error listing assistants! err: %s", error.message || error);
         }
     }
+    /**
+     * Get list of phone numbers imported in vapi
+     */
+    async listPhoneNumbers() {
+        try {
+            const options = {
+                url: "https://api.vapi.ai/phone-number",
+                method: "GET", headers: { Authorization: this.Bearer }
+            }
+            const response = await this.requestPromise(options);
+            const parsed = JSON.parse(response);
+            if (parsed && parsed.length) {
+                return parsed;
+            }
+            return null;
+        } catch (error) {
+            Utilities.showError("Error listing phone numbers", error)
+        }
+    }
+    /**
+     * Update Assistant configuration
+     * @param {*} assistantId 
+     * @param {*} config updated json configuration
+     * @returns 
+     */
     async updateAssistant(assistantId, config) {
         try {
             if (assistantId && config) {
@@ -172,6 +215,81 @@ export class Vapi {
             Utilities.showError("Error updating assistant! err: %s", error.message || error);
         }
     }
+    async generateKnowledgeBase(markdown) {
+        const knowledge = await this.#openai.GenerateKNowledgeBase(markdown);
+        const title = await this.#openai.GenerateTitle(knowledge);
+        return { knowledge: knowledge, title: title }
+    }
+    /**
+     * This function will scrape the url provided if not present in the database then update a assitant associated
+     * with a phone number that pulled from the pool.
+     * @param {String} url url to be scrape
+     * @returns 
+     */
+    async updateAssistantFile(url) {
+        let knowledgeBase = new KnowledgeBase();
+        const baseUrl = Utilities.getBaseUrl(url);
+
+        const existingFile = await knowledgeBase.findFile(baseUrl);
+        const availablePhone = this.#pool.getPhone();
+        if (availablePhone) {
+            try {
+                let markdownString = ""
+                let knowledgeTitle = "";
+                if (existingFile && existingFile.length > 0) {
+                    Utilities.showStatus("Pulling the file from database");
+                    markdownString = await knowledgeBase.getFile(existingFile[0]._id);
+                    knowledgeTitle = existingFile[0].metadata.title;
+                } else {
+                    Utilities.showStatus("Scraping the site for first time");
+                    const content = await Utilities.scrapeURL(url)
+                    const knowledge = this.generateKnowledgeBase(content);
+                    markdownString = (await knowledge).knowledge;
+                    knowledgeTitle = (await knowledge).title;
+                }
+
+                // const markdownJSON = JSON.parse(markdownString);
+
+                try {
+                    if (!existingFile || existingFile.length === 0)
+                        knowledgeBase.saveKnowledgeBaseFile(markdownString, baseUrl, knowledgeTitle)
+                } catch (error) {
+                    Utilities.showError("Error uploading file", error);
+                }
+                const response = this.uploadFile(markdownString, baseUrl);
+                const fileId = response.data.id;
+                let configIndex = registry.findIndex(obj => obj.assistant.name === availablePhone.name);
+                let config = registry[configIndex].assistant;
+                config.model.knowledgeBase = {
+                    "provider": "canonical",
+                    "fileIds": [
+                        fileId
+                    ]
+                }
+                config.model.messages = [
+                    {
+                        "role": "system",
+                        "content": `Use the content for ${baseUrl}.txt to answer questions regarding ${knowledgeTitle} subject matter.`
+                    }
+                ]
+                config.firstMessage = `Good day! Thank you for calling. I can provide information about ${knowledgeTitle}. How can I assist you today?`;
+                await this.updateAssistant(availablePhone.assistantId, config);
+                this.#pool.updateIndex();
+                console.log("Updated", availablePhone.number)
+                return availablePhone.number;
+            } catch (error) {
+                console.log(error)
+                throw new Error("Something went wrong...");
+            }
+        } else {
+            throw new Error("Assistant are currently busy. Try again later.");
+        }
+    }
+    /**
+     * Create Assistant on vapi
+     * @param {Object} config json object containing the configuration for assistant
+     * @returns {Object} assitant object
+     */
     async createAssistant(config) {
         try {
             if (config) {
@@ -411,6 +529,31 @@ export class Vapi {
             return this.#tools[lastMessage.function.name];
         }
         return null;
+    }
+    uploadFile(markdownString, filename) {
+        console.log(markdownString)
+        const formdata = new FormData();
+        formdata.append('file', Buffer.from(markdownString), {
+            filename: `${filename}.txt`,
+            contentType: "text/plain"
+        });
+        try {
+            const response = HTTP.post(
+                "https://api.vapi.ai/file",
+                {
+                    headers: {
+                        Authorization: this.Bearer,
+                        ...formdata.getHeaders(),
+                    },
+                    content: formdata.getBuffer(),
+                }
+            );
+
+            return response;
+        } catch (error) {
+            console.error("Error:", error);
+
+        }
     }
     /**
      * 

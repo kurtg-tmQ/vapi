@@ -12,9 +12,19 @@ export const SESSION = {
     GET_TRANSCRIPT: "get-transcript",
 };
 
+export const SCRAPE = {
+    SCRAPE_URL: "scrape-url",
+}
+
 export const SESSION_EVENTS = {
     START: "start",
     END: "end",
     ERROR: "error",
     UPDATE: "update"
 };
+
+
+export const SOCKET = {
+    PORT: 7000,
+    CLIENT: "http://localhost:3000",
+}
